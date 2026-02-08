@@ -1,0 +1,80 @@
+package com.adappvark.toolkit
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import com.adappvark.toolkit.service.UserPreferencesManager
+import com.adappvark.toolkit.ui.navigation.AppNavigation
+import com.adappvark.toolkit.ui.screens.TermsAndWalletScreen
+import com.adappvark.toolkit.ui.theme.ADappvarkToolkitTheme
+import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
+
+class MainActivity : ComponentActivity() {
+
+    // ActivityResultSender for MWA - must be created at activity level
+    private lateinit var activityResultSender: ActivityResultSender
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        // Initialize MWA activity result sender
+        activityResultSender = ActivityResultSender(this)
+
+        setContent {
+            ADappvarkToolkitTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    AardAppvarkApp(activityResultSender)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AardAppvarkApp(activityResultSender: ActivityResultSender) {
+    val context = LocalContext.current
+    val userPrefs = remember { UserPreferencesManager(context) }
+
+    // Check if onboarding is complete (T&C accepted AND wallet connected)
+    var isOnboardingComplete by remember {
+        mutableStateOf(userPrefs.hasAcceptedTerms() && userPrefs.isWalletConnected())
+    }
+
+    if (!isOnboardingComplete) {
+        // Show combined Terms & Wallet screen
+        TermsAndWalletScreen(
+            activityResultSender = activityResultSender,
+            onComplete = { publicKey, walletName ->
+                // Record T&C acceptance with wallet address
+                userPrefs.acceptTerms(publicKey)
+
+                // Save wallet connection
+                userPrefs.saveWalletConnection(publicKey, walletName)
+
+                // Mark onboarding complete
+                userPrefs.setOnboardingComplete()
+                isOnboardingComplete = true
+            },
+            onExit = {
+                // Activity will handle exit via finish()
+            }
+        )
+    } else {
+        // Show main app
+        AppNavigation(
+            activityResultSender = activityResultSender,
+            onDisconnectWallet = {
+                // Reset onboarding state to show Terms & Wallet screen again
+                isOnboardingComplete = false
+            }
+        )
+    }
+}

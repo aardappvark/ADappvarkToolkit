@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    
+    <!-- 8-bit Aardvark Mascot - Idle State -->
+    <!-- Body (brown) -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M16,32 L16,48 L48,48 L48,32 Z"/>
+    
+    <!-- Head (brown) -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M20,16 L20,32 L44,32 L44,16 Z"/>
+    
+    <!-- Snout (tan) -->
+    <path
+        android:fillColor="@color/aardvark_tan"
+        android:pathData="M8,24 L8,28 L20,28 L20,24 Z"/>
+    
+    <!-- Ears (brown) -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M20,8 L20,16 L24,16 L24,8 Z
+                         M40,8 L40,16 L44,16 L44,8 Z"/>
+    
+    <!-- Eyes (white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,20 L24,24 L28,24 L28,20 Z
+                         M36,20 L36,24 L40,24 L40,20 Z"/>
+    
+    <!-- Pupils (black) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M26,21 L26,23 L27,23 L27,21 Z
+                         M37,21 L37,23 L38,23 L38,21 Z"/>
+    
+    <!-- Legs (brown) -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M20,48 L20,56 L24,56 L24,48 Z
+                         M28,48 L28,56 L32,56 L32,48 Z
+                         M36,48 L36,56 L40,56 L40,48 Z
+                         M44,48 L44,56 L48,56 L48,48 Z"/>
+    
+    <!-- Toolbox (purple - representing dApp tools) -->
+    <path
+        android:fillColor="@color/solana_purple"
+        android:pathData="M48,36 L48,44 L60,44 L60,36 Z"/>
+    
+    <!-- Toolbox handle (lighter purple) -->
+    <path
+        android:fillColor="#B07FFF"
+        android:pathData="M52,32 L52,36 L56,36 L56,32 Z"/>
+</vector>

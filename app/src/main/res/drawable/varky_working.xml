@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    
+    <!-- 8-bit Aardvark Mascot - Working/Digging State -->
+    <!-- Body (brown) - leaning forward -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M12,32 L12,48 L44,48 L44,32 Z"/>
+    
+    <!-- Head (brown) - tilted down -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M16,20 L16,36 L40,36 L40,20 Z"/>
+    
+    <!-- Snout (tan) - pointing down -->
+    <path
+        android:fillColor="@color/aardvark_tan"
+        android:pathData="M4,28 L4,32 L16,32 L16,28 Z"/>
+    
+    <!-- Ears (brown) -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M16,12 L16,20 L20,20 L20,12 Z
+                         M36,12 L36,20 L40,20 L40,12 Z"/>
+    
+    <!-- Eyes (white) - closed/focused -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M20,24 L20,26 L24,26 L24,24 Z
+                         M32,24 L32,26 L36,26 L36,24 Z"/>
+    
+    <!-- Legs (brown) - active stance -->
+    <path
+        android:fillColor="@color/aardvark_brown"
+        android:pathData="M16,48 L16,56 L20,56 L20,48 Z
+                         M24,48 L24,58 L28,58 L28,48 Z
+                         M32,48 L32,56 L36,56 L36,48 Z
+                         M40,48 L40,58 L44,58 L44,48 Z"/>
+    
+    <!-- Dirt particles (showing work) -->
+    <path
+        android:fillColor="@color/aardvark_tan"
+        android:pathData="M8,40 L8,42 L10,42 L10,40 Z
+                         M12,44 L12,46 L14,46 L14,44 Z
+                         M6,46 L6,48 L8,48 L8,46 Z"/>
+    
+    <!-- Shovel (green - action tool) -->
+    <path
+        android:fillColor="@color/solana_green"
+        android:pathData="M48,40 L48,56 L52,56 L52,40 Z
+                         M44,52 L44,60 L56,60 L56,52 Z"/>
+</vector>

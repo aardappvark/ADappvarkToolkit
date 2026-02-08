@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- App Name -->
+    <string name="app_name">AardAppvark</string>
+    <string name="app_tagline">First in line. Every dApp, every time.</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_uninstall">Uninstall</string>
+    <string name="nav_reinstall">Reinstall</string>
+    <string name="nav_subscription">Subscription</string>
+    <string name="nav_settings">Settings</string>
+    
+    <!-- Home Screen -->
+    <string name="welcome_title">Welcome to ADappvark!</string>
+    <string name="welcome_message">Professional dApp lifecycle management for Seeker power users</string>
+    <string name="setup_required">Setup Required</string>
+    <string name="setup_shizuku_title">Enable Shizuku</string>
+    <string name="setup_shizuku_desc">Grant system permissions for silent uninstall</string>
+    <string name="setup_subscription_title">Choose Your Plan</string>
+    <string name="setup_subscription_desc">Weekly subscriptions starting at 0.005 SOL</string>
+    
+    <!-- Subscription Plans -->
+    <string name="plan_uninstall_title">Uninstall Suite</string>
+    <string name="plan_uninstall_price">0.005 SOL/week</string>
+    <string name="plan_uninstall_desc">Bulk uninstall, storage analysis, one-click cleanup</string>
+    
+    <string name="plan_reinstall_title">Reinstall Suite</string>
+    <string name="plan_reinstall_price">0.01 SOL/week</string>
+    <string name="plan_reinstall_desc">Automated reinstall, batch operations, install tracking</string>
+    
+    <string name="plan_complete_title">Complete Toolkit</string>
+    <string name="plan_complete_price">0.012 SOL/week</string>
+    <string name="plan_complete_desc">Everything included + weekly automation</string>
+    <string name="plan_complete_badge">Save 20%!</string>
+    
+    <!-- Subscription Actions -->
+    <string name="subscribe_now">Subscribe Now</string>
+    <string name="subscription_active">Active until %1$s</string>
+    <string name="subscription_expired">Subscription Expired</string>
+    <string name="renew_subscription">Renew Subscription</string>
+    
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">Scan dApps</string>
+    <string name="select_all">Select All</string>
+    <string name="deselect_all">Deselect All</string>
+    <string name="uninstall_selected">Uninstall Selected</string>
+    <string name="uninstalling">Uninstalling…</string>
+    <string name="uninstall_progress">%1$d of %2$d dApps</string>
+    <string name="uninstall_complete">Uninstall Complete!</string>
+    <string name="uninstalled_count">%1$d dApps uninstalled</string>
+    <string name="storage_freed">%1$s freed</string>
+    
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Reinstall Selected</string>
+    <string name="reinstalling">Reinstalling…</string>
+    <string name="reinstall_progress">%1$d of %2$d dApps</string>
+    <string name="reinstall_complete">Reinstall Complete!</string>
+    
+    <!-- Errors -->
+    <string name="error_shizuku_not_running">Shizuku is not running. Please start Shizuku.</string>
+    <string name="error_shizuku_permission_denied">Shizuku permission denied</string>
+    <string name="error_subscription_required">Subscription required for this feature</string>
+    <string name="error_no_dapps_selected">No dApps selected</string>
+    <string name="error_payment_failed">Payment failed. Please try again.</string>
+    
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Confirm Bulk Uninstall</string>
+    <string name="dialog_confirm_uninstall_message">Uninstall %1$d dApps? This cannot be undone.</string>
+    <string name="dialog_shizuku_setup_title">Shizuku Setup Required</string>
+    <string name="dialog_shizuku_setup_message">ADappvark requires Shizuku for silent uninstall.\n\n1. Enable Developer Options\n2. Enable Wireless Debugging\n3. Start Shizuku and pair\n\nWould you like to learn more?</string>
+    <string name="learn_more">Learn More</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="ok">OK</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_general">General</string>
+    <string name="settings_about">About</string>
+    <string name="settings_legal">Legal</string>
+    <string name="version">Version %1$s</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="open_source_licenses">Open Source Licenses</string>
+    
+    <!-- Shizuku Integration -->
+    <string name="shizuku_status_running">Shizuku: Running</string>
+    <string name="shizuku_status_not_running">Shizuku: Not Running</string>
+    <string name="shizuku_permission_granted">Permission Granted</string>
+    <string name="shizuku_permission_not_granted">Permission Required</string>
+    <string name="request_shizuku_permission">Grant Permission</string>
+    
+    <!-- Mascot Messages (8-bit Varky) -->
+    <string name="varky_idle">Ready to dig!</string>
+    <string name="varky_working">Digging through dApps…</string>
+    <string name="varky_success">All done! 🎉</string>
+    <string name="varky_error">Oops! Something went wrong</string>
+    
+    <!-- Stats -->
+    <string name="total_dapps">Total dApps</string>
+    <string name="selected_dapps">Selected</string>
+    <string name="storage_used">Storage Used</string>
+    <string name="last_operation">Last Operation</string>
+
+    <!-- Accessibility Service -->
+    <string name="accessibility_service_description">ADappvark uses this service to automatically confirm dApp uninstall dialogs. This enables bulk removal of multiple dApps without tapping OK for each one. You can disable this service anytime in Settings.</string>
+    <string name="accessibility_setup_title">Enable Auto-Uninstall</string>
+    <string name="accessibility_setup_message">To uninstall multiple dApps automatically, ADappvark needs Accessibility permission.\n\nThis is a one-time setup. After enabling, you can bulk uninstall with one tap.</string>
+    <string name="accessibility_enable">Enable</string>
+    <string name="accessibility_not_enabled">Auto-uninstall not enabled</string>
+</resources>

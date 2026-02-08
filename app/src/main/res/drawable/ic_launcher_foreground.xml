@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Stylized Aardvark Head - Centered in safe zone (18dp inset) -->
+    <!-- Safe zone is 66x66 centered, so design within 21-87 range -->
+
+    <!-- Main Head Shape -->
+    <path
+        android:fillColor="#D4A574"
+        android:pathData="
+            M78,52
+            C78,40 70,32 58,32
+            C50,32 44,35 40,40
+            L25,50
+            C22,52 22,56 25,58
+            L40,66
+            C44,70 50,74 58,74
+            C70,74 78,66 78,54
+            Z"/>
+
+    <!-- Ear -->
+    <path
+        android:fillColor="#C49764"
+        android:pathData="
+            M62,32
+            C65,26 72,24 76,28
+            C80,32 78,38 74,40
+            C70,42 66,38 64,36
+            Z"/>
+
+    <!-- Inner Ear -->
+    <path
+        android:fillColor="#E8C9A8"
+        android:pathData="
+            M66,30
+            C68,27 72,26 74,29
+            C76,32 74,35 72,36
+            C70,37 67,34 66,32
+            Z"/>
+
+    <!-- Snout/Nose (Long characteristic aardvark nose) -->
+    <path
+        android:fillColor="#E8C9A8"
+        android:pathData="
+            M25,50
+            L40,44
+            L40,62
+            L25,56
+            C22,54 22,52 25,50
+            Z"/>
+
+    <!-- Nostril -->
+    <path
+        android:fillColor="#8B6F47"
+        android:pathData="M28,52 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"/>
+
+    <!-- Eye White -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M52,46 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0"/>
+
+    <!-- Eye Pupil -->
+    <path
+        android:fillColor="#2D1F12"
+        android:pathData="M55,46 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"/>
+
+    <!-- Eye Highlight -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M56,44 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0"/>
+
+    <!-- Smile -->
+    <path
+        android:fillColor="#8B6F47"
+        android:strokeWidth="1.5"
+        android:pathData="M44,58 Q52,64 62,60"/>
+
+    <!-- dApp Toolbox Badge (bottom right) -->
+    <path
+        android:fillColor="#14F195"
+        android:pathData="M70,66 L70,78 L86,78 L86,66 Z"/>
+
+    <!-- Toolbox Handle -->
+    <path
+        android:fillColor="#0FD17A"
+        android:pathData="M75,62 L75,66 L81,66 L81,62 Z"/>
+
+    <!-- Toolbox "d" symbol -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M74,70 L74,76 L76,76 L76,72 L78,72 L78,76 L80,76 L80,70 Z
+                         M82,70 L82,76 L84,76 L84,70 Z"/>
+
+</vector>
