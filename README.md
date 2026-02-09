@@ -1,329 +1,112 @@
-# 🐜 ADappvark Toolkit
+# AardAppvark Toolkit
 
 **First in line. Every dApp, every time.**
 
-Professional dApp lifecycle management for Solana Seeker power users.
+The essential dApp lifecycle manager for Solana Seeker.
+
+[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/sGXgKG4U)
 
 ---
 
-## 📋 Project Overview
+## Features
 
-**Package:** `com.adappvark.toolkit`  
-**Version:** 1.0.0 (Beta)  
-**Target Platform:** Solana dApp Store (Seeker exclusive)  
-**Minimum SDK:** Android 8.0 (API 26)  
-**Target SDK:** Android 14 (API 34)
-
-### What is ADappvark Toolkit?
-
-ADappvark Toolkit is the first professional-grade app management solution for the Solana Seeker ecosystem. It enables power users to efficiently manage hundreds of dApps with enterprise automation features.
-
-**Core Features:**
-- ✅ **Bulk Uninstall** - Silent uninstall via Shizuku (no confirmations)
-- 🚧 **Batch Reinstall** - Automated reinstallation (Phase 2)
-- 💰 **Weekly Subscriptions** - Tiered pricing (0.005-0.012 SOL/week)
-- 🎨 **8-bit Mascot** - Varky the ADappvark (retro charm)
-- 🎯 **Material 3 UI** - Modern, polished interface
+- **Bulk Uninstall** - Clean up dApps in seconds with one-tap bulk removal
+- **Bulk Reinstall** - Restore your entire dApp collection from the Solana dApp Store
+- **Smart Favourites** - Star your favourite dApps for quick access
+- **Wallet Login** - Non-custodial authentication via Solana Mobile Wallet Adapter
+- **Simple Pricing** - First 4 apps FREE per operation, then 0.01 SOL for 5+
 
 ---
 
-## 🏗️ Architecture
+## Built For Seeker
 
-### Technology Stack
+Designed specifically for the Solana Seeker device. Uses standard Android intents for uninstall and dApp Store deep links for reinstall. No root access required.
 
-**Frontend:**
-- Kotlin 1.9.20
-- Jetpack Compose (Material 3)
-- Navigation Compose
-- Coroutines + Flow
+---
 
-**Core Services:**
-- **Shizuku API** - Silent package uninstall
-- **PackageManager** - App scanning and filtering
-- **Solana MWA** - Payment processing (TODO)
+## Privacy First
 
-**Key Dependencies:**
-```gradle
-// Shizuku for system access
-implementation("dev.rikka.shizuku:api:13.1.5")
+- No analytics or tracking
+- No cloud database or user accounts
+- All data stored locally on your device
+- Non-custodial wallet integration via Mobile Wallet Adapter
+- GDPR and CCPA compliant
+- Full data export and deletion
+- Geo-restriction for sanctioned jurisdictions
+- On-chain wallet sanctions screening
 
-// Solana Mobile Wallet Adapter
-implementation("com.solanamobile:mobile-wallet-adapter-clientlib-ktx:2.0.0")
+---
 
-// Jetpack Compose & Material 3
-implementation("androidx.compose.material3:material3:1.2.0")
-```
+## Tech Stack
 
-### Project Structure
+- **Language:** Kotlin
+- **UI:** Jetpack Compose (Material 3)
+- **Wallet:** Solana Mobile Wallet Adapter 2.0
+- **Payments:** On-chain SOL/SKR transfers
+- **Target:** Android 14 (API 34), Min SDK 26
 
-```
-app/src/main/kotlin/com/adappvark/toolkit/
-├── MainActivity.kt                    # Entry point
-├── data/
-│   └── model/
-│       ├── DAppInfo.kt               # dApp data model
-│       └── Subscription.kt           # Subscription plans & status
-├── service/
-│   ├── ShizukuManager.kt             # Shizuku integration (CORE)
-│   └── PackageManagerService.kt      # Package scanning
-├── ui/
-│   ├── theme/
-│   │   ├── Theme.kt                  # Material 3 + Solana colors
-│   │   └── Type.kt                   # Typography
-│   ├── navigation/
-│   │   └── AppNavigation.kt          # Bottom nav setup
-│   └── screens/
-│       ├── HomeScreen.kt             # Dashboard & setup
-│       ├── UninstallScreen.kt        # Bulk uninstall (WORKING)
-│       ├── SubscriptionScreen.kt     # Plan selection
-│       └── SettingsScreen.kt         # Settings & Shizuku status
+---
+
+## Installation
+
+### From Solana dApp Store
+
+1. Open the Solana dApp Store on your Seeker
+2. Search for "AardAppvark"
+3. Install and launch
+4. Accept Terms of Service
+5. Connect your Solana wallet (Phantom or Solflare)
+
+### From APK
+
+```bash
+adb install app/build/outputs/apk/release/app-release.apk
 ```
 
 ---
 
-## 🚀 Current Status (Day 1)
-
-### ✅ **COMPLETED:**
-
-1. **Project Scaffold**
-   - Full Gradle build configuration
-   - All dependencies integrated
-   - Proper package structure
-
-2. **Core Services**
-   - ✅ ShizukuManager - Complete with bulk uninstall
-   - ✅ PackageManagerService - Scanning & filtering
-   - ✅ Data models (DAppInfo, Subscription plans)
-
-3. **UI/UX**
-   - ✅ Material 3 theme with Solana branding
-   - ✅ Bottom navigation
-   - ✅ Home screen with setup checklist
-   - ✅ **Uninstall screen (FUNCTIONAL)**
-   - ✅ Subscription plan display
-   - ✅ Settings screen with Shizuku status
-
-4. **Features Working:**
-   - Package scanning (all apps or dApp Store only)
-   - Multi-select dApp list
-   - Bulk uninstall with progress tracking
-   - Shizuku permission management
-
-### 🚧 **TODO (Next Steps):**
-
-#### **Phase 1: Polish & Testing (Days 2-3)**
-- [ ] Add Solana MWA payment integration
-- [ ] Implement subscription gating logic
-- [ ] Create 8-bit mascot sprites (Varky)
-- [ ] Add animations and transitions
-- [ ] Improve error handling
-- [ ] Test on actual Seeker device
-
-#### **Phase 2: Reinstall Feature (Days 4-5)**
-- [ ] Deep link automation for dApp Store
-- [ ] Accessibility Service integration
-- [ ] Manual fallback mode
-- [ ] Install history tracking
-
-#### **Phase 3: Launch Prep (Day 6)**
-- [ ] Legal documents (Privacy Policy, ToS, EULA)
-- [ ] App icon design (512x512)
-- [ ] Screenshots for dApp Store
-- [ ] Submit to Solana dApp Store
-
----
-
-## 💻 Development Setup
+## Build From Source
 
 ### Prerequisites
 
-1. **Android Studio** (Latest stable)
-2. **Java 17**
-3. **Solana Seeker device** (or emulator)
-4. **Shizuku installed** on test device
+- Android Studio (latest stable)
+- Java 17+
+- Solana Seeker device (or Android emulator)
 
-### Build Instructions
+### Build
 
-1. **Clone/Import Project:**
-   ```bash
-   # Open the ADappvarkToolkit folder in Android Studio
-   ```
-
-2. **Sync Gradle:**
-   ```
-   File → Sync Project with Gradle Files
-   ```
-
-3. **Build APK:**
-   ```
-   Build → Build Bundle(s) / APK(s) → Build APK(s)
-   ```
-
-4. **Install on Device:**
-   ```bash
-   adb install -r app/build/outputs/apk/debug/app-debug.apk
-   ```
-
-### Testing Requirements
-
-**Critical:** You MUST have Shizuku running on the test device:
-
-1. Enable Developer Options (tap Build Number 7x)
-2. Enable Wireless Debugging
-3. Install Shizuku from GitHub: https://github.com/RikkaApps/Shizuku
-4. Start Shizuku and pair via Wireless Debugging
-5. Grant ADappvark permission in Shizuku
-
----
-
-## 🎨 Branding Guidelines
-
-### Colors
-
-```kotlin
-// Primary
-SolanaPurple = #9945FF
-SolanaGreen = #14F195
-
-// Secondary
-AardvarkBrown = #8B6F47
-AardvarkTan = #D4A574
+```bash
+JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew assembleRelease
 ```
 
-### Typography
-
-- **Headings:** Bold, high contrast
-- **Body:** Standard weight, readable
-- **Accents:** Medium weight for buttons/labels
-
-### Mascot (Varky)
-
-**States to implement:**
-- Idle: Standing with toolbox
-- Working: Digging animation (3 frames)
-- Success: Celebration with trophy
-- Error: Confused head-scratch
-
-**Style:** 8-bit pixel art, 64x64 base resolution
+The signed APK will be at `app/build/outputs/apk/release/app-release.apk`.
 
 ---
 
-## 💰 Monetization
+## Legal
 
-### Subscription Plans
-
-| Plan | Price/Week | Features |
-|------|-----------|----------|
-| **Uninstall Suite** | 0.005 SOL | Bulk uninstall, storage analysis |
-| **Reinstall Suite** | 0.01 SOL | Automated reinstall, install tracking |
-| **Complete Toolkit** | 0.012 SOL | Everything + weekly automation (Save 20%) |
-
-### Payment Integration (TODO)
-
-Using Solana Mobile Wallet Adapter:
-1. User selects plan
-2. Connect wallet via MWA
-3. Request transaction (0.01 SOL to payment address)
-4. Verify confirmation on-chain
-5. Activate subscription for 7 days
+- [Terms of Service](https://aardappvark.github.io/ADappvarkToolkit/terms.html)
+- [Privacy Policy](https://aardappvark.github.io/ADappvarkToolkit/privacy.html)
+- [Website](https://aardappvark.github.io/ADappvarkToolkit)
 
 ---
 
-## 🔒 Security & Privacy
+## Support
 
-### Permissions Required
-
-- `QUERY_ALL_PACKAGES` - Scan installed apps
-- `REQUEST_INSTALL_PACKAGES` - For reinstall feature
-- `INTERNET` - MWA communication
-- Shizuku permission - Silent uninstall
-
-### Data Collection
-
-**We collect ZERO personal data:**
-- No analytics
-- No tracking
-- No user accounts
-- Wallet address only for payment verification
-- All data stored locally on device
-
-### Legal Compliance
-
-- ✅ GDPR compliant (minimal data)
-- ✅ CCPA compliant (no data sale)
-- ✅ Transparent permissions
-- ✅ Open about Shizuku requirements
+- **Discord:** [Join Server](https://discord.gg/sGXgKG4U)
+- **Email:** aardappvark@proton.me
 
 ---
 
-## 📱 Installation (For Users)
+## License
 
-### From Solana dApp Store (COMING SOON)
+Proprietary Software. Copyright 2026 AardAppvark. All rights reserved.
 
-1. Open Solana dApp Store on Seeker
-2. Search "ADappvark"
-3. Install & launch
-4. Follow setup wizard
-
-### Setup Steps
-
-1. **Install Shizuku** (one-time)
-2. **Grant permission** to ADappvark
-3. **Choose subscription plan**
-4. **Start managing dApps!**
+Uses open-source components under Apache 2.0:
+- Jetpack Compose
+- Material Design 3
+- Solana Mobile Wallet Adapter
 
 ---
 
-## 🐛 Known Issues
-
-- [ ] Shizuku permission dialog sometimes requires app restart
-- [ ] Large dApp lists (500+) can be slow to scan
-- [ ] No storage size calculation yet (PackageManager limitation)
-- [ ] MWA payment not implemented
-
----
-
-## 🤝 Contributing
-
-This is a commercial product, but we welcome:
-- Bug reports
-- Feature suggestions
-- UI/UX feedback
-- Beta testing volunteers
-
-Contact: [Add contact info]
-
----
-
-## 📄 License
-
-**Proprietary Software**
-
-Copyright © 2026 ADappvark Toolkit. All rights reserved.
-
-Uses open-source components:
-- Shizuku (Apache 2.0)
-- Jetpack Compose (Apache 2.0)
-- Material Design (Apache 2.0)
-
----
-
-## 🙏 Acknowledgments
-
-- **RikkaApps** for Shizuku
-- **Solana Mobile** for Seeker & dApp Store
-- **Android community** for tools & libraries
-
----
-
-## 📞 Support
-
-- Discord: [Add link]
-- Twitter: @ADappvark
-- Email: aardappvark@proton.me
-
----
-
-**Built with ❤️ for the Solana Mobile revolution**
-
-*ADappvark Toolkit - First in line, every time* 🐜
+**Built for the Solana Mobile ecosystem**
