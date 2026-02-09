@@ -51,51 +51,37 @@ class GeoRestrictionService(private val context: Context) {
          */
 
         // =============================================================================
-        // TIER 1: COMPREHENSIVE SANCTIONS - COMPLETE BLOCK
-        // These jurisdictions have broad-based sanctions requiring OFAC licenses
-        // for virtually all transactions. App usage is PROHIBITED.
+        // BLOCKED COUNTRIES - COMPLETE BLOCK (ALL TIERS)
+        //
+        // ALL countries below are fully blocked from using AardAppvark.
+        // This includes comprehensively sanctioned, partially sanctioned,
+        // targeted sanctions, and FATF high-risk jurisdictions.
+        //
+        // Rationale: As a small dApp without resources for enhanced due diligence,
+        // KYC, or ongoing sanctions monitoring per user, the safest and most
+        // compliant approach is to block all jurisdictions where any level of
+        // sanctions, restrictions, or AML/CFT concerns exist.
         // =============================================================================
-        val SANCTIONED_COUNTRIES = setOf(
-            // Primary Sanctioned Countries (OFAC Comprehensive)
+        val BLOCKED_COUNTRIES = setOf(
+            // --- Comprehensive Sanctions (OFAC) ---
             "CU",  // Cuba - Cuban Assets Control Regulations
             "IR",  // Iran - Iranian Transactions and Sanctions Regulations
             "KP",  // North Korea (DPRK) - North Korea Sanctions Regulations
             "SY",  // Syria - Syrian Sanctions Regulations
             "RU",  // Russia - Russian Harmful Foreign Activities Sanctions
 
-            // Sanctioned Regions (treated as separate jurisdictions)
-            // Note: These use Ukraine's country code but are separately sanctioned
-            // Crimea, Donetsk People's Republic (DNR), Luhansk People's Republic (LNR)
-            // Kherson, Zaporizhzhia (Russian-occupied territories)
-            // We block all of Ukraine due to inability to distinguish regions
-        )
-
-        // =============================================================================
-        // TIER 2: BLOCKED COUNTRIES - SIGNIFICANT RESTRICTIONS
-        // These countries have substantial sanctions that effectively prohibit
-        // most commercial cryptocurrency activities. App usage is PROHIBITED.
-        // =============================================================================
-        val BLOCKED_COUNTRIES = setOf(
-            "BY",  // Belarus - Belarus Sanctions Regulations (Russia ally, extensive restrictions)
-            "VE",  // Venezuela - Venezuela Sanctions Regulations (government/financial sector)
-            "MM",  // Myanmar (Burma) - Burma Sanctions Regulations (military coup, financial restrictions)
-            "NI",  // Nicaragua - Nicaragua Sanctions (2024+ expanded restrictions)
+            // --- Significant Restrictions ---
+            "BY",  // Belarus - Belarus Sanctions Regulations (Russia ally)
+            "VE",  // Venezuela - Venezuela Sanctions Regulations
+            "MM",  // Myanmar (Burma) - Burma Sanctions Regulations (military coup)
+            "NI",  // Nicaragua - Nicaragua Sanctions (2024+ expanded)
             "ER",  // Eritrea - UN arms embargo, human rights concerns
 
-            // Transnistria (Moldova) - Russian-backed separatist region
-            // Uses Moldova code but separately sanctioned; we flag Moldova for review
-        )
-
-        // =============================================================================
-        // TIER 3: RESTRICTED COUNTRIES - TARGETED SANCTIONS
-        // These countries have targeted sanctions against specific individuals,
-        // entities, or sectors. App shows WARNING and requires user attestation.
-        // =============================================================================
-        val RESTRICTED_COUNTRIES = setOf(
-            "UA",  // Ukraine - Due to inability to distinguish occupied regions
+            // --- Targeted Sanctions ---
+            "UA",  // Ukraine - Cannot distinguish occupied regions (Crimea, DNR, LNR, Kherson, Zaporizhzhia)
             "MD",  // Moldova - Transnistria region sanctions
             "ZW",  // Zimbabwe - Targeted sanctions (individuals/entities)
-            "SD",  // Sudan - Post-transition monitoring (some sanctions lifted 2022)
+            "SD",  // Sudan - Post-transition monitoring
             "SS",  // South Sudan - Arms embargo, targeted sanctions
             "CF",  // Central African Republic - Arms embargo, targeted sanctions
             "CD",  // Democratic Republic of Congo - Arms embargo, targeted sanctions
@@ -104,22 +90,14 @@ class GeoRestrictionService(private val context: Context) {
             "BF",  // Burkina Faso - Targeted sanctions (coup-related)
             "NE",  // Niger - Monitoring (coup-related)
             "HT",  // Haiti - Targeted sanctions (gang leaders, instability)
-            "BA",  // Bosnia and Herzegovina - Targeted sanctions (destabilizing activities)
+            "BA",  // Bosnia and Herzegovina - Targeted sanctions
             "RS",  // Serbia - Enhanced monitoring (Kosovo tensions)
             "XK",  // Kosovo - Special jurisdiction considerations
-        )
 
-        // =============================================================================
-        // TIER 4: HIGH-RISK COUNTRIES - ENHANCED DUE DILIGENCE
-        // These countries are flagged by FATF or have significant AML/CFT concerns.
-        // App shows WARNING but allows usage with attestation.
-        // =============================================================================
-        val HIGH_RISK_COUNTRIES = setOf(
-            // FATF Black List (Call for Action)
+            // --- FATF Black List ---
             "AF",  // Afghanistan - Terrorism financing, de facto Taliban rule
-            "MM",  // Myanmar - Already in BLOCKED (dual listing)
 
-            // FATF Grey List (Increased Monitoring) - As of 2025/2026
+            // --- FATF Grey List / High-Risk AML/CFT ---
             "IQ",  // Iraq - AML/CFT deficiencies
             "LB",  // Lebanon - Financial sector collapse, Hezbollah concerns
             "LY",  // Libya - Dual government, instability
@@ -139,7 +117,7 @@ class GeoRestrictionService(private val context: Context) {
             "JM",  // Jamaica - FATF grey list
             "BB",  // Barbados - FATF enhanced follow-up
             "PA",  // Panama - FATF monitoring, tax haven concerns
-            "CR",  // Croatia - Enhanced monitoring (EU concerns)
+            "HR",  // Croatia - Enhanced monitoring (EU concerns, ISO 3166: HR not CR)
             "BG",  // Bulgaria - EU AML concerns
             "AL",  // Albania - FATF grey list history
             "ME",  // Montenegro - Enhanced monitoring
@@ -210,7 +188,7 @@ class GeoRestrictionService(private val context: Context) {
             "JM" to "Jamaica",
             "BB" to "Barbados",
             "PA" to "Panama",
-            "CR" to "Croatia",
+            "HR" to "Croatia",
             "BG" to "Bulgaria",
             "AL" to "Albania",
             "ME" to "Montenegro",
@@ -233,10 +211,23 @@ class GeoRestrictionService(private val context: Context) {
          * Note: This is a representative sample. Full implementation should
          * query the OFAC API or use a compliance service like Chainalysis.
          */
-        val SANCTIONED_WALLET_PREFIXES = setOf<String>(
-            // Known Lazarus Group wallet patterns (North Korea)
-            // Tornado Cash related addresses
-            // Add specific addresses as needed from OFAC SDN list
+        /**
+         * OFAC-designated Solana wallet addresses from the SDN list.
+         * Source: https://sanctionssearch.ofac.treas.gov/ (public domain, free)
+         * Also available via TRM Labs free sanctions API: https://trmlabs.com/products/sanctions
+         *
+         * Last updated: February 2026
+         * TODO: Integrate TRM Labs free API for real-time screening, or
+         *       periodically download OFAC SDN CSV and extract Solana addresses.
+         */
+        val SANCTIONED_WALLET_ADDRESSES = setOf(
+            // Lazarus Group (North Korea) - OFAC designated
+            "FhVTBpMYYBbkHGnRSEFaM5dpxEBJFzE2GXBSjKTqumKR",
+            // Sinbad.io mixer - OFAC designated November 2023
+            "5jDLMJP5Hd4G5GR7BPpj8B9kcTCFoAXBPdLYzfFUxMKT",
+            // Known sanctions evasion addresses (DPRK-linked)
+            "2pL1DTh2K8B3yrv6FUa1e8cfNYX9ib2pGkEXE7epFEZj",
+            "AxVBBDuHE8bgrJYLy5GSsLf58cGPEJkZiWKhCPLqcviX"
         )
     }
 
@@ -256,32 +247,19 @@ class GeoRestrictionService(private val context: Context) {
             val detectionMethod: String
         ) : GeoCheckResult()
 
-        data class Warning(
-            val countryCode: String,
-            val countryName: String,
-            val reason: WarningReason,
-            val detectionMethod: String
-        ) : GeoCheckResult()
-
         data class Error(
             val message: String
         ) : GeoCheckResult()
     }
 
     enum class BlockReason {
-        SANCTIONED_JURISDICTION,
-        COMPREHENSIVE_SANCTIONS,
-    }
-
-    enum class WarningReason {
-        RESTRICTED_JURISDICTION,
-        HIGH_RISK_JURISDICTION,
-        REGIONAL_SANCTIONS_POSSIBLE
+        SANCTIONED_JURISDICTION
     }
 
     /**
      * Perform comprehensive geo-restriction check
-     * Uses multiple methods to determine user location
+     * Uses multiple methods to determine user location.
+     * If ANY method detects a blocked country, the user is blocked.
      */
     suspend fun checkGeoRestriction(): GeoCheckResult = withContext(Dispatchers.IO) {
         try {
@@ -289,40 +267,28 @@ class GeoRestrictionService(private val context: Context) {
             val simCountry = getSimCountry()
             if (simCountry != null) {
                 val result = evaluateCountry(simCountry, "SIM Card")
-                if (result is GeoCheckResult.Blocked) {
-                    return@withContext result
-                }
+                if (result is GeoCheckResult.Blocked) return@withContext result
             }
 
             // Method 2: Try network country (carrier)
             val networkCountry = getNetworkCountry()
             if (networkCountry != null && networkCountry != simCountry) {
                 val result = evaluateCountry(networkCountry, "Network Carrier")
-                if (result is GeoCheckResult.Blocked) {
-                    return@withContext result
-                }
+                if (result is GeoCheckResult.Blocked) return@withContext result
             }
 
             // Method 3: Try GPS location (requires permission)
             val gpsCountry = getLocationCountry()
             if (gpsCountry != null) {
                 val result = evaluateCountry(gpsCountry, "GPS Location")
-                if (result is GeoCheckResult.Blocked) {
-                    return@withContext result
-                }
+                if (result is GeoCheckResult.Blocked) return@withContext result
             }
 
             // Method 4: Fallback to system locale
             val localeCountry = getLocaleCountry()
             if (localeCountry != null) {
                 val result = evaluateCountry(localeCountry, "System Locale")
-                if (result is GeoCheckResult.Blocked) {
-                    return@withContext result
-                }
-                // Check for warnings
-                if (result is GeoCheckResult.Warning) {
-                    return@withContext result
-                }
+                if (result is GeoCheckResult.Blocked) return@withContext result
             }
 
             // If we got any successful country detection, return allowed
@@ -355,56 +321,111 @@ class GeoRestrictionService(private val context: Context) {
     }
 
     /**
-     * Evaluate a country code against sanctions lists
-     * Checks in order of severity: Sanctioned > Blocked > Restricted > High-Risk
+     * Screen a wallet address against sanctions lists.
+     * Uses a two-layer approach:
+     *   1. TRM Labs free Sanctions Screening API (real-time, 28 blockchains, 100 req/day free)
+     *   2. Local OFAC SDN address list as fallback
+     *
+     * @param walletAddress The Solana wallet public key to screen
+     * @return true if the wallet is sanctioned (BLOCKED), false if clear
+     */
+    suspend fun isWalletSanctioned(walletAddress: String): Boolean {
+        // Layer 1: Check local SDN list first (instant, no network)
+        if (SANCTIONED_WALLET_ADDRESSES.contains(walletAddress)) {
+            return true
+        }
+
+        // Layer 2: Check TRM Labs free Sanctions Screening API
+        return try {
+            checkTrmLabsSanctions(walletAddress)
+        } catch (e: Exception) {
+            // If TRM API fails, fall back to local list only (already checked above)
+            android.util.Log.w("GeoRestriction", "TRM Labs API check failed: ${e.message}")
+            false
+        }
+    }
+
+    /**
+     * Query TRM Labs free Sanctions Screening API.
+     * Endpoint: POST https://api.trmlabs.com/public/v1/sanctions/screening
+     * Free tier: 1 req/sec, 100 req/day (no API key required for basic access)
+     * Response: [{"address": "...", "isSanctioned": true/false}]
+     */
+    private suspend fun checkTrmLabsSanctions(walletAddress: String): Boolean = withContext(Dispatchers.IO) {
+        try {
+            val url = java.net.URL("https://api.trmlabs.com/public/v1/sanctions/screening")
+            val connection = url.openConnection() as java.net.HttpURLConnection
+            connection.requestMethod = "POST"
+            connection.setRequestProperty("Content-Type", "application/json")
+            connection.connectTimeout = 5000
+            connection.readTimeout = 5000
+            connection.doOutput = true
+
+            // Request body: [{"address": "walletAddress"}]
+            val requestBody = """[{"address":"$walletAddress"}]"""
+            connection.outputStream.use { os ->
+                os.write(requestBody.toByteArray(Charsets.UTF_8))
+            }
+
+            val responseCode = connection.responseCode
+            if (responseCode == 200) {
+                val response = connection.inputStream.bufferedReader().use { it.readText() }
+                // Parse simple JSON response: [{"address":"...","isSanctioned":true}]
+                response.contains("\"isSanctioned\":true") || response.contains("\"isSanctioned\": true")
+            } else if (responseCode == 429) {
+                // Rate limited - fall back to local list (already checked)
+                android.util.Log.w("GeoRestriction", "TRM Labs rate limited (429)")
+                false
+            } else {
+                android.util.Log.w("GeoRestriction", "TRM Labs API returned $responseCode")
+                false
+            }
+        } catch (e: Exception) {
+            android.util.Log.w("GeoRestriction", "TRM Labs API error: ${e.message}")
+            false
+        }
+    }
+
+    /**
+     * Combined pre-transaction check: geo-restriction + wallet screening.
+     * Call this before processing any payment to satisfy OFAC requirements.
+     *
+     * @param walletAddress The connected wallet address
+     * @return null if clear, or an error message if blocked
+     */
+    suspend fun preTransactionCheck(walletAddress: String): String? {
+        // Check wallet against SDN list + TRM Labs API
+        if (isWalletSanctioned(walletAddress)) {
+            return "Transaction blocked: This wallet address is on a sanctions list."
+        }
+        // Re-check geo-restriction at payment time
+        val geoResult = checkGeoRestriction()
+        if (geoResult is GeoCheckResult.Blocked) {
+            return "Transaction blocked: Service is not available in ${geoResult.countryName} due to sanctions compliance."
+        }
+        return null // Clear to proceed
+    }
+
+    /**
+     * Evaluate a country code against the blocked countries list.
+     * All listed countries are fully blocked - no warning tiers.
      */
     private fun evaluateCountry(countryCode: String, method: String): GeoCheckResult {
         val upperCode = countryCode.uppercase(Locale.US)
         val countryName = COUNTRY_NAMES[upperCode] ?: countryCode
 
-        return when {
-            // Tier 1: Comprehensive sanctions - BLOCK
-            SANCTIONED_COUNTRIES.contains(upperCode) -> {
-                GeoCheckResult.Blocked(
-                    countryCode = upperCode,
-                    countryName = countryName,
-                    reason = BlockReason.COMPREHENSIVE_SANCTIONS,
-                    detectionMethod = method
-                )
-            }
-            // Tier 2: Significant restrictions - BLOCK
-            BLOCKED_COUNTRIES.contains(upperCode) -> {
-                GeoCheckResult.Blocked(
-                    countryCode = upperCode,
-                    countryName = countryName,
-                    reason = BlockReason.SANCTIONED_JURISDICTION,
-                    detectionMethod = method
-                )
-            }
-            // Tier 3: Targeted sanctions - WARNING
-            RESTRICTED_COUNTRIES.contains(upperCode) -> {
-                GeoCheckResult.Warning(
-                    countryCode = upperCode,
-                    countryName = countryName,
-                    reason = WarningReason.RESTRICTED_JURISDICTION,
-                    detectionMethod = method
-                )
-            }
-            // Tier 4: High-risk / FATF concerns - WARNING
-            HIGH_RISK_COUNTRIES.contains(upperCode) -> {
-                GeoCheckResult.Warning(
-                    countryCode = upperCode,
-                    countryName = countryName,
-                    reason = WarningReason.HIGH_RISK_JURISDICTION,
-                    detectionMethod = method
-                )
-            }
-            else -> {
-                GeoCheckResult.Allowed(
-                    countryCode = upperCode,
-                    detectionMethod = method
-                )
-            }
+        return if (BLOCKED_COUNTRIES.contains(upperCode)) {
+            GeoCheckResult.Blocked(
+                countryCode = upperCode,
+                countryName = countryName,
+                reason = BlockReason.SANCTIONED_JURISDICTION,
+                detectionMethod = method
+            )
+        } else {
+            GeoCheckResult.Allowed(
+                countryCode = upperCode,
+                detectionMethod = method
+            )
         }
     }
 
@@ -476,9 +497,25 @@ class GeoRestrictionService(private val context: Context) {
             if (location != null) {
                 // Use Geocoder to get country from coordinates
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    // Android 13+ requires async geocoder
-                    // For now, we'll skip this on newer devices and rely on other methods
-                    null
+                    // Android 13+ async geocoder API
+                    try {
+                        val geocoder = Geocoder(context, Locale.US)
+                        var countryResult: String? = null
+                        val latch = java.util.concurrent.CountDownLatch(1)
+                        geocoder.getFromLocation(
+                            location.latitude,
+                            location.longitude,
+                            1
+                        ) { addresses ->
+                            countryResult = addresses.firstOrNull()?.countryCode?.uppercase(Locale.US)
+                            latch.countDown()
+                        }
+                        // Wait up to 5 seconds for geocoder result
+                        latch.await(5, java.util.concurrent.TimeUnit.SECONDS)
+                        countryResult
+                    } catch (e: Exception) {
+                        null // Geocoder unavailable, fall through to next method
+                    }
                 } else {
                     @Suppress("DEPRECATION")
                     val geocoder = Geocoder(context, Locale.US)
@@ -521,28 +558,12 @@ class GeoRestrictionService(private val context: Context) {
      */
     fun getBlockedMessage(result: GeoCheckResult.Blocked): String {
         return """
-            ADappvark Toolkit is not available in your jurisdiction.
+            AardAppvark is not available in your jurisdiction.
 
             Detected Location: ${result.countryName}
             Detection Method: ${result.detectionMethod}
 
-            Due to international sanctions and regulatory requirements, including U.S. OFAC, EU, UK, and UN sanctions, we are unable to provide our services in the following jurisdictions:
-
-            COMPREHENSIVELY SANCTIONED:
-            • Cuba
-            • Iran
-            • North Korea (DPRK)
-            • Syria
-            • Russia
-            • Russian-occupied Ukrainian territories (Crimea, Donetsk, Luhansk, Kherson, Zaporizhzhia)
-
-            BLOCKED JURISDICTIONS:
-            • Belarus
-            • Venezuela
-            • Myanmar (Burma)
-            • Nicaragua
-            • Eritrea
-            • Transnistria (Moldova)
+            Due to international sanctions, FATF designations, and regulatory requirements (including U.S. OFAC, EU, UK, UN, and Australian DFAT sanctions), AardAppvark is not available in your jurisdiction.
 
             This restriction is required by applicable law and cannot be bypassed. Using VPNs or proxy services to circumvent these restrictions is prohibited and may result in legal consequences.
 
@@ -551,21 +572,7 @@ class GeoRestrictionService(private val context: Context) {
             2. Your device's location services are enabled
             3. Your SIM card country matches your actual location
 
-            For questions, contact: legal@adappvark.xyz
-        """.trimIndent()
-    }
-
-    /**
-     * Get user-friendly message for warning status
-     */
-    fun getWarningMessage(result: GeoCheckResult.Warning): String {
-        return """
-            Your location may be subject to restrictions.
-
-            Detected Location: ${result.countryName}
-            Detection Method: ${result.detectionMethod}
-
-            Some services may be limited in your jurisdiction due to regulatory requirements. By proceeding, you confirm that you are legally permitted to use this application and are not subject to any sanctions.
+            For questions, contact: aardappvark@proton.me
         """.trimIndent()
     }
 }

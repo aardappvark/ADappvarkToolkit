@@ -328,7 +328,7 @@ ADappvark Toolkit complies with all open-source license requirements:
 ---
 
 **For questions about open-source licenses:**
-Email: opensource@adappvark.xyz
+Email: aardappvark@proton.me
 
 ---
 

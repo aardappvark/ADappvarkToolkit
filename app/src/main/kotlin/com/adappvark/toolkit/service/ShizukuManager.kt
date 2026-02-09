@@ -75,6 +75,12 @@ class ShizukuManager(private val context: Context) {
                 )
             }
             
+            // Validate package name to prevent shell injection
+            if (!packageName.matches(Regex("^[a-zA-Z][a-zA-Z0-9_.]*$"))) {
+                return@withContext Result.failure(
+                    IllegalArgumentException("Invalid package name: $packageName")
+                )
+            }
             // Execute uninstall command via Shizuku
             val result = executeShellCommand("pm uninstall --user 0 $packageName")
             

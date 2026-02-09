@@ -114,10 +114,10 @@ We're Seeker power users just like you. Frustrated by manual dApp management, we
 
 📞 SUPPORT
 
-• Email: support@adappvark.xyz
-• Website: https://adappvark.xyz
-• Privacy Policy: https://adappvark.xyz/privacy
-• Terms: https://adappvark.xyz/terms
+• Email: aardappvark@proton.me
+• Website: https://aardappvark.github.io/ADappvarkToolkit
+• Privacy Policy: https://aardappvark.github.io/ADappvarkToolkit/privacy.html
+• Terms: https://aardappvark.github.io/ADappvarkToolkit/terms.html
 
 🚀 TAGLINE
 
@@ -161,10 +161,10 @@ ADappvark Toolkit - Professional dApp management for Solana Seeker.
 
 ## Support URLs
 
-- **Website:** https://adappvark.xyz
-- **Privacy Policy:** https://adappvark.xyz/privacy
-- **Support Email:** support@adappvark.xyz
-- **Terms of Service:** https://adappvark.xyz/terms
+- **Website:** https://aardappvark.github.io/ADappvarkToolkit
+- **Privacy Policy:** https://aardappvark.github.io/ADappvarkToolkit/privacy.html
+- **Support Email:** aardappvark@proton.me
+- **Terms of Service:** https://aardappvark.github.io/ADappvarkToolkit/terms.html
 
 ---
 
@@ -287,7 +287,7 @@ ADappvark Toolkit - Professional dApp management for Solana Seeker.
 • Large lists (500+) can be slow to scan
 
 💬 FEEDBACK
-support@adappvark.xyz
+aardappvark@proton.me
 
 Thanks for using ADappvark Toolkit! 🐜
 ```
@@ -338,7 +338,7 @@ We recommend using devnet/testnet for review. The app supports both:
 Configuration can be changed in AppConfig.kt for testing.
 
 CONTACT FOR REVIEW SUPPORT:
-review@adappvark.xyz
+aardappvark@proton.me
 ```
 
 ---
@@ -346,10 +346,10 @@ review@adappvark.xyz
 ## Privacy & Legal Compliance
 
 ### **Privacy Policy URL**
-https://adappvark.xyz/privacy
+https://aardappvark.github.io/ADappvarkToolkit/privacy.html
 
 ### **Terms of Service URL**
-https://adappvark.xyz/terms
+https://aardappvark.github.io/ADappvarkToolkit/terms.html
 
 ### **Data Collection Statement**
 
@@ -371,7 +371,7 @@ All app data is stored locally on your device using Android DataStore. We do not
 
 Blockchain payments are public by design (inherent to Solana).
 
-See full privacy policy: https://adappvark.xyz/privacy
+See full privacy policy: https://aardappvark.github.io/ADappvarkToolkit/privacy.html
 ```
 
 ---
@@ -443,8 +443,8 @@ com.adappvark.toolkit
 ## Contact for Questions
 
 **Developer Contact:**
-- Email: dev@adappvark.xyz
-- For urgent review issues: review@adappvark.xyz
+- Email: aardappvark@proton.me
+- For urgent review issues: aardappvark@proton.me
 
 ---
 

@@ -8,11 +8,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.adappvark.toolkit.service.GeoRestrictionService
 import com.adappvark.toolkit.service.UserPreferencesManager
 import com.adappvark.toolkit.ui.navigation.AppNavigation
 import com.adappvark.toolkit.ui.screens.TermsAndWalletScreen
 import com.adappvark.toolkit.ui.theme.ADappvarkToolkitTheme
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
 
@@ -68,6 +70,21 @@ fun AardAppvarkApp(activityResultSender: ActivityResultSender) {
             }
         )
     } else {
+        // Periodic geo re-check every 30 minutes while app is in use
+        // Detects if user enables VPN mid-session
+        LaunchedEffect(Unit) {
+            val geoService = GeoRestrictionService(context)
+            while (true) {
+                delay(30 * 60 * 1000L) // 30 minutes
+                val result = geoService.checkGeoRestriction()
+                if (result is GeoRestrictionService.GeoCheckResult.Blocked) {
+                    // User is now in a blocked jurisdiction — force exit
+                    android.util.Log.w("AardAppvark", "Periodic geo-check: BLOCKED in ${result.countryName}")
+                    isOnboardingComplete = false // Will show blocked screen on TermsAndWalletScreen
+                }
+            }
+        }
+
         // Show main app
         AppNavigation(
             activityResultSender = activityResultSender,

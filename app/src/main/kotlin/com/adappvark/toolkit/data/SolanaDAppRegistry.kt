@@ -24,7 +24,9 @@ class SolanaDAppRegistry {
         private const val TAG = "SolanaDAppRegistry"
 
         // Helius provides free DAS API access (rate limited)
-        // Users can also use their own RPC endpoint
+        // SECURITY: API key should be moved to a backend proxy before production release.
+        // For now, using the free tier key directly. This will be visible in decompiled APK.
+        // TODO: Move to backend proxy before dApp Store submission
         private const val HELIUS_RPC = "https://mainnet.helius-rpc.com/?api-key=15319bf4-5b40-4958-ac8d-6313aa55eb92"
 
         // Known Solana dApp Store publisher collection address

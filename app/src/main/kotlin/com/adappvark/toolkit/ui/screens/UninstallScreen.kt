@@ -28,6 +28,7 @@ import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
 import com.adappvark.toolkit.ui.components.PricingBanner
 import com.adappvark.toolkit.service.PaymentMethod
 import com.adappvark.toolkit.util.AccessibilityHelper
+import android.util.Log
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -173,13 +174,14 @@ fun UninstallScreen(
                 label = { Text("dApp Store Only") }
             )
             FilterChip(
-                selected = currentFilter == DAppFilter.ALL,
-                onClick = { currentFilter = DAppFilter.ALL },
-                label = { Text("All Apps") },
+                selected = false,
+                onClick = { /* Locked - coming soon */ },
+                enabled = false,
+                label = { Text("All Apps (Coming Soon)") },
                 leadingIcon = {
                     Icon(
-                        imageVector = Icons.Filled.Key,
-                        contentDescription = "Premium",
+                        imageVector = Icons.Filled.Lock,
+                        contentDescription = "Coming Soon",
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -714,7 +716,13 @@ fun DAppListItem(
 
 /**
  * Perform bulk uninstall using standard Android uninstall intents
- * The accessibility service will auto-click the confirm buttons
+ * The accessibility service will auto-click the confirm buttons.
+ *
+ * Uses adaptive waiting: after firing each ACTION_DELETE intent,
+ * polls PackageManager to confirm the package is actually gone
+ * before proceeding to the next one. This prevents the issue where
+ * the next uninstall dialog replaces the current one before the
+ * accessibility service can click "OK".
  */
 suspend fun performBulkUninstall(
     context: android.content.Context,
@@ -724,6 +732,12 @@ suspend fun performBulkUninstall(
     onComplete: suspend () -> Unit
 ) {
     onStart()
+    val TAG = "BulkUninstall"
+
+    // Pre-operation: hint GC to free memory before bulk operation
+    // This helps prevent system popup dialogs caused by memory pressure
+    Runtime.getRuntime().gc()
+    delay(500)
 
     // Filter to only packages that are actually still installed
     val pm = context.packageManager
@@ -736,6 +750,11 @@ suspend fun performBulkUninstall(
         }
     }
 
+    Log.d(TAG, "Starting bulk uninstall: ${installedPackages.size} packages (filtered from ${packageNames.size})")
+
+    // Track packages that failed to uninstall for retry
+    val failedPackages = mutableListOf<String>()
+
     installedPackages.forEachIndexed { index, packageName ->
         // Double-check still installed right before triggering (in case prior uninstall removed it)
         val stillInstalled = try {
@@ -746,11 +765,36 @@ suspend fun performBulkUninstall(
         }
 
         if (!stillInstalled) {
-            onProgress(index + 1, installedPackages.size, "$packageName (skipped)")
+            Log.d(TAG, "[${ index + 1}/${installedPackages.size}] $packageName already gone, skipping")
+            onProgress(index + 1, installedPackages.size, "$packageName (already removed)")
             return@forEachIndexed
         }
 
+        // Every 5 packages: let the system breathe to prevent memory-pressure popups
+        // This is a mitigation for occasional system "not responding" dialogs on
+        // devices with limited RAM (like Solana Seeker) during rapid sequential uninstalls
+        if (index > 0 && index % 5 == 0) {
+            Log.d(TAG, "Breathing pause at package #$index to reduce memory pressure")
+            Runtime.getRuntime().gc()
+            delay(1500)
+        }
+
+        Log.d(TAG, "[${index + 1}/${installedPackages.size}] Uninstalling: $packageName")
         onProgress(index + 1, installedPackages.size, packageName)
+
+        // Dismiss any lingering system dialog from previous uninstall before starting next one
+        // This clears stale package installer dialogs that may not have been auto-dismissed
+        try {
+            val backIntent = Intent(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            // Briefly return to home to clear dialog stack, then proceed
+            context.startActivity(backIntent)
+            delay(200)
+        } catch (e: Exception) {
+            Log.w(TAG, "Could not dismiss lingering dialog: ${e.message}")
+        }
 
         // Trigger standard Android uninstall
         val intent = Intent(Intent.ACTION_DELETE).apply {
@@ -759,19 +803,122 @@ suspend fun performBulkUninstall(
         }
         context.startActivity(intent)
 
-        // Wait for the uninstall dialog to appear
-        delay(500)
+        // Adaptive wait: poll until the package is actually gone
+        // or we hit the timeout (max 15 seconds per app)
+        val maxWaitMs = 15_000L
+        val pollIntervalMs = 500L
+        var waited = 0L
+        var uninstalled = false
 
-        // Wait for accessibility service to click the button
-        // and for the uninstall to complete
-        delay(3000)
+        // Initial wait for the dialog to appear and accessibility service to click
+        delay(1000)
+        waited += 1000
 
-        // Small delay before next one to let system settle
+        while (waited < maxWaitMs) {
+            val isGone = try {
+                pm.getPackageInfo(packageName, 0)
+                false // Still installed
+            } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
+                true // Successfully uninstalled
+            }
+
+            if (isGone) {
+                uninstalled = true
+                Log.d(TAG, "  ✓ $packageName removed after ${waited}ms")
+                break
+            }
+
+            delay(pollIntervalMs)
+            waited += pollIntervalMs
+        }
+
+        if (!uninstalled) {
+            Log.w(TAG, "  ✗ $packageName NOT removed after ${waited}ms (timeout)")
+            failedPackages.add(packageName)
+        }
+
+        // Settle time before next intent - slightly longer to prevent dialog accumulation
+        // that can cause system popup windows on memory-constrained devices
         delay(500)
     }
 
-    // Wait a bit more for the last one to fully complete
-    delay(2000)
+    // Retry phase: attempt failed packages one more time
+    if (failedPackages.isNotEmpty()) {
+        Log.d(TAG, "Retry phase: ${failedPackages.size} packages failed first attempt")
+        delay(2000) // Let system settle before retrying
+
+        val retryFailed = mutableListOf<String>()
+
+        failedPackages.forEachIndexed { index, packageName ->
+            // Check if it was actually uninstalled in the meantime
+            val stillInstalled = try {
+                pm.getPackageInfo(packageName, 0)
+                true
+            } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
+                false
+            }
+
+            if (!stillInstalled) {
+                Log.d(TAG, "  Retry [${index + 1}/${failedPackages.size}] $packageName already gone")
+                return@forEachIndexed
+            }
+
+            Log.d(TAG, "  Retry [${index + 1}/${failedPackages.size}] $packageName")
+            onProgress(
+                installedPackages.size - failedPackages.size + index + 1,
+                installedPackages.size + failedPackages.size,
+                "$packageName (retry)"
+            )
+
+            val intent = Intent(Intent.ACTION_DELETE).apply {
+                data = Uri.parse("package:$packageName")
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(intent)
+
+            // Adaptive wait for retry (same logic, slightly longer max)
+            val maxRetryWaitMs = 20_000L
+            val pollIntervalMs = 500L
+            var waited = 0L
+            var uninstalled = false
+
+            delay(1500) // Slightly longer initial wait on retry
+            waited += 1500
+
+            while (waited < maxRetryWaitMs) {
+                val isGone = try {
+                    pm.getPackageInfo(packageName, 0)
+                    false
+                } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
+                    true
+                }
+
+                if (isGone) {
+                    uninstalled = true
+                    Log.d(TAG, "  ✓ Retry: $packageName removed after ${waited}ms")
+                    break
+                }
+
+                delay(pollIntervalMs)
+                waited += pollIntervalMs
+            }
+
+            if (!uninstalled) {
+                Log.w(TAG, "  ✗ Retry: $packageName still NOT removed after ${waited}ms")
+                retryFailed.add(packageName)
+            }
+
+            delay(300)
+        }
+
+        if (retryFailed.isNotEmpty()) {
+            Log.w(TAG, "Final: ${retryFailed.size} packages could not be uninstalled: ${retryFailed.joinToString()}")
+        }
+    }
+
+    // Final settle
+    delay(1000)
+    Log.d(TAG, "Bulk uninstall complete")
 
     onComplete()
 }

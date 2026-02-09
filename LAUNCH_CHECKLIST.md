@@ -437,10 +437,10 @@ version: 1.0.0
 versionCode: 1
 category: tools
 description: Professional dApp lifecycle management for Seeker
-website: https://adappvark.xyz
-support: support@adappvark.xyz
-privacyPolicy: https://adappvark.xyz/privacy
-termsOfService: https://adappvark.xyz/terms
+website: https://aardappvark.github.io/ADappvarkToolkit
+support: aardappvark@proton.me
+privacyPolicy: https://aardappvark.github.io/ADappvarkToolkit/privacy.html
+termsOfService: https://aardappvark.github.io/ADappvarkToolkit/terms.html
 ```
 
 ---

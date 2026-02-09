@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9945FF"/>
+      <stop offset="100%" style="stop-color:#7A2FE0"/>
+    </linearGradient>
+    <clipPath id="roundedSquare">
+      <rect width="512" height="512" rx="100" ry="100"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background with rounded corners (matches Android adaptive icon shape) -->
+  <g clip-path="url(#roundedSquare)">
+    <!-- Gradient background -->
+    <rect width="512" height="512" fill="url(#bgGrad)"/>
+
+    <!-- Inner circle for depth -->
+    <circle cx="256" cy="256" r="228" fill="#7A2FE0" opacity="0.6"/>
+
+    <!-- Subtle radial glow -->
+    <circle cx="240" cy="230" r="160" fill="#9945FF" opacity="0.3"/>
+
+    <!-- === AARDVARK HEAD === -->
+    <!-- Scaled from 108dp viewport to 512px (factor ~4.74), centered -->
+
+    <!-- Main Head Shape -->
+    <path fill="#D4A574" d="
+      M370,247
+      C370,190 332,152 275,152
+      C237,152 209,166 190,190
+      L119,237
+      C104,247 104,266 119,275
+      L190,313
+      C209,332 237,351 275,351
+      C332,351 370,313 370,256
+      Z"/>
+
+    <!-- Ear -->
+    <path fill="#C49764" d="
+      M294,152
+      C308,123 341,114 360,133
+      C379,152 370,180 351,190
+      C332,199 313,180 304,171
+      Z"/>
+
+    <!-- Inner Ear -->
+    <path fill="#E8C9A8" d="
+      M313,142
+      C322,128 341,123 351,138
+      C360,152 351,166 341,171
+      C332,176 318,161 313,152
+      Z"/>
+
+    <!-- Snout/Nose (Long characteristic aardvark nose) -->
+    <path fill="#E8C9A8" d="
+      M119,237
+      L190,209
+      L190,294
+      L119,266
+      C104,256 104,247 119,237
+      Z"/>
+
+    <!-- Nostril -->
+    <circle fill="#8B6F47" cx="142" cy="249" r="10"/>
+
+    <!-- Eye White -->
+    <circle fill="#FFFFFF" cx="275" cy="218" r="28"/>
+
+    <!-- Eye Pupil -->
+    <circle fill="#2D1F12" cx="275" cy="218" r="15"/>
+
+    <!-- Eye Highlight -->
+    <circle fill="#FFFFFF" cx="269" cy="209" r="7"/>
+
+    <!-- Smile -->
+    <path fill="none" stroke="#8B6F47" stroke-width="7" stroke-linecap="round"
+      d="M209,275 Q246,304 294,285"/>
+
+    <!-- dApp Toolbox Badge (bottom right) -->
+    <rect fill="#14F195" x="332" y="313" width="76" height="57" rx="6"/>
+
+    <!-- Toolbox Handle -->
+    <rect fill="#0FD17A" x="351" y="294" width="38" height="19" rx="4"/>
+
+    <!-- Toolbox "dA" symbol -->
+    <text x="370" y="353" fill="#FFFFFF" font-family="monospace" font-weight="bold" font-size="28" text-anchor="middle">dA</text>
+  </g>
+</svg>

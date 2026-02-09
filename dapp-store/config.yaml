@@ -1,0 +1,73 @@
+# AardAppvark Toolkit - Solana dApp Store Configuration
+# Reference: https://github.com/solana-mobile/dapp-publishing
+
+publisher:
+  name: "AardAppvark"
+  address: ""  # TODO: Set to your publisher NFT mint address after minting
+  website: "https://aardappvark.github.io/ADappvarkToolkit"
+  email: "aardappvark@proton.me"
+
+app:
+  name: "AardAppvark Toolkit"
+  address: ""  # TODO: Set to your app NFT mint address after minting
+  android_package: "com.adappvark.toolkit"
+
+release:
+  address: ""  # TODO: Set to your release NFT mint address after minting
+  catalog:
+    en:
+      name: "AardAppvark Toolkit"
+      short_description: "Bulk uninstall & reinstall dApps on Solana Seeker. First in line, every dApp, every time."
+      long_description: |
+        AardAppvark Toolkit is the essential dApp lifecycle manager for Solana Seeker.
+
+        KEY FEATURES:
+        - Bulk Uninstall: Clean up dApps in seconds with one-tap bulk removal
+        - Bulk Reinstall: Restore your entire dApp collection from the Solana dApp Store
+        - Smart Favourites: Star your favourite dApps for quick access
+        - Simple Pricing: First 4 apps FREE, then 0.01 SOL per bulk operation
+
+        BUILT FOR SEEKER:
+        Designed specifically for the Solana Seeker device, AardAppvark Toolkit leverages
+        the accessibility service for seamless auto-confirmation of uninstall/install dialogs.
+
+        PRIVACY FIRST:
+        - No analytics or tracking
+        - No cloud database or user accounts
+        - All data stored locally on your device
+        - Non-custodial wallet integration via Mobile Wallet Adapter
+
+        COMPLIANCE:
+        - GDPR and CCPA compliant
+        - Full data export and deletion
+        - Geo-restriction for sanctioned jurisdictions
+        - On-chain wallet sanctions screening via TRM Labs
+
+        Meet Varky the Aardvark - your dApp management companion!
+      new_in_version: "Initial release"
+      saga_features: ""
+
+  media:
+    icon: "assets/icon_512x512.png"
+    banner: "assets/banner_1200x600.png"
+    screenshots:
+      - "assets/screenshot_3_home.png"
+      - "assets/screenshot_4_uninstall.png"
+      - "assets/screenshot_2_reinstall.png"
+      - "assets/screenshot_5_settings.png"
+
+  files:
+    apk: "app/build/outputs/apk/release/app-release.apk"
+
+  testing_instructions: |
+    1. Install on Solana Seeker device
+    2. Enable Accessibility Service when prompted
+    3. Connect Solana wallet (Phantom or Solflare)
+    4. Accept Terms of Service
+    5. Navigate to Uninstall tab - select dApps and tap Uninstall
+    6. Navigate to Reinstall tab - tap Reinstall dApps
+    7. First 4 apps are free, 5+ triggers 0.01 SOL payment
+
+solana:
+  cluster: "mainnet-beta"
+  rpc_url: "https://api.mainnet-beta.solana.com"

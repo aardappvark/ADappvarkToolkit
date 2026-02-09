@@ -497,11 +497,11 @@ total_monthly = uninstall_suite + reinstall_suite + complete
 
 **Build Issues:**
 - Check: GitHub Issues (if public repo)
-- Email: dev@adappvark.xyz
+- Email: aardappvark@proton.me
 
 **Deployment Issues:**
 - Solana dApp Store: publisher support
-- Email: review@adappvark.xyz
+- Email: aardappvark@proton.me
 
 ---
 

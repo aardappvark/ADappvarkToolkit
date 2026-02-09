@@ -1,7 +1,10 @@
 package com.adappvark.toolkit.ui.screens
 
+import android.Manifest
 import android.app.Activity
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -55,7 +58,6 @@ fun TermsAndWalletScreen(
     var isCheckingGeo by remember { mutableStateOf(true) }
     var geoBlocked by remember { mutableStateOf(false) }
     var geoBlockedMessage by remember { mutableStateOf<String?>(null) }
-    var geoWarning by remember { mutableStateOf<String?>(null) }
 
     // Legal acceptance state
     var hasReadTerms by remember { mutableStateOf(false) }
@@ -87,26 +89,54 @@ fun TermsAndWalletScreen(
         )
     }
 
-    // Check geo-restriction on launch
-    LaunchedEffect(Unit) {
-        isCheckingGeo = true
-        when (val result = geoService.checkGeoRestriction()) {
-            is GeoRestrictionService.GeoCheckResult.Blocked -> {
-                geoBlocked = true
-                geoBlockedMessage = geoService.getBlockedMessage(result)
+    // Track whether geo check has been performed
+    var geoCheckDone by remember { mutableStateOf(false) }
+
+    // Function to run the geo check
+    fun performGeoCheck() {
+        scope.launch {
+            isCheckingGeo = true
+            when (val result = geoService.checkGeoRestriction()) {
+                is GeoRestrictionService.GeoCheckResult.Blocked -> {
+                    geoBlocked = true
+                    geoBlockedMessage = geoService.getBlockedMessage(result)
+                }
+                is GeoRestrictionService.GeoCheckResult.Allowed -> {
+                    // All good, proceed
+                }
+                is GeoRestrictionService.GeoCheckResult.Error -> {
+                    // Unable to check - block access for safety
+                    geoBlocked = true
+                    geoBlockedMessage = "Unable to verify your location. For sanctions compliance, AardAppvark cannot be used without location verification. Please enable location services and try again."
+                }
             }
-            is GeoRestrictionService.GeoCheckResult.Warning -> {
-                geoWarning = geoService.getWarningMessage(result)
-            }
-            is GeoRestrictionService.GeoCheckResult.Allowed -> {
-                // All good, proceed
-            }
-            is GeoRestrictionService.GeoCheckResult.Error -> {
-                // Unable to check - allow with warning
-                geoWarning = "Unable to verify your location. By proceeding, you confirm you are not located in a sanctioned jurisdiction."
-            }
+            isCheckingGeo = false
+            geoCheckDone = true
         }
-        isCheckingGeo = false
+    }
+
+    // Location permission launcher - request permission then run geo check
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { _ ->
+        // Whether granted or denied, proceed with geo check
+        // GeoRestrictionService uses SIM/network/locale as fallbacks
+        performGeoCheck()
+    }
+
+    // On launch: request location permission for geo-restriction compliance
+    LaunchedEffect(Unit) {
+        val hasPermission = androidx.core.content.ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == android.content.pm.PackageManager.PERMISSION_GRANTED
+
+        if (hasPermission) {
+            // Already have permission, run geo check directly
+            performGeoCheck()
+        } else {
+            // Request location permission - geo check runs in callback
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
     }
 
     // All requirements must be met
@@ -196,35 +226,6 @@ fun TermsAndWalletScreen(
             .padding(24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Geo warning if applicable
-        geoWarning?.let { warning ->
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer
-                ),
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row(
-                    modifier = Modifier.padding(12.dp),
-                    verticalAlignment = Alignment.Top
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Warning,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = warning,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-
         // Header with logo
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -400,7 +401,7 @@ fun TermsAndWalletScreen(
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = "I confirm that I am at least 18 years old, I am NOT located in a sanctioned jurisdiction (Cuba, Iran, North Korea, Syria, Crimea), I am NOT on any sanctions list, and I have read and agree to the Terms of Service and Privacy Policy.",
+                        text = "I confirm that I am at least 18 years old, I am NOT located in any blocked jurisdiction (including but not limited to Cuba, Iran, North Korea, Syria, Russia, and other sanctioned, restricted, or FATF-listed countries as detailed in the Terms of Service), I am NOT on any sanctions list, and I have read and agree to the Terms of Service and Privacy Policy.",
                         style = MaterialTheme.typography.bodySmall,
                         modifier = Modifier.padding(top = 12.dp)
                     )
@@ -826,14 +827,21 @@ IMPORTANT: BY CONNECTING YOUR WALLET AND SIGNING THE CONSENT MESSAGE, YOU ARE EN
 You must be at least eighteen (18) years of age, or the age of legal majority in your jurisdiction, whichever is higher.
 
 2.2 PROHIBITED JURISDICTIONS
-This Application is NOT available to persons who are:
-    (a) Located in, citizens of, or residents of:
-        • Cuba
-        • Iran
-        • North Korea (Democratic People's Republic of Korea)
-        • Syria
-        • Crimea, Donetsk, or Luhansk regions
-        • Any jurisdiction subject to comprehensive trade sanctions
+This Application is NOT available to persons who are located in, citizens of, or residents of any of the following countries or territories:
+
+    COMPREHENSIVELY SANCTIONED:
+        • Cuba, Iran, North Korea (DPRK), Syria, Russia
+
+    BLOCKED (Significant Restrictions):
+        • Belarus, Venezuela, Myanmar (Burma), Nicaragua, Eritrea
+
+    BLOCKED (Targeted Sanctions):
+        • Ukraine (including occupied territories), Moldova, Zimbabwe, Sudan, South Sudan, Central African Republic, Democratic Republic of Congo, Mali, Guinea, Burkina Faso, Niger, Haiti, Bosnia and Herzegovina, Serbia, Kosovo
+
+    BLOCKED (FATF / High-Risk AML/CFT):
+        • Afghanistan, Iraq, Lebanon, Libya, Somalia, Yemen, Pakistan, Jordan, Tanzania, Nigeria, Senegal, Kenya, Philippines, Vietnam, Cameroon, Togo, Trinidad and Tobago, Jamaica, Barbados, Panama, Croatia, Bulgaria, Albania, Montenegro, North Macedonia, Georgia, Armenia, Azerbaijan, Kazakhstan, Uzbekistan, Tajikistan, Turkmenistan, Kyrgyzstan
+
+    This list is subject to change based on evolving international sanctions and FATF designations.
 
 2.3 SANCTIONED PERSONS
 You represent and warrant that you are NOT:
@@ -945,7 +953,7 @@ This indemnification obligation survives termination of these Terms.
 9. DISPUTE RESOLUTION
 
 9.1 GOVERNING LAW
-These Terms are governed by the laws of the jurisdiction where the Provider is established.
+These Terms are governed by the laws of Australia.
 
 9.2 ARBITRATION
 Disputes shall be resolved through binding arbitration. You waive your right to a jury trial and to participate in class actions.
@@ -1022,9 +1030,9 @@ AardAppvark acts as the data controller for personal information collected throu
     • Preferences: Your app settings and favorites
 
 2.2 INFORMATION COLLECTED AUTOMATICALLY
-    • Device Information: Device model, operating system version
-    • Usage Data: Features used, timestamps, error logs
-    • Device Identifier: Android device ID (hashed for privacy)
+    • Location Data: Approximate geographic location used solely for sanctions compliance. Determined via GPS/network location (if permitted), SIM card country, network carrier country, or device locale. Not stored after verification.
+    • Device Information: Device model, operating system version (stored locally only)
+    • Usage Data: Features used, timestamps (stored locally only)
 
 2.3 BLOCKCHAIN DATA
     • Transaction History: Payment transactions for credits
@@ -1032,8 +1040,10 @@ AardAppvark acts as the data controller for personal information collected throu
 
 2.4 INFORMATION WE DO NOT COLLECT
     • We do NOT collect your name, email, phone number, or physical address
+    • We do NOT collect device identifiers (IMEI, Android ID)
     • We do NOT access your wallet's private keys
     • We do NOT access your wallet balances or transaction history beyond our Application
+    • We do NOT use analytics, advertising trackers, or profiling
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

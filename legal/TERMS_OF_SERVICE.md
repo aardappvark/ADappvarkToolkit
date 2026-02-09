@@ -142,23 +142,21 @@ You must be at least 18 years of age or the age of majority in your jurisdiction
 
 ### 4.2 Sanctions Compliance
 
-The Service is NOT available to users located in, ordinarily resident in, or nationals of the following jurisdictions:
+The Service is NOT available to users located in, ordinarily resident in, or nationals of the following jurisdictions. All listed countries are fully blocked.
 
-**Comprehensively Sanctioned (Complete Block):**
-- Cuba
-- Iran
-- North Korea (Democratic People's Republic of Korea)
-- Syria
-- Russia
-- Russian-occupied Ukrainian territories (Crimea, Donetsk, Luhansk, Kherson, Zaporizhzhia)
+**Comprehensively Sanctioned:**
+- Cuba, Iran, North Korea (DPRK), Syria, Russia
 
-**Blocked Jurisdictions (Significant Restrictions):**
-- Belarus
-- Venezuela
-- Myanmar (Burma)
-- Nicaragua
-- Eritrea
-- Transnistria (Moldova)
+**Blocked (Significant Restrictions):**
+- Belarus, Venezuela, Myanmar (Burma), Nicaragua, Eritrea
+
+**Blocked (Targeted Sanctions):**
+- Ukraine (including occupied territories), Moldova, Zimbabwe, Sudan, South Sudan, Central African Republic, Democratic Republic of Congo, Mali, Guinea, Burkina Faso, Niger, Haiti, Bosnia and Herzegovina, Serbia, Kosovo
+
+**Blocked (FATF / High-Risk AML/CFT):**
+- Afghanistan, Iraq, Lebanon, Libya, Somalia, Yemen, Pakistan, Jordan, Tanzania, Nigeria, Senegal, Kenya, Philippines, Vietnam, Cameroon, Togo, Trinidad and Tobago, Jamaica, Barbados, Panama, Croatia, Bulgaria, Albania, Montenegro, North Macedonia, Georgia, Armenia, Azerbaijan, Kazakhstan, Uzbekistan, Tajikistan, Turkmenistan, Kyrgyzstan
+
+This list is subject to change based on evolving international sanctions and FATF designations.
 
 ### 4.3 Location Verification
 
@@ -169,7 +167,7 @@ We verify your location through multiple methods:
 3. Network carrier country
 4. Device locale settings
 
-By using the Service, you consent to this location verification.
+Location permission is requested at app launch. Geo-restriction checks are performed at app launch and before each payment transaction. If your location cannot be verified, access will be restricted. By using the Service, you consent to this location verification.
 
 ### 4.4 VPN and Circumvention Prohibition
 
@@ -263,7 +261,7 @@ This is because:
 - Transaction fees cannot be recovered
 - The decentralized nature of blockchain prevents refunds
 
-**Exception:** Technical failures that completely prevent service delivery may be reviewed on a case-by-case basis. Contact support@adappvark.xyz with transaction details.
+**Exception:** Technical failures that completely prevent service delivery may be reviewed on a case-by-case basis. Contact aardappvark@proton.me with transaction details.
 
 ### 6.4 No Automatic Renewal
 
@@ -639,7 +637,7 @@ We reserve the right to assume exclusive defense of any matter subject to indemn
 
 Before initiating formal dispute resolution:
 
-1. Contact us at legal@adappvark.xyz with a detailed description of your dispute
+1. Contact us at aardappvark@proton.me with a detailed description of your dispute
 2. Allow 30 days for good-faith negotiation
 3. Include your wallet address and relevant transaction details
 
@@ -674,7 +672,7 @@ The following may be pursued in court:
 
 ### 15.5 Governing Law
 
-These Terms are governed by the laws of [JURISDICTION TO BE SPECIFIED], without regard to conflict of law principles.
+These Terms are governed by the laws of Australia, without regard to conflict of law principles.
 
 ---
 
@@ -758,7 +756,7 @@ If you disagree with modified Terms:
 Your privacy is governed by our Privacy Policy, available at:
 
 - In-App: Settings > Privacy Policy
-- Online: https://adappvark.xyz/privacy
+- Online: https://aardappvark.github.io/ADappvarkToolkit/privacy.html
 - In legal folder: `/legal/PRIVACY_POLICY.md`
 
 ### 18.2 Key Privacy Points
@@ -896,7 +894,7 @@ We are not liable for failures due to circumstances beyond our control:
 
 ### 21.6 Notices
 
-Notices to us: legal@adappvark.xyz
+Notices to us: aardappvark@proton.me
 Notices to you: In-app notification or connected wallet address (if we can communicate via blockchain)
 
 ### 21.7 Headings
@@ -921,23 +919,23 @@ Nothing in these Terms creates:
 
 ### 22.1 General Support
 
-**Email:** support@adappvark.xyz
-**Website:** https://adappvark.xyz
+**Email:** aardappvark@proton.me
+**Website:** https://aardappvark.github.io/ADappvarkToolkit
 **Response Time:** 24-72 hours
 
 ### 22.2 Legal Matters
 
-**Email:** legal@adappvark.xyz
+**Email:** aardappvark@proton.me
 **For:** Legal inquiries, disputes, subpoenas, DMCA notices
 
 ### 22.3 Privacy Concerns
 
-**Email:** privacy@adappvark.xyz
+**Email:** aardappvark@proton.me
 **For:** Privacy inquiries, data requests, GDPR/CCPA requests
 
 ### 22.4 Security Issues
 
-**Email:** security@adappvark.xyz
+**Email:** aardappvark@proton.me
 **For:** Responsible disclosure of security vulnerabilities
 
 ### 22.5 Business Address

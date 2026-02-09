@@ -455,7 +455,10 @@ You expressly agree NOT to:
 
 8.2 IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED THE GREATER OF: (A) THE AMOUNT YOU PAID TO US IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM, OR (B) ONE HUNDRED U.S. DOLLARS (USD $100).
 
-8.3 SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF CERTAIN DAMAGES. IN SUCH JURISDICTIONS, OUR LIABILITY IS LIMITED TO THE MAXIMUM EXTENT PERMITTED BY LAW.
+8.3 CONSUMER LAW PROTECTIONS
+(a) Nothing in these Terms excludes, restricts, or modifies any consumer guarantee, right, or remedy conferred by the Australian Consumer Law (Schedule 2 of the Competition and Consumer Act 2010), the UK Consumer Rights Act 2015, the EU Consumer Rights Directive (2011/83/EU), or any other applicable consumer protection law, to the extent that such exclusion would be void or unenforceable.
+(b) Some jurisdictions do not allow the exclusion or limitation of certain damages. In such jurisdictions, our liability is limited to the maximum extent permitted by law.
+(c) To the extent prohibited by applicable law in your jurisdiction, the arbitration and class action waiver provisions in Section 12 shall not apply.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -528,7 +531,7 @@ If you are a California resident, you have rights under the California Consumer 
 12. DISPUTE RESOLUTION AND GOVERNING LAW
 
 12.1 GOVERNING LAW
-These Terms shall be governed by and construed in accordance with the laws of the jurisdiction where the Provider is established, without regard to conflict of law principles.
+These Terms shall be governed by and construed in accordance with the laws of Australia, without regard to conflict of law principles.
 
 12.2 DISPUTE RESOLUTION
 (a) Any dispute arising out of or relating to these Terms shall first be attempted to be resolved through good faith negotiation.

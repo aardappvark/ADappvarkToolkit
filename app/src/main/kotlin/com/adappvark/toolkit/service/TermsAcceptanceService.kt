@@ -82,7 +82,7 @@ hereby confirm that on $formattedDate (UTC):
 4. ELIGIBILITY CONFIRMATION
    I confirm that:
    - I am at least 18 years of age
-   - I am NOT located in a sanctioned jurisdiction (Cuba, Iran, North Korea, Syria, Crimea)
+   - I am NOT located in any blocked jurisdiction as listed in the Terms of Service
    - I am NOT on any OFAC, EU, UK, UN, or Australian sanctions list
    - I will not use this application for any unlawful purpose
 
@@ -168,10 +168,8 @@ Application: $APP_NAME
         messageHash: String
     ) {
         val timestamp = System.currentTimeMillis()
-        val deviceId = android.provider.Settings.Secure.getString(
-            context.contentResolver,
-            android.provider.Settings.Secure.ANDROID_ID
-        )
+        // ANDROID_ID removed: Privacy Policy states no device identifiers collected.
+        // Wallet address + timestamp provides sufficient consent identification.
 
         prefs.edit()
             .putString(KEY_CONSENT_WALLET, walletAddress)
@@ -181,7 +179,6 @@ Application: $APP_NAME
             .putLong(KEY_CONSENT_TIMESTAMP, timestamp)
             .putString(KEY_CONSENT_TOS_VERSION, CURRENT_TOS_VERSION)
             .putString(KEY_CONSENT_PRIVACY_VERSION, CURRENT_PRIVACY_VERSION)
-            .putString(KEY_CONSENT_DEVICE_ID, deviceId)
             .apply()
     }
 
@@ -267,10 +264,7 @@ Application: $APP_NAME
     ) {
         val timestamp = System.currentTimeMillis()
         val messageHash = hashMessage(signedMessage)
-        val deviceId = android.provider.Settings.Secure.getString(
-            context.contentResolver,
-            android.provider.Settings.Secure.ANDROID_ID
-        )
+        // ANDROID_ID removed: Privacy Policy states no device identifiers collected.
 
         prefs.edit()
             .putString(KEY_CONSENT_WALLET, walletAddress)
@@ -280,7 +274,6 @@ Application: $APP_NAME
             .putLong(KEY_CONSENT_TIMESTAMP, timestamp)
             .putString(KEY_CONSENT_TOS_VERSION, CURRENT_TOS_VERSION)
             .putString(KEY_CONSENT_PRIVACY_VERSION, CURRENT_PRIVACY_VERSION)
-            .putString(KEY_CONSENT_DEVICE_ID, deviceId)
             .apply()
     }
 
@@ -292,10 +285,7 @@ Application: $APP_NAME
         val timestamp = System.currentTimeMillis()
         val message = generateConsentMessage(walletAddress)
         val messageHash = hashMessage(message)
-        val deviceId = android.provider.Settings.Secure.getString(
-            context.contentResolver,
-            android.provider.Settings.Secure.ANDROID_ID
-        )
+        // ANDROID_ID removed: Privacy Policy states no device identifiers collected.
 
         prefs.edit()
             .putString(KEY_CONSENT_WALLET, walletAddress)
@@ -305,7 +295,6 @@ Application: $APP_NAME
             .putLong(KEY_CONSENT_TIMESTAMP, timestamp)
             .putString(KEY_CONSENT_TOS_VERSION, CURRENT_TOS_VERSION)
             .putString(KEY_CONSENT_PRIVACY_VERSION, CURRENT_PRIVACY_VERSION)
-            .putString(KEY_CONSENT_DEVICE_ID, deviceId)
             .apply()
     }
 }

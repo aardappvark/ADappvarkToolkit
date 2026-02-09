@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.adappvark.toolkit.BuildConfig
 import com.adappvark.toolkit.service.TermsAcceptanceService
 import com.adappvark.toolkit.service.UserPreferencesManager
-import com.adappvark.toolkit.util.AccessibilityHelper
-import kotlinx.coroutines.delay
+import com.adappvark.toolkit.AppConfig
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +32,6 @@ fun SettingsScreen(
     val userPrefs = remember { UserPreferencesManager(context) }
     val termsService = remember { TermsAcceptanceService(context) }
 
-    var isAccessibilityEnabled by remember { mutableStateOf(false) }
     var showTermsDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
     var showLicensesDialog by remember { mutableStateOf(false) }
@@ -42,14 +40,6 @@ fun SettingsScreen(
     var showDeleteDataDialog by remember { mutableStateOf(false) }
     var showDeleteConfirmDialog by remember { mutableStateOf(false) }
     var showDisconnectWalletDialog by remember { mutableStateOf(false) }
-
-    // Check accessibility status periodically
-    LaunchedEffect(Unit) {
-        while (true) {
-            isAccessibilityEnabled = AccessibilityHelper.isAccessibilityServiceEnabled(context)
-            delay(1000)
-        }
-    }
 
     Column(
         modifier = Modifier
@@ -215,45 +205,6 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Accessibility Status Card
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp)
-            ) {
-                Text(
-                    text = "Accessibility Service",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Auto-Uninstall/Reinstall")
-                    StatusIndicator(isAccessibilityEnabled)
-                }
-
-                if (!isAccessibilityEnabled) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Button(
-                        onClick = {
-                            AccessibilityHelper.openAccessibilitySettings(context)
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text("Enable Accessibility")
-                    }
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
         // Legal Section
         Card(
             modifier = Modifier.fillMaxWidth()
@@ -348,6 +299,12 @@ fun SettingsScreen(
                     icon = Icons.Filled.Android,
                     title = "Package",
                     subtitle = BuildConfig.APPLICATION_ID
+                )
+
+                SettingsItem(
+                    icon = Icons.Filled.Code,
+                    title = "GitHub",
+                    subtitle = "github.com/AardAppvark/ADappvarkToolkit"
                 )
             }
         }
@@ -766,26 +723,6 @@ fun ConsentInfoRow(label: String, value: String) {
             text = value,
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold
-        )
-    }
-}
-
-@Composable
-fun StatusIndicator(isActive: Boolean) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = if (isActive) Icons.Filled.CheckCircle else Icons.Filled.Cancel,
-            contentDescription = null,
-            tint = if (isActive) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = if (isActive) "Enabled" else "Disabled",
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (isActive) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
         )
     }
 }

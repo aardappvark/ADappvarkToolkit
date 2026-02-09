@@ -1234,13 +1234,82 @@ private suspend fun performBulkReinstall(
     val installedCount = appsToProcess.count { uninstallHistory.isAppInstalled(it.packageName) }
     val pendingCount = appsToProcess.size - installedCount
 
-    val message = when {
-        installedCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
-        pendingCount > 0 -> "$installedCount installed. $pendingCount downloading in background - tap Refresh to check."
-        else -> "Reinstall triggered. Tap Refresh to check status."
+    // Auto-retry phase: if some apps weren't installed (dApp Store cooldown/timeout),
+    // retry them automatically at no additional cost to the user
+    if (pendingCount > 0) {
+        Log.d(TAG, "Auto-retry: $pendingCount apps not yet installed, retrying...")
+        android.widget.Toast.makeText(
+            context,
+            "$installedCount installed. Retrying $pendingCount remaining apps...",
+            android.widget.Toast.LENGTH_SHORT
+        ).show()
+
+        // Wait for dApp Store to recover from any cooldown
+        delay(5000)
+
+        // Get the apps that still need installing
+        val retryApps = appsToProcess.filter { !uninstallHistory.isAppInstalled(it.packageName) }
+
+        // Re-enable auto-click for retry
+        AccessibilityHelper.enableAutoClickForInstall()
+
+        retryApps.forEachIndexed { index, app ->
+            Log.d(TAG, "Retry [${index + 1}/${retryApps.size}]: ${app.appName}")
+            onProgress(appsToProcess.size - retryApps.size + index + 1,
+                appsToProcess.size + retryApps.size,
+                "${app.appName} (retry)")
+
+            AccessibilityHelper.resetOpenButtonFlag()
+            openDAppStore(context, app.packageName)
+            delay(2500)
+
+            // Wait up to 20 seconds for install/already-installed detection
+            for (i in 1..40) {
+                delay(500)
+                val openFound = AccessibilityHelper.wasOpenButtonFound()
+                val installClicked = AccessibilityHelper.wasInstallButtonClicked()
+                val cancelFound = AccessibilityHelper.isInstallationInProgress()
+
+                if (openFound) {
+                    Log.d(TAG, "Retry: ${app.appName} already installed")
+                    uninstallHistory.markAsReinstalled(app.packageName)
+                    onAppReinstalled(app.packageName)
+                    break
+                }
+                if (installClicked || cancelFound) {
+                    Log.d(TAG, "Retry: ${app.appName} install triggered")
+                    break
+                }
+            }
+
+            bringAppToForeground(context)
+            delay(2000)
+        }
+
+        AccessibilityHelper.disableAutoClick()
+
+        // Final sync
+        delay(3000)
+        uninstallHistory.syncWithDeviceState()
+        onAppReinstalled("")
+
+        val finalInstalledCount = appsToProcess.count { uninstallHistory.isAppInstalled(it.packageName) }
+        val finalPendingCount = appsToProcess.size - finalInstalledCount
+
+        val message = when {
+            finalInstalledCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
+            finalPendingCount > 0 -> "$finalInstalledCount installed. $finalPendingCount downloading in background - tap Refresh to check."
+            else -> "Reinstall complete. Tap Refresh to check status."
+        }
+        android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
+    } else {
+        val message = when {
+            installedCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
+            else -> "Reinstall triggered. Tap Refresh to check status."
+        }
+        android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
     }
 
-    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
     onComplete()
 }
 

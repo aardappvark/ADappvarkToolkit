@@ -85,9 +85,11 @@ For the purposes of this Privacy Policy:
   - SIM card country code (Mobile Country Code)
   - Network carrier country
   - Device locale settings
-- Used solely to verify you are not in a sanctioned jurisdiction
+- Used solely to verify you are not in a blocked jurisdiction (54 countries blocked - see Terms of Service for full list)
+- Location is checked at app launch and before each payment transaction
 - Not stored after verification; only the result (allowed/blocked) is retained
-- You may deny location permission; alternative verification methods will be used
+- Location permission is requested at app launch; if denied, alternative methods (SIM, network, locale) are used
+- If location cannot be verified, access to the App will be restricted
 
 **Device and Package Information (Local Only)**
 - List of installed applications on your device
@@ -352,7 +354,7 @@ Under the General Data Protection Regulation, you have additional rights:
 - **Right to Object (Article 21):** Stop using the App
 - **Right Not to be Subject to Automated Decisions (Article 22):** We do not make automated decisions
 
-**Exercising Rights:** Contact us at privacy@adappvark.xyz
+**Exercising Rights:** Contact us at aardappvark@proton.me
 
 ### 10.3 CCPA Rights (California Users)
 
@@ -410,18 +412,7 @@ We are required to comply with international sanctions programs including:
 
 ### 12.2 Blocked Jurisdictions
 
-The App is not available in comprehensively sanctioned jurisdictions:
-- Cuba
-- Iran
-- North Korea (DPRK)
-- Syria
-- Russia
-- Russian-occupied Ukrainian territories
-- Belarus
-- Venezuela
-- Myanmar (Burma)
-- Nicaragua
-- Eritrea
+The App is fully blocked in 54 jurisdictions including countries subject to comprehensive sanctions, significant restrictions, targeted sanctions, and FATF/AML high-risk designations. The complete list is provided in our Terms of Service (Section 4.2).
 
 ### 12.3 Location Verification
 
@@ -430,6 +421,8 @@ We verify your location using:
 2. SIM card country code
 3. Network carrier country
 4. Device locale
+
+Location is checked at app launch and before each payment transaction. Location permission is requested at app launch. If location cannot be verified, access to the App will be restricted.
 
 **We do not store your precise location.** We only store the verification result (allowed/blocked).
 
@@ -459,7 +452,7 @@ We do not knowingly collect Personal Data from anyone under 18 years of age. If 
 
 ### 13.3 Parental Notice
 
-If you are a parent or guardian and believe your child has provided us with Personal Data, please contact us at privacy@adappvark.xyz.
+If you are a parent or guardian and believe your child has provided us with Personal Data, please contact us at aardappvark@proton.me.
 
 ---
 
@@ -514,6 +507,7 @@ Your continued use of the App after changes constitutes acceptance of the update
 |---------|------|-------------------|
 | 1.0.0 | Feb 4, 2026 | Initial release |
 | 1.1.0 | Feb 8, 2026 | Expanded sanctions list, added location permissions |
+| 1.2.0 | Feb 9, 2026 | All 54 restricted countries now fully blocked, geo check added before payments, location permission requested at launch |
 
 ---
 
@@ -521,24 +515,24 @@ Your continued use of the App after changes constitutes acceptance of the update
 
 ### 16.1 Privacy Inquiries
 
-**Email:** privacy@adappvark.xyz
+**Email:** aardappvark@proton.me
 **Subject Line:** "Privacy Inquiry - [Your Topic]"
 **Response Time:** Within 30 days (14 days for GDPR requests)
 
 ### 16.2 General Support
 
-**Email:** support@adappvark.xyz
-**Website:** https://adappvark.xyz
+**Email:** aardappvark@proton.me
+**Website:** https://aardappvark.github.io/ADappvarkToolkit
 
 ### 16.3 Legal Matters
 
-**Email:** legal@adappvark.xyz
+**Email:** aardappvark@proton.me
 **For:** DMCA notices, legal process, subpoenas
 
 ### 16.4 Data Protection Officer
 
 For GDPR-related inquiries:
-**Email:** dpo@adappvark.xyz
+**Email:** aardappvark@proton.me
 
 ### 16.5 Regulatory Complaints
 

@@ -33,10 +33,10 @@ This is a prerequisite for the Solana Mobile grant.
 - [ ] Test on real Seeker device with Shizuku
 - [ ] Create release signing keystore
 - [ ] Build signed release APK
-- [ ] Deploy website at https://adappvark.xyz
-- [ ] Privacy Policy live at https://adappvark.xyz/privacy
-- [ ] Terms of Service live at https://adappvark.xyz/terms
-- [ ] Set up support email (support@adappvark.xyz)
+- [ ] Deploy website at https://aardappvark.github.io/ADappvarkToolkit
+- [ ] Privacy Policy live at https://aardappvark.github.io/ADappvarkToolkit/privacy.html
+- [ ] Terms of Service live at https://aardappvark.github.io/ADappvarkToolkit/terms.html
+- [ ] Set up support email (aardappvark@proton.me)
 - [ ] GitHub repo for licensing/legal URLs
 
 ### Assets Needed
@@ -48,7 +48,7 @@ This is a prerequisite for the Solana Mobile grant.
 ### GitHub Setup Required
 - [ ] Create GitHub repository (public or private)
 - [ ] Host legal documents (Privacy Policy, Terms, Licenses)
-- [ ] Set up GitHub Pages or link to adappvark.xyz
+- [ ] Set up GitHub Pages or link to aardappvark.com
 - [ ] APK can be hosted in GitHub Releases as alternative distribution
 
 ## Payment Model (Consolidated - Feb 9, 2026)

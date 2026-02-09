@@ -2,6 +2,7 @@ package com.adappvark.toolkit.service
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.adappvark.toolkit.BuildConfig
 import com.adappvark.toolkit.config.CreditState
 import com.adappvark.toolkit.config.PaymentConfig
 
@@ -236,9 +237,11 @@ class CreditManager(context: Context) {
     }
 
     /**
-     * FOR TESTING: Set credit balance directly
+     * FOR TESTING ONLY: Set credit balance directly
+     * Gated behind BuildConfig.DEBUG to prevent abuse in production
      */
     fun debugSetCredits(balance: Int, expiresInDays: Int = 365) {
+        if (!BuildConfig.DEBUG) return  // No-op in production
         val expiresAt = System.currentTimeMillis() +
             (expiresInDays.toLong() * 24 * 60 * 60 * 1000)
         prefs.edit()
@@ -248,9 +251,11 @@ class CreditManager(context: Context) {
     }
 
     /**
-     * FOR TESTING: Reset free credit flag
+     * FOR TESTING ONLY: Reset free credit flag
+     * Gated behind BuildConfig.DEBUG to prevent abuse in production
      */
     fun debugResetFreeCredit() {
+        if (!BuildConfig.DEBUG) return  // No-op in production
         prefs.edit()
             .putBoolean(KEY_FREE_CREDIT_GRANTED, false)
             .apply()

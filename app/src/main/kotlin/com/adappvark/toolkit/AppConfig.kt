@@ -7,16 +7,14 @@ object AppConfig {
     
     /**
      * Payment Configuration
-     * TODO: Replace with your actual Solana wallet address before launch
      */
     object Payment {
-        // CRITICAL: Replace this with your actual Solana wallet address
-        const val WALLET_ADDRESS = "DD4aPDhf396NhNDxa4PBVf1u3uzCUP2QYm2dFMmJWq2Q"  // Placeholder - REPLACE!
-        
-        // Cluster configuration
-        const val CLUSTER = "devnet"  // Use "devnet" for testing
-        const val RPC_ENDPOINT = "https://api.devnet.solana.com"
-        
+        const val WALLET_ADDRESS = "DD4aPDhf396NhNDxa4PBVf1u3uzCUP2QYm2dFMmJWq2Q"
+
+        // Production: mainnet-beta
+        const val CLUSTER = "mainnet-beta"
+        const val RPC_ENDPOINT = "https://api.mainnet-beta.solana.com"
+
         // For testing, use devnet:
         // const val CLUSTER = "devnet"
         // const val RPC_ENDPOINT = "https://api.devnet.solana.com"
@@ -26,9 +24,9 @@ object AppConfig {
      * App Identity for MWA
      */
     object Identity {
-        const val URI = "https://adappvark.xyz"
-        const val ICON_URI = "https://adappvark.xyz/favicon.ico"
-        const val NAME = "ADappvark Toolkit"
+        const val URI = "https://aardappvark.github.io/ADappvarkToolkit"
+        const val ICON_URI = "favicon.png"
+        const val NAME = "AardAppvark Toolkit"
     }
     
     /**
@@ -47,18 +45,17 @@ object AppConfig {
         const val ENABLE_CRASH_REPORTING = false  // No crash reporting
         const val ENABLE_DEBUG_LOGGING = BuildConfig.DEBUG
 
-        // TODO: Set to false before dApp Store submission
-        const val TESTING_BYPASS_PAYMENT = true  // Bypass payment for testing
+        const val TESTING_BYPASS_PAYMENT = false  // Production: payments enabled
     }
     
     /**
      * URLs
      */
     object Urls {
-        const val WEBSITE = "https://adappvark.xyz"
-        const val PRIVACY_POLICY = "https://adappvark.xyz/privacy"
-        const val TERMS_OF_SERVICE = "https://adappvark.xyz/terms"
-        const val SUPPORT_EMAIL = "support@adappvark.xyz"
+        const val WEBSITE = "https://aardappvark.github.io/ADappvarkToolkit"
+        const val PRIVACY_POLICY = "https://aardappvark.github.io/ADappvarkToolkit/privacy.html"
+        const val TERMS_OF_SERVICE = "https://aardappvark.github.io/ADappvarkToolkit/terms.html"
+        const val SUPPORT_EMAIL = "aardappvark@proton.me"
         
         // Solana Explorer (cluster-aware)
         fun getSolscanUrl(signature: String): String {

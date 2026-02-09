@@ -320,7 +320,7 @@ Uses open-source components:
 
 - Discord: [Add link]
 - Twitter: @ADappvark
-- Email: support@adappvark.xyz
+- Email: aardappvark@proton.me
 
 ---
 

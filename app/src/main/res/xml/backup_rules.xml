@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
     <include domain="sharedpref" path="."/>
+    <!-- Exclude sensitive data from cloud backup -->
     <exclude domain="sharedpref" path="device_prefs.xml"/>
+    <exclude domain="sharedpref" path="aardappvark_credits.xml"/>
+    <exclude domain="sharedpref" path="aardappvark_user_prefs.xml"/>
+    <exclude domain="sharedpref" path="aardappvark_legal_compliance.xml"/>
+    <exclude domain="sharedpref" path="subscription_prefs.xml"/>
 </full-backup-content>

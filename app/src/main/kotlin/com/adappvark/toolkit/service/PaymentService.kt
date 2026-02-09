@@ -2,6 +2,7 @@ package com.adappvark.toolkit.service
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.adappvark.toolkit.AppConfig
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import com.solana.mobilewalletadapter.clientlib.ConnectionIdentity
@@ -25,6 +26,8 @@ class PaymentService(
 ) {
 
     companion object {
+        private const val TAG = "PaymentService"
+
         // Free tier threshold - first 4 apps are free
         const val FREE_TIER_LIMIT = 4
 
@@ -41,6 +44,12 @@ class PaymentService(
         // SKR token mint address (replace with actual when available)
         const val SKR_TOKEN_MINT = "SKRTokenMint11111111111111111111111111111"
 
+        // Lamports per SOL
+        private const val LAMPORTS_PER_SOL = 1_000_000_000L
+
+        // Base58 alphabet for decoding
+        private const val BASE58_ALPHABET = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+
         /**
          * Create a shared MobileWalletAdapter instance.
          * Must be called before Activity is STARTED (e.g., in remember{} at composition time).
@@ -54,7 +63,61 @@ class PaymentService(
                 )
             )
         }
+
+        /**
+         * Decode a Base58-encoded string to bytes
+         */
+        fun decodeBase58(input: String): ByteArray {
+            var bi = java.math.BigInteger.ZERO
+            for (ch in input) {
+                val index = BASE58_ALPHABET.indexOf(ch)
+                require(index >= 0) { "Invalid Base58 character: $ch" }
+                bi = bi.multiply(java.math.BigInteger.valueOf(58)) + java.math.BigInteger.valueOf(index.toLong())
+            }
+
+            // Convert to byte array
+            val bytes = bi.toByteArray()
+
+            // Count leading 1s (which represent leading zero bytes in Base58)
+            val leadingZeros = input.takeWhile { it == '1' }.length
+
+            // Strip any leading zero byte from BigInteger representation
+            val stripped = if (bytes.isNotEmpty() && bytes[0] == 0.toByte()) {
+                bytes.copyOfRange(1, bytes.size)
+            } else {
+                bytes
+            }
+
+            // Prepend leading zeros
+            return ByteArray(leadingZeros) + stripped
+        }
+
+        /**
+         * Encode bytes to Base58 string
+         */
+        fun encodeBase58(input: ByteArray): String {
+            if (input.isEmpty()) return ""
+
+            var bi = java.math.BigInteger(1, input)
+            val sb = StringBuilder()
+
+            while (bi > java.math.BigInteger.ZERO) {
+                val (quotient, remainder) = bi.divideAndRemainder(java.math.BigInteger.valueOf(58))
+                sb.append(BASE58_ALPHABET[remainder.toInt()])
+                bi = quotient
+            }
+
+            // Add leading '1' characters for each leading zero byte
+            for (byte in input) {
+                if (byte == 0.toByte()) sb.append('1') else break
+            }
+
+            return sb.reverse().toString()
+        }
     }
+
+    private val rpcClient = SolanaRpcClient()
+    private val txBuilder = SolanaTransactionBuilder()
 
     /**
      * Check if payment is required for the given app count
@@ -121,7 +184,8 @@ class PaymentService(
 
     /**
      * Request SOL payment from user's wallet
-     * Note: Full implementation requires building and signing a SOL transfer transaction
+     * Builds a real SystemProgram::Transfer transaction, signs via MWA, and submits to network.
+     * Performs geo-restriction and wallet sanctions check before processing.
      */
     suspend fun requestSOLPayment(
         activityResultSender: ActivityResultSender,
@@ -135,15 +199,60 @@ class PaymentService(
             return
         }
 
+        // Pre-transaction compliance check: geo-restriction + wallet screening
+        val geoService = GeoRestrictionService(context)
+        val geoResult = geoService.checkGeoRestriction()
+        if (geoResult is GeoRestrictionService.GeoCheckResult.Blocked) {
+            onError("Payment blocked: AardAppvark is not available in ${geoResult.countryName} due to sanctions compliance.")
+            return
+        }
+        if (geoResult is GeoRestrictionService.GeoCheckResult.Error) {
+            onError("Payment blocked: Unable to verify your location. Location verification is required for sanctions compliance.")
+            return
+        }
+
         val adapter = mobileWalletAdapter ?: run {
             onError("Payment service not properly initialized. Please restart the app.")
             return
         }
 
+        // Step 1: Get recent blockhash from Solana RPC
+        val blockhashResult = rpcClient.getRecentBlockhash()
+        val blockhashData = blockhashResult.getOrElse { e ->
+            onError("Failed to get blockhash: ${e.message}")
+            return
+        }
+
+        Log.d(TAG, "Got blockhash: ${blockhashData.blockhash}")
+
+        // Step 2: Decode treasury wallet address from Base58
+        val treasuryPubkey: ByteArray
         try {
-            // Connect to wallet and prepare transaction
+            treasuryPubkey = decodeBase58(TREASURY_WALLET)
+            require(treasuryPubkey.size == 32) { "Treasury wallet decoded to ${treasuryPubkey.size} bytes, expected 32" }
+        } catch (e: Exception) {
+            onError("Invalid treasury wallet configuration: ${e.message}")
+            return
+        }
+
+        // Step 3: Decode blockhash from Base58
+        val blockhashBytes: ByteArray
+        try {
+            blockhashBytes = decodeBase58(blockhashData.blockhash)
+            require(blockhashBytes.size == 32) { "Blockhash decoded to ${blockhashBytes.size} bytes, expected 32" }
+        } catch (e: Exception) {
+            onError("Invalid blockhash: ${e.message}")
+            return
+        }
+
+        // Step 4: Calculate lamports
+        val lamports = (amount * LAMPORTS_PER_SOL).toLong()
+        Log.d(TAG, "Transfer amount: $amount SOL = $lamports lamports")
+
+        try {
+            // Step 5: Connect to wallet, authorize, build tx, sign & send
             val result = adapter.transact(activityResultSender) {
-                // First authorize using centralized AppConfig
+                // Authorize with the wallet
                 val authResult = authorize(
                     identityUri = Uri.parse(AppConfig.Identity.URI),
                     iconUri = Uri.parse(AppConfig.Identity.ICON_URI),
@@ -151,38 +260,68 @@ class PaymentService(
                     chain = if (AppConfig.Payment.CLUSTER == "mainnet-beta") "solana:mainnet" else "solana:devnet"
                 )
 
-                // In a full implementation, we would:
-                // 1. Build a SOL transfer transaction to TREASURY_WALLET
-                // 2. Request signAndSendTransactions()
-                // 3. Return the transaction signature
+                // Get user's public key from auth result
+                val userPubkey = authResult.accounts.firstOrNull()?.publicKey
+                    ?: throw Exception("No account returned from wallet authorization")
 
-                // For now, return auth result - actual payment needs RPC integration
-                authResult
+                Log.d(TAG, "User pubkey: ${userPubkey.size} bytes")
+
+                // Wallet sanctions check on the user's public key
+                val walletAddress = encodeBase58(userPubkey)
+                if (geoService.isWalletSanctioned(walletAddress)) {
+                    throw Exception("Wallet $walletAddress is on a sanctions list. Transaction blocked.")
+                }
+
+                // Build the SOL transfer transaction message
+                val transactionMessage = txBuilder.buildTransferTransaction(
+                    fromPubkey = userPubkey,
+                    toPubkey = treasuryPubkey,
+                    lamports = lamports,
+                    recentBlockhash = blockhashBytes
+                )
+
+                Log.d(TAG, "Built transaction message: ${transactionMessage.size} bytes")
+
+                // Sign and send the transaction via the wallet
+                val signResult = signAndSendTransactions(
+                    transactions = arrayOf(transactionMessage)
+                )
+
+                signResult
             }
 
             when (result) {
                 is TransactionResult.Success -> {
-                    // In production, this would be the actual transaction signature
-                    // For now, we generate a placeholder
-                    val mockSignature = "PAYMENT_${System.currentTimeMillis()}_${appCount}apps_${amount}SOL"
-                    onSuccess(mockSignature)
+                    // Extract the transaction signature from the result
+                    val signatures = result.payload.signatures
+                    val signature = if (signatures.isNotEmpty()) {
+                        encodeBase58(signatures[0])
+                    } else {
+                        "TX_${System.currentTimeMillis()}"
+                    }
+                    Log.d(TAG, "Payment successful! Signature: $signature")
+                    onSuccess(signature)
                 }
                 is TransactionResult.NoWalletFound -> {
-                    onError("No wallet found. Please install a Solana wallet app.")
+                    onError("No wallet found. Please install a Solana wallet app (Phantom, Solflare, etc.).")
                 }
                 is TransactionResult.Failure -> {
-                    onError(result.e.message ?: "Payment failed")
+                    Log.e(TAG, "Payment failed", result.e)
+                    onError(result.e.message ?: "Payment failed. Please try again.")
                 }
             }
         } catch (e: Exception) {
-            onError(e.message ?: "Payment failed")
+            Log.e(TAG, "Payment error", e)
+            onError(e.message ?: "Payment failed unexpectedly.")
         }
     }
 
     /**
      * Request SKR token payment from user's wallet
+     * Performs geo-restriction check before processing.
      * Note: SKR token payment requires SPL token transfer implementation
      */
+    @Suppress("UNUSED_PARAMETER")
     suspend fun requestSKRPayment(
         activityResultSender: ActivityResultSender,
         appCount: Int,
@@ -192,6 +331,18 @@ class PaymentService(
         val amount = calculateFeeSKR(appCount)
         if (amount == 0.0) {
             onSuccess("FREE_TRANSACTION")
+            return
+        }
+
+        // Pre-transaction compliance check: geo-restriction
+        val geoService = GeoRestrictionService(context)
+        val geoResult = geoService.checkGeoRestriction()
+        if (geoResult is GeoRestrictionService.GeoCheckResult.Blocked) {
+            onError("Payment blocked: AardAppvark is not available in ${geoResult.countryName} due to sanctions compliance.")
+            return
+        }
+        if (geoResult is GeoRestrictionService.GeoCheckResult.Error) {
+            onError("Payment blocked: Unable to verify your location. Location verification is required for sanctions compliance.")
             return
         }
 

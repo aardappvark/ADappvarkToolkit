@@ -11,7 +11,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.adappvark.toolkit.R
-import kotlinx.coroutines.delay
 
 /**
  * Mascot states for Varky the ADappvark
@@ -26,7 +25,7 @@ enum class MascotState {
 
 /**
  * Animated mascot component
- * Shows Varky in different states with animation
+ * Shows Varky in different states using vector drawables
  */
 @Composable
 fun AnimatedMascot(
@@ -39,35 +38,23 @@ fun AnimatedMascot(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (state) {
-            MascotState.IDLE, MascotState.THINKING -> {
-                Image(
-                    painter = painterResource(id = R.drawable.mascot_idle),
-                    contentDescription = "Varky idle",
-                    modifier = Modifier.size(size)
-                )
-            }
-
-            MascotState.WORKING -> {
-                WorkingAnimation(modifier = Modifier, size = size)
-            }
-
-            MascotState.SUCCESS -> {
-                Image(
-                    painter = painterResource(id = R.drawable.mascot_success),
-                    contentDescription = "Varky celebrating",
-                    modifier = Modifier.size(size)
-                )
-            }
-
-            MascotState.ERROR -> {
-                Image(
-                    painter = painterResource(id = R.drawable.mascot_error),
-                    contentDescription = "Varky confused",
-                    modifier = Modifier.size(size)
-                )
-            }
+        val drawableId = when (state) {
+            MascotState.IDLE, MascotState.THINKING -> R.drawable.varky_idle
+            MascotState.WORKING -> R.drawable.varky_working
+            MascotState.SUCCESS -> R.drawable.varky_success
+            MascotState.ERROR -> R.drawable.varky_idle  // Use idle for error state too
         }
+
+        Image(
+            painter = painterResource(id = drawableId),
+            contentDescription = when (state) {
+                MascotState.IDLE, MascotState.THINKING -> "Varky idle"
+                MascotState.WORKING -> "Varky working"
+                MascotState.SUCCESS -> "Varky celebrating"
+                MascotState.ERROR -> "Varky"
+            },
+            modifier = Modifier.size(size)
+        )
 
         // Optional message
         if (message != null) {
@@ -79,35 +66,4 @@ fun AnimatedMascot(
             )
         }
     }
-}
-
-/**
- * Working animation cycles through 3 frames
- */
-@Composable
-private fun WorkingAnimation(
-    modifier: Modifier = Modifier,
-    size: Dp = 80.dp
-) {
-    var frame by remember { mutableIntStateOf(0) }
-
-    // Cycle through frames
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(300) // 300ms per frame = ~3 fps (retro feel)
-            frame = (frame + 1) % 3
-        }
-    }
-
-    val drawableId = when (frame) {
-        0 -> R.drawable.mascot_working_1
-        1 -> R.drawable.mascot_working_2
-        else -> R.drawable.mascot_working_3
-    }
-
-    Image(
-        painter = painterResource(id = drawableId),
-        contentDescription = "Varky working",
-        modifier = modifier.size(size)
-    )
 }

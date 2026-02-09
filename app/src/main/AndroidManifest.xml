@@ -6,8 +6,8 @@
     <!-- Permission to request package uninstallation (shows system dialog) -->
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES"
-        tools:ignore="ProtectedPermissions" />
+    <!-- DELETE_PACKAGES removed: protected permission not granted to non-system apps.
+         App uses ACTION_DELETE intents and Shizuku for uninstallation instead. -->
 
     <!-- Query installed packages -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
@@ -26,7 +26,8 @@
     <!-- Location permissions for sanctions/geo-restriction compliance -->
     <!-- Used to verify user is not in sanctioned jurisdiction (OFAC, EU, UK, UN sanctions) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- ACCESS_FINE_LOCATION removed: coarse location is sufficient for country-level
+         sanctions compliance. Fine GPS precision is unnecessary and privacy-invasive. -->
 
     <!-- Optional: Used to check network-based location when GPS unavailable -->
     <uses-feature android:name="android.hardware.location" android:required="false" />
@@ -34,9 +35,10 @@
     <uses-feature android:name="android.hardware.location.network" android:required="false" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
