@@ -102,11 +102,4 @@
     <string name="selected_dapps">Selected</string>
     <string name="storage_used">Storage Used</string>
     <string name="last_operation">Last Operation</string>
-
-    <!-- Accessibility Service -->
-    <string name="accessibility_service_description">ADappvark uses this service to automatically confirm dApp uninstall dialogs. This enables bulk removal of multiple dApps without tapping OK for each one. You can disable this service anytime in Settings.</string>
-    <string name="accessibility_setup_title">Enable Auto-Uninstall</string>
-    <string name="accessibility_setup_message">To uninstall multiple dApps automatically, ADappvark needs Accessibility permission.\n\nThis is a one-time setup. After enabling, you can bulk uninstall with one tap.</string>
-    <string name="accessibility_enable">Enable</string>
-    <string name="accessibility_not_enabled">Auto-uninstall not enabled</string>
 </resources>

@@ -27,7 +27,6 @@ import com.adappvark.toolkit.ui.components.PaymentErrorDialog
 import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
 import com.adappvark.toolkit.ui.components.PricingBanner
 import com.adappvark.toolkit.service.PaymentMethod
-import com.adappvark.toolkit.util.AccessibilityHelper
 import android.util.Log
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
@@ -60,7 +59,6 @@ fun UninstallScreen(
     var paymentErrorMessage by remember { mutableStateOf("") }
     var lastTransactionSignature by remember { mutableStateOf("") }
     var isProcessingPayment by remember { mutableStateOf(false) }
-    var showAccessibilityDialog by remember { mutableStateOf(false) }
     var currentFilter by remember { mutableStateOf(DAppFilter.DAPP_STORE_ONLY) }
     var sortOption by remember { mutableStateOf(SortOption.ALPHABETICAL) }
     var showSortMenu by remember { mutableStateOf(false) }
@@ -96,15 +94,6 @@ fun UninstallScreen(
     val pricingSummary = paymentService.getPricingSummary(selectedDApps.size)
     var uninstallProgress by remember { mutableStateOf<Pair<Int, Int>?>(null) }
     var currentUninstallingApp by remember { mutableStateOf<String?>(null) }
-    var isAccessibilityEnabled by remember { mutableStateOf(false) }
-
-    // Check accessibility status periodically
-    LaunchedEffect(Unit) {
-        while (true) {
-            isAccessibilityEnabled = AccessibilityHelper.isAccessibilityServiceEnabled(context)
-            delay(1000) // Check every second
-        }
-    }
 
     // Scan dApps on first load
     LaunchedEffect(currentFilter) {
@@ -118,51 +107,6 @@ fun UninstallScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Accessibility Status Banner - Bright yellow for visibility
-        if (!isAccessibilityEnabled) {
-            val brightYellow = Color(0xFFFFEB3B) // Bright yellow
-            val darkText = Color(0xFF1A1A1A) // Dark text for contrast
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { showAccessibilityDialog = true },
-                colors = CardDefaults.cardColors(
-                    containerColor = brightYellow
-                )
-            ) {
-                Row(
-                    modifier = Modifier.padding(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        Icons.Filled.Warning,
-                        contentDescription = null,
-                        tint = darkText
-                    )
-                    Spacer(modifier = Modifier.width(12.dp))
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            "Auto-Uninstall Not Enabled",
-                            style = MaterialTheme.typography.titleSmall,
-                            color = darkText
-                        )
-                        Text(
-                            "Tap to enable one-tap bulk uninstall",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = darkText
-                        )
-                    }
-                    Icon(
-                        Icons.Filled.ChevronRight,
-                        contentDescription = null,
-                        tint = darkText
-                    )
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-
         // Filter Chips
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -428,9 +372,7 @@ fun UninstallScreen(
         // Uninstall Button
         Button(
             onClick = {
-                if (!isAccessibilityEnabled) {
-                    showAccessibilityDialog = true
-                } else if (isPaymentRequired) {
+                if (isPaymentRequired) {
                     showPaymentDialog = true
                 } else {
                     showConfirmDialog = true
@@ -439,71 +381,19 @@ fun UninstallScreen(
             modifier = Modifier.fillMaxWidth(),
             enabled = selectedDApps.isNotEmpty() && !isUninstalling
         ) {
-            if (!isAccessibilityEnabled) {
-                Icon(Icons.Filled.Settings, contentDescription = null)
-            } else if (isPaymentRequired) {
+            if (isPaymentRequired) {
                 Icon(Icons.Filled.Payment, contentDescription = null)
             } else {
                 Icon(Icons.Filled.Delete, contentDescription = null)
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                when {
-                    !isAccessibilityEnabled -> "Enable Auto-Uninstall"
-                    isPaymentRequired -> "Pay & Uninstall ${selectedDApps.size} dApps"
-                    else -> "Uninstall ${selectedDApps.size} dApps"
-                }
+                if (isPaymentRequired)
+                    "Pay & Uninstall ${selectedDApps.size} dApps"
+                else
+                    "Uninstall ${selectedDApps.size} dApps"
             )
         }
-    }
-
-    // Accessibility Setup Dialog
-    if (showAccessibilityDialog) {
-        AlertDialog(
-            onDismissRequest = { showAccessibilityDialog = false },
-            icon = {
-                Icon(
-                    Icons.Filled.Accessibility,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(48.dp)
-                )
-            },
-            title = { Text("Enable Auto-Uninstall") },
-            text = {
-                Column {
-                    Text("To uninstall multiple dApps automatically, ADappvark needs Accessibility permission.")
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        "This is a one-time setup:",
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text("1. Tap \"Enable\" below")
-                    Text("2. Find \"ADappvark Toolkit\" in the list")
-                    Text("3. Toggle it ON and tap \"Allow\"")
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Text(
-                        "After this, you can bulk uninstall with one tap!",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-            },
-            confirmButton = {
-                Button(onClick = {
-                    showAccessibilityDialog = false
-                    AccessibilityHelper.openAccessibilitySettings(context)
-                }) {
-                    Text("Enable")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showAccessibilityDialog = false }) {
-                    Text("Cancel")
-                }
-            }
-        )
     }
 
     // Payment Dialog for 5+ apps
@@ -618,8 +508,6 @@ fun UninstallScreen(
                                 packageNames = selectedDApps.toList(),
                                 onStart = {
                                     isUninstalling = true
-                                    // Enable auto-click in accessibility service
-                                    AccessibilityHelper.enableAutoClick()
                                 },
                                 onProgress = { current, total, packageName ->
                                     uninstallProgress = current to total
@@ -630,8 +518,6 @@ fun UninstallScreen(
                                     uninstallProgress = null
                                     currentUninstallingApp = null
                                     selectedDApps = emptySet()
-                                    // Disable auto-click
-                                    AccessibilityHelper.disableAutoClick()
                                     // Rescan
                                     dAppList = packageService.scanInstalledApps(filter = currentFilter)
                                 }
@@ -715,14 +601,12 @@ fun DAppListItem(
 }
 
 /**
- * Perform bulk uninstall using standard Android uninstall intents
- * The accessibility service will auto-click the confirm buttons.
+ * Perform bulk uninstall using standard Android uninstall intents.
  *
  * Uses adaptive waiting: after firing each ACTION_DELETE intent,
  * polls PackageManager to confirm the package is actually gone
- * before proceeding to the next one. This prevents the issue where
- * the next uninstall dialog replaces the current one before the
- * accessibility service can click "OK".
+ * before proceeding to the next one. The user confirms each
+ * uninstall via the standard system dialog.
  */
 suspend fun performBulkUninstall(
     context: android.content.Context,
@@ -810,7 +694,7 @@ suspend fun performBulkUninstall(
         var waited = 0L
         var uninstalled = false
 
-        // Initial wait for the dialog to appear and accessibility service to click
+        // Initial wait for the dialog to appear and user to confirm
         delay(1000)
         waited += 1000
 

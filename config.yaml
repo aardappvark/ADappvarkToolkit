@@ -48,9 +48,9 @@ release:
         Simple Pricing - First 4 apps FREE, then 0.01 SOL per bulk operation.
 
         BUILT FOR SEEKER:
-        Designed specifically for the Solana Seeker device. AardAppvark Toolkit
-        uses Shizuku for seamless uninstall and reinstall operations without
-        root access.
+        Designed specifically for the Solana Seeker device. Uses standard
+        Android intents for uninstall and dApp Store deep links for reinstall.
+        No root access required.
 
         PRIVACY FIRST:
         No analytics or tracking. No cloud database or user accounts. All data
@@ -78,4 +78,4 @@ solana_mobile_dapp_publisher_portal:
     5. Navigate to Reinstall tab - tap Reinstall dApps to restore from dApp Store.
     6. First 4 apps are free per operation. 5+ apps triggers a 0.01 SOL payment via Mobile Wallet Adapter.
     7. Settings screen shows wallet info, data management, and legal links.
-    Note: App requires Shizuku to be running for uninstall/reinstall operations.
+    Note: Uses standard Android uninstall intents and dApp Store deep links.

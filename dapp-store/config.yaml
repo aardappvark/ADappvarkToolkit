@@ -28,8 +28,8 @@ release:
         - Simple Pricing: First 4 apps FREE, then 0.01 SOL per bulk operation
 
         BUILT FOR SEEKER:
-        Designed specifically for the Solana Seeker device, AardAppvark Toolkit leverages
-        the accessibility service for seamless auto-confirmation of uninstall/install dialogs.
+        Designed specifically for the Solana Seeker device. Uses standard Android intents
+        for uninstall and dApp Store deep links for reinstall.
 
         PRIVACY FIRST:
         - No analytics or tracking
@@ -61,12 +61,11 @@ release:
 
   testing_instructions: |
     1. Install on Solana Seeker device
-    2. Enable Accessibility Service when prompted
-    3. Connect Solana wallet (Phantom or Solflare)
-    4. Accept Terms of Service
-    5. Navigate to Uninstall tab - select dApps and tap Uninstall
-    6. Navigate to Reinstall tab - tap Reinstall dApps
-    7. First 4 apps are free, 5+ triggers 0.01 SOL payment
+    2. Accept Terms of Service on first launch
+    3. Connect Solana wallet (Phantom or Solflare) when prompted
+    4. Navigate to Uninstall tab - select dApps and tap Uninstall Selected
+    5. Navigate to Reinstall tab - tap Reinstall dApps to restore from dApp Store
+    6. First 4 apps are free per operation, 5+ triggers 0.01 SOL payment via MWA
 
 solana:
   cluster: "mainnet-beta"

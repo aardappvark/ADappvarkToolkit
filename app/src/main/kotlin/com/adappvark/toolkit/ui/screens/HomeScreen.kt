@@ -18,9 +18,6 @@ import com.adappvark.toolkit.data.model.DAppFilter
 import com.adappvark.toolkit.service.PackageManagerService
 import com.adappvark.toolkit.service.UserPreferencesManager
 import com.adappvark.toolkit.ui.components.AardvarkIcon
-import com.adappvark.toolkit.util.AccessibilityHelper
-import kotlinx.coroutines.delay
-
 @Composable
 fun HomeScreen(
     onDisconnectWallet: () -> Unit = {}
@@ -30,7 +27,6 @@ fun HomeScreen(
     val uninstallHistory = remember { UninstallHistory(context) }
     val userPrefs = remember { UserPreferencesManager(context) }
 
-    var isAccessibilityEnabled by remember { mutableStateOf(false) }
     var isWalletConnected by remember { mutableStateOf(userPrefs.isWalletConnected()) }
     var walletAddress by remember { mutableStateOf(userPrefs.getShortWalletAddress()) }
     var fullWalletAddress by remember { mutableStateOf(userPrefs.getWalletPublicKey()) }
@@ -40,20 +36,12 @@ fun HomeScreen(
     var uninstallCount by remember { mutableStateOf(0) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
 
-    // Check Accessibility status and load stats
+    // Load stats
     LaunchedEffect(Unit) {
-        // Initial load
-        isAccessibilityEnabled = AccessibilityHelper.isAccessibilityServiceEnabled(context)
         val dApps = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
         dAppCount = dApps.size
         totalStorageMB = dApps.sumOf { it.sizeInBytes } / (1024 * 1024)
         uninstallCount = uninstallHistory.getHistory().size
-
-        // Periodic updates
-        while (true) {
-            delay(2000)
-            isAccessibilityEnabled = AccessibilityHelper.isAccessibilityServiceEnabled(context)
-        }
     }
 
     Column(
@@ -120,19 +108,11 @@ fun HomeScreen(
             title = "Setup Checklist",
             items = listOf(
                 SetupItem(
-                    "Accessibility Enabled",
-                    isAccessibilityEnabled,
-                    "Enable for auto-uninstall & reinstall"
-                ),
-                SetupItem(
                     "Wallet Connected",
                     isWalletConnected,
                     if (isWalletConnected && walletAddress != null) walletAddress!! else "Connect Solana wallet"
                 )
             ),
-            onSetupAccessibility = {
-                AccessibilityHelper.openAccessibilitySettings(context)
-            },
             onConnectWallet = {
                 // Wallet is already connected during onboarding
             }
@@ -197,7 +177,6 @@ fun HomeScreen(
 fun SetupChecklistCard(
     title: String,
     items: List<SetupItem>,
-    onSetupAccessibility: () -> Unit,
     onConnectWallet: () -> Unit = {}
 ) {
     Card(
@@ -219,7 +198,6 @@ fun SetupChecklistCard(
                     item = item,
                     onClick = {
                         when (item.title) {
-                            "Accessibility Enabled" -> onSetupAccessibility()
                             "Connect Wallet" -> onConnectWallet()
                         }
                     }

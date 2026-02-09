@@ -33,7 +33,6 @@ import com.adappvark.toolkit.ui.components.PaymentConfirmationDialog
 import com.adappvark.toolkit.ui.components.PaymentErrorDialog
 import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
 import com.adappvark.toolkit.ui.components.PricingBanner
-import com.adappvark.toolkit.util.AccessibilityHelper
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -429,7 +428,7 @@ fun ReinstallScreen(
                             Spacer(modifier = Modifier.height(8.dp))
 
                             Text(
-                                text = "⚠️ Screen will flash briefly - don't touch!",
+                                text = "📱 Tap Install on each dApp Store page",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 textAlign = TextAlign.Center
@@ -806,9 +805,9 @@ fun ReinstallScreen(
 
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    Text("• dApp Store will open automatically", style = MaterialTheme.typography.bodySmall)
-                    Text("• Navigate to categories (DeFi, Games, etc.)", style = MaterialTheme.typography.bodySmall)
-                    Text("• Scroll through - Install buttons tap automatically!", style = MaterialTheme.typography.bodySmall)
+                    Text("• dApp Store opens for each app", style = MaterialTheme.typography.bodySmall)
+                    Text("• Tap Install on each dApp Store page", style = MaterialTheme.typography.bodySmall)
+                    Text("• App returns automatically after each one", style = MaterialTheme.typography.bodySmall)
                     Text("• Downloads queue in background", style = MaterialTheme.typography.bodySmall)
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -1116,14 +1115,12 @@ private fun bringAppToForeground(context: android.content.Context) {
 }
 
 /**
- * Reinstall apps via dApp Store UI automation.
+ * Reinstall apps via dApp Store deep links.
  *
- * Strategy: "Fire and forget" - trigger each install quickly and return to ADappvark.
- * Large apps (50MB+) can take minutes to download, so we don't wait on the dApp Store page.
- * Instead we:
- * 1. Open dApp Store page
- * 2. Wait just long enough for Install button to be clicked (or detect already installed)
- * 3. Return to ADappvark immediately
+ * Strategy: Open the dApp Store page for each app so the user can tap Install.
+ * 1. Open dApp Store page for each app
+ * 2. Wait for user to tap Install
+ * 3. Return to ADappvark
  * 4. Downloads continue in background
  * 5. User can tap Refresh to check final status
  */
@@ -1144,9 +1141,6 @@ private suspend fun performBulkReinstall(
     // Also show a toast so we know it started
     android.widget.Toast.makeText(context, "Starting reinstall of ${apps.size} apps...", android.widget.Toast.LENGTH_SHORT).show()
 
-    // Enable auto-click for INSTALL mode
-    AccessibilityHelper.enableAutoClickForInstall()
-
     val appsToProcess = apps.filter { !it.skipReinstall }
     Log.d(TAG, "Processing ${appsToProcess.size} apps after skip filter")
 
@@ -1154,76 +1148,24 @@ private suspend fun performBulkReinstall(
         Log.d(TAG, "Processing ${index + 1}/${appsToProcess.size}: ${app.appName}")
         onProgress(index + 1, appsToProcess.size, app.appName)
 
-        // Reset flags before each app
-        AccessibilityHelper.resetOpenButtonFlag()
-
         // Open dApp Store for this app
         openDAppStore(context, app.packageName)
 
-        // Wait a bit longer for the dApp Store page to fully load before checking
-        delay(2000)
+        // Wait for the dApp Store page to load and user to tap Install
+        delay(5000)
 
-        // Wait for page to load and Install button to be clicked (up to 15 seconds)
-        // The accessibility service will auto-click Install when it appears
-        var alreadyInstalled = false
-        var installTriggered = false
-
-        for (i in 1..30) {  // 15 seconds max on dApp Store page
-            delay(500)
-
-            val openFound = AccessibilityHelper.wasOpenButtonFound()
-            val installClicked = AccessibilityHelper.wasInstallButtonClicked()
-            val cancelFound = AccessibilityHelper.isInstallationInProgress()
-
-            // Check if app is already installed (Open button found)
-            if (openFound) {
-                Log.d(TAG, "${app.appName}: Already installed (Open button found)")
-                alreadyInstalled = true
-                uninstallHistory.markAsReinstalled(app.packageName)
-                onAppReinstalled(app.packageName)
-                break
-            }
-
-            // Check if Install button was clicked (this is set immediately when we click Install)
-            // This is the PRIMARY check for large apps where Cancel button may not appear quickly
-            if (installClicked) {
-                Log.d(TAG, "${app.appName}: Install triggered")
-                installTriggered = true
-                // Don't wait for download - return to ADappvark immediately
-                // Large apps can take minutes to download
-                break
-            }
-
-            // Also check for Cancel button (installation in progress)
-            if (cancelFound) {
-                Log.d(TAG, "${app.appName}: Install in progress")
-                installTriggered = true
-                break
-            }
-        }
-
-        // Return to ADappvark IMMEDIATELY after triggering install
-        // Don't stay on dApp Store page waiting for large downloads
+        // Return to ADappvark after giving user time to install
         bringAppToForeground(context)
         delay(1500)  // Give time for ADappvark to come to front
 
         // Update progress message
-        if (alreadyInstalled) {
-            onProgress(index + 1, appsToProcess.size, "${app.appName} ✓")
-        } else if (installTriggered) {
-            onProgress(index + 1, appsToProcess.size, "${app.appName} (downloading in background)")
-        } else {
-            onProgress(index + 1, appsToProcess.size, "${app.appName} (triggered)")
-        }
+        onProgress(index + 1, appsToProcess.size, "${app.appName} (opened in dApp Store)")
 
         // Brief pause before next app
         if (index < appsToProcess.size - 1) {
             delay(1500)
         }
     }
-
-    // Disable auto-click
-    AccessibilityHelper.disableAutoClick()
 
     // Wait a moment then sync with device state
     delay(3000)
@@ -1250,43 +1192,18 @@ private suspend fun performBulkReinstall(
         // Get the apps that still need installing
         val retryApps = appsToProcess.filter { !uninstallHistory.isAppInstalled(it.packageName) }
 
-        // Re-enable auto-click for retry
-        AccessibilityHelper.enableAutoClickForInstall()
-
         retryApps.forEachIndexed { index, app ->
             Log.d(TAG, "Retry [${index + 1}/${retryApps.size}]: ${app.appName}")
             onProgress(appsToProcess.size - retryApps.size + index + 1,
                 appsToProcess.size + retryApps.size,
                 "${app.appName} (retry)")
 
-            AccessibilityHelper.resetOpenButtonFlag()
             openDAppStore(context, app.packageName)
-            delay(2500)
-
-            // Wait up to 20 seconds for install/already-installed detection
-            for (i in 1..40) {
-                delay(500)
-                val openFound = AccessibilityHelper.wasOpenButtonFound()
-                val installClicked = AccessibilityHelper.wasInstallButtonClicked()
-                val cancelFound = AccessibilityHelper.isInstallationInProgress()
-
-                if (openFound) {
-                    Log.d(TAG, "Retry: ${app.appName} already installed")
-                    uninstallHistory.markAsReinstalled(app.packageName)
-                    onAppReinstalled(app.packageName)
-                    break
-                }
-                if (installClicked || cancelFound) {
-                    Log.d(TAG, "Retry: ${app.appName} install triggered")
-                    break
-                }
-            }
+            delay(5000)
 
             bringAppToForeground(context)
             delay(2000)
         }
-
-        AccessibilityHelper.disableAutoClick()
 
         // Final sync
         delay(3000)
@@ -1315,7 +1232,6 @@ private suspend fun performBulkReinstall(
 
 /**
  * dApp Store category definitions with deep links
- * We'll navigate to each category and scan for target apps
  */
 private val DAPP_STORE_CATEGORIES = listOf(
     "Top Picks" to "solanadappstore://category/top-picks",
@@ -1382,143 +1298,5 @@ private fun openDAppStoreCategory(context: android.content.Context, categoryName
 }
 
 /**
- * Perform scroll action using accessibility service
+ * Open dApp Store main page
  */
-private fun performScroll(context: android.content.Context): Boolean {
-    // We can't directly scroll, but the accessibility service will scan visible items
-    // The user needs to scroll manually, or we trigger scroll via gestures
-    return false
-}
-
-/**
- * Category-based bulk reinstall using gesture taps
- *
- * Strategy:
- * 1. Set target app names in AccessibilityHelper
- * 2. Open dApp Store main page
- * 3. User scrolls through categories
- * 4. Accessibility service uses GESTURE TAPS to click Install buttons
- *    (more precise than ACTION_CLICK which can trigger parent rows)
- * 5. Monitor progress and sync status
- */
-private suspend fun performCategoryBulkReinstall(
-    context: android.content.Context,
-    apps: List<UninstalledApp>,
-    uninstallHistory: UninstallHistory,
-    onStart: () -> Unit,
-    onProgress: suspend (Int, Int, String) -> Unit,
-    onAppReinstalled: suspend (String) -> Unit,
-    onComplete: suspend () -> Unit
-) {
-    onStart()
-
-    Log.d(TAG, "Category-based bulk reinstall started - ${apps.size} apps")
-
-    val appsToProcess = apps.filter { !it.skipReinstall }
-    if (appsToProcess.isEmpty()) {
-        android.widget.Toast.makeText(context, "No apps to reinstall", android.widget.Toast.LENGTH_SHORT).show()
-        onComplete()
-        return
-    }
-
-    // Extract app names for matching
-    val targetAppNames = appsToProcess.map { it.appName }.toSet()
-
-    android.widget.Toast.makeText(
-        context,
-        "Opening dApp Store...\nScroll through categories - Install buttons will be tapped automatically!",
-        android.widget.Toast.LENGTH_LONG
-    ).show()
-
-    // Enable category install mode with target app names
-    AccessibilityHelper.enableCategoryInstallMode(targetAppNames)
-
-    // Open dApp Store main page
-    onProgress(0, appsToProcess.size, "Opening dApp Store...")
-    openDAppStoreMain(context)
-
-    // Wait for dApp Store to open
-    delay(3000)
-
-    // Monitor progress
-    var lastClickCount = 0
-    var noProgressIterations = 0
-    val maxWaitTime = 5 * 60 * 1000L  // 5 minutes max
-    val startTime = System.currentTimeMillis()
-
-    while (System.currentTimeMillis() - startTime < maxWaitTime) {
-        delay(2000)
-
-        val currentClickCount = AccessibilityHelper.getInstallClickCount()
-        val installedNames = AccessibilityHelper.getInstalledAppNames()
-        val alreadyInstalledNames = AccessibilityHelper.getAlreadyInstalledAppNames()
-
-        val totalProcessed = installedNames.size + alreadyInstalledNames.size
-
-        onProgress(totalProcessed, appsToProcess.size,
-            "Clicked ${installedNames.size}, Already installed ${alreadyInstalledNames.size}")
-
-        // Mark apps as reinstalled if they were clicked
-        for (app in appsToProcess) {
-            val appNameLower = app.appName.lowercase().trim()
-            val appNameNormalized = appNameLower.replace(".", "").replace(" ", "")
-
-            if (installedNames.any { it == appNameLower || it.replace(".", "").replace(" ", "") == appNameNormalized } ||
-                alreadyInstalledNames.any { it == appNameLower || it.replace(".", "").replace(" ", "") == appNameNormalized }) {
-                if (!app.reinstalled) {
-                    uninstallHistory.markAsReinstalled(app.packageName)
-                    onAppReinstalled(app.packageName)
-                }
-            }
-        }
-
-        // Check if all apps are processed
-        if (totalProcessed >= appsToProcess.size) {
-            Log.d(TAG, "All apps processed")
-            break
-        }
-
-        // Check progress
-        if (currentClickCount == lastClickCount) {
-            noProgressIterations++
-            if (noProgressIterations == 15) {
-                android.widget.Toast.makeText(
-                    context,
-                    "Scroll through categories to find more apps...",
-                    android.widget.Toast.LENGTH_SHORT
-                ).show()
-            }
-        } else {
-            noProgressIterations = 0
-        }
-        lastClickCount = currentClickCount
-
-        if (noProgressIterations > 30) {
-            Log.d(TAG, "No progress for 60 seconds, finishing")
-            break
-        }
-    }
-
-    // Clean up
-    AccessibilityHelper.disableAutoClick()
-    AccessibilityHelper.clearTargetApps()
-
-    // Bring ADappvark back
-    bringAppToForeground(context)
-    delay(1000)
-
-    // Sync
-    uninstallHistory.syncWithDeviceState()
-
-    val finalInstalledCount = appsToProcess.count { uninstallHistory.isAppInstalled(it.packageName) }
-    val clickCount = AccessibilityHelper.getInstallClickCount()
-
-    val message = when {
-        finalInstalledCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
-        clickCount > 0 -> "$clickCount installs triggered. Tap Refresh to check status."
-        else -> "Tap Refresh to check installation status."
-    }
-
-    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
-    onComplete()
-}
