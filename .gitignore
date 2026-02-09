@@ -67,6 +67,10 @@ vcs.xml
 .env.local
 secrets/
 
+# Solana keypair (NEVER commit)
+publisher-keypair.json
+*-keypair.json
+
 # Claude Code
 .claude/
 

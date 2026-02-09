@@ -32,9 +32,9 @@ class TermsAcceptanceService(private val context: Context) {
         private const val PREFS_NAME = "aardappvark_legal_compliance"
 
         // Current versions - increment when documents change
-        const val CURRENT_TOS_VERSION = "1.0.0"
-        const val CURRENT_PRIVACY_VERSION = "1.0.0"
-        const val CURRENT_EULA_VERSION = "1.0.0"
+        const val CURRENT_TOS_VERSION = "1.2.0"
+        const val CURRENT_PRIVACY_VERSION = "1.2.0"
+        const val CURRENT_EULA_VERSION = "1.2.0"
 
         // Storage keys
         private const val KEY_CONSENT_SIGNATURE = "consent_signature"

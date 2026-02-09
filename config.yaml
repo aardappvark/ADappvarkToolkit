@@ -1,0 +1,81 @@
+publisher:
+  name: AardAppvark
+  website: https://aardappvark.github.io/ADappvarkToolkit
+  email: aardappvark@proton.me
+  support_email: aardappvark@proton.me
+app:
+  name: AardAppvark Toolkit
+  address: ''
+  android_package: com.adappvark.toolkit
+  urls:
+    license_url: https://aardappvark.github.io/ADappvarkToolkit/terms.html
+    copyright_url: https://aardappvark.github.io/ADappvarkToolkit
+    privacy_policy_url: https://aardappvark.github.io/ADappvarkToolkit/privacy.html
+    website: https://aardappvark.github.io/ADappvarkToolkit
+  media:
+    - purpose: icon
+      uri: assets/icon_512x512.png
+release:
+  address: ''
+  media:
+    - purpose: icon
+      uri: assets/icon_512x512.png
+    - purpose: banner
+      uri: assets/banner_1200x600.png
+    - purpose: screenshot
+      uri: assets/screenshot_3_home.png
+    - purpose: screenshot
+      uri: assets/screenshot_4_uninstall.png
+    - purpose: screenshot
+      uri: assets/screenshot_2_reinstall.png
+    - purpose: screenshot
+      uri: assets/screenshot_5_settings.png
+  files:
+    - purpose: install
+      uri: app/build/outputs/apk/release/app-release.apk
+  catalog:
+    en-US:
+      name: AardAppvark Toolkit
+      short_description: dApp manager for Seeker
+      long_description: >-
+        AardAppvark Toolkit is the essential dApp lifecycle manager for Solana
+        Seeker.
+
+        KEY FEATURES:
+        Bulk Uninstall - Clean up dApps in seconds with one-tap bulk removal.
+        Bulk Reinstall - Restore your entire dApp collection from the Solana dApp Store.
+        Smart Favourites - Star your favourite dApps for quick access.
+        Simple Pricing - First 4 apps FREE, then 0.01 SOL per bulk operation.
+
+        BUILT FOR SEEKER:
+        Designed specifically for the Solana Seeker device. AardAppvark Toolkit
+        uses Shizuku for seamless uninstall and reinstall operations without
+        root access.
+
+        PRIVACY FIRST:
+        No analytics or tracking. No cloud database or user accounts. All data
+        stored locally on your device. Non-custodial wallet integration via
+        Mobile Wallet Adapter.
+
+        COMPLIANCE:
+        GDPR and CCPA compliant. Full data export and deletion.
+        Geo-restriction for sanctioned jurisdictions. On-chain wallet
+        sanctions screening.
+
+        Meet Varky the Aardvark - your dApp management companion!
+      new_in_version: Initial release v1.0.0
+      saga_features: ''
+  android_details:
+    locales:
+      - en-US
+solana_mobile_dapp_publisher_portal:
+  google_store_package: ''
+  testing_instructions: >-
+    1. Install on Solana Seeker device.
+    2. Accept Terms of Service on first launch.
+    3. Connect Solana wallet (Phantom or Solflare) when prompted.
+    4. Navigate to Uninstall tab - select pre-installed dApps and tap Uninstall Selected.
+    5. Navigate to Reinstall tab - tap Reinstall dApps to restore from dApp Store.
+    6. First 4 apps are free per operation. 5+ apps triggers a 0.01 SOL payment via Mobile Wallet Adapter.
+    7. Settings screen shows wallet info, data management, and legal links.
+    Note: App requires Shizuku to be running for uninstall/reinstall operations.
