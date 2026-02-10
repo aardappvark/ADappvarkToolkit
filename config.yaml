@@ -65,9 +65,119 @@ release:
         Meet Varky the Aardvark - your dApp management companion!
       new_in_version: Initial release v1.0.0
       saga_features: ''
+    es:
+      name: AardAppvark Toolkit
+      short_description: Gestor de dApps para Seeker
+      long_description: >-
+        AardAppvark Toolkit es el gestor esencial de ciclo de vida de dApps para Solana Seeker.
+        Desinstalación masiva, reinstalación desde la dApp Store, favoritos inteligentes.
+        Las primeras 4 apps son GRATIS, luego 0.01 SOL por operación masiva.
+        Sin analíticas ni rastreo. Todos los datos se almacenan localmente en tu dispositivo.
+      new_in_version: Versión inicial v1.0.0
+      saga_features: ''
+    fr:
+      name: AardAppvark Toolkit
+      short_description: Gestionnaire de dApps pour Seeker
+      long_description: >-
+        AardAppvark Toolkit est le gestionnaire essentiel du cycle de vie des dApps pour Solana Seeker.
+        Désinstallation groupée, réinstallation depuis le dApp Store, favoris intelligents.
+        Les 4 premières apps sont GRATUITES, puis 0.01 SOL par opération groupée.
+        Aucune analyse ni suivi. Toutes les données restent sur votre appareil.
+      new_in_version: Version initiale v1.0.0
+      saga_features: ''
+    de:
+      name: AardAppvark Toolkit
+      short_description: dApp-Manager für Seeker
+      long_description: >-
+        AardAppvark Toolkit ist der unverzichtbare dApp-Lebenszyklusmanager für Solana Seeker.
+        Massendeinstallation, Neuinstallation aus dem dApp Store, intelligente Favoriten.
+        Die ersten 4 Apps sind KOSTENLOS, danach 0.01 SOL pro Massenvorgang.
+        Keine Analysen oder Tracking. Alle Daten bleiben lokal auf Ihrem Gerät.
+      new_in_version: Erstveröffentlichung v1.0.0
+      saga_features: ''
+    pt:
+      name: AardAppvark Toolkit
+      short_description: Gerenciador de dApps para Seeker
+      long_description: >-
+        AardAppvark Toolkit é o gerenciador essencial de ciclo de vida de dApps para Solana Seeker.
+        Desinstalação em massa, reinstalação pela dApp Store, favoritos inteligentes.
+        Os primeiros 4 apps são GRÁTIS, depois 0.01 SOL por operação em massa.
+        Sem análises ou rastreamento. Todos os dados ficam no seu dispositivo.
+      new_in_version: Versão inicial v1.0.0
+      saga_features: ''
+    it:
+      name: AardAppvark Toolkit
+      short_description: Gestore di dApp per Seeker
+      long_description: >-
+        AardAppvark Toolkit è il gestore essenziale del ciclo di vita delle dApp per Solana Seeker.
+        Disinstallazione di massa, reinstallazione dal dApp Store, preferiti intelligenti.
+        Le prime 4 app sono GRATUITE, poi 0.01 SOL per operazione di massa.
+        Nessuna analisi o tracciamento. Tutti i dati restano sul tuo dispositivo.
+      new_in_version: Versione iniziale v1.0.0
+      saga_features: ''
+    ja:
+      name: AardAppvark Toolkit
+      short_description: Seeker用dAppマネージャー
+      long_description: >-
+        AardAppvark ToolkitはSolana Seeker向けの必須dAppライフサイクルマネージャーです。
+        一括アンインストール、dApp Storeからの再インストール、スマートお気に入り機能。
+        最初の4アプリは無料、以降は一括操作ごとに0.01 SOL。
+        分析やトラッキングなし。すべてのデータはデバイスにローカル保存されます。
+      new_in_version: 初回リリース v1.0.0
+      saga_features: ''
+    ko:
+      name: AardAppvark Toolkit
+      short_description: Seeker용 dApp 관리자
+      long_description: >-
+        AardAppvark Toolkit은 Solana Seeker를 위한 필수 dApp 수명 주기 관리자입니다.
+        일괄 삭제, dApp Store에서 재설치, 스마트 즐겨찾기 기능.
+        처음 4개 앱은 무료, 이후 일괄 작업당 0.01 SOL.
+        분석이나 추적 없음. 모든 데이터는 기기에 로컬로 저장됩니다.
+      new_in_version: 초기 릴리스 v1.0.0
+      saga_features: ''
+    tr:
+      name: AardAppvark Toolkit
+      short_description: Seeker için dApp yöneticisi
+      long_description: >-
+        AardAppvark Toolkit, Solana Seeker için vazgeçilmez dApp yaşam döngüsü yöneticisidir.
+        Toplu kaldırma, dApp Store'dan yeniden yükleme, akıllı favoriler.
+        İlk 4 uygulama ÜCRETSİZ, sonrası toplu işlem başına 0.01 SOL.
+        Analiz veya izleme yok. Tüm veriler cihazınızda yerel olarak saklanır.
+      new_in_version: İlk sürüm v1.0.0
+      saga_features: ''
+    nl:
+      name: AardAppvark Toolkit
+      short_description: dApp-beheerder voor Seeker
+      long_description: >-
+        AardAppvark Toolkit is de essentiële dApp-lifecyclebeheerder voor Solana Seeker.
+        Bulk verwijderen, herinstalleren vanuit de dApp Store, slimme favorieten.
+        De eerste 4 apps zijn GRATIS, daarna 0.01 SOL per bulkbewerking.
+        Geen analytics of tracking. Alle gegevens blijven lokaal op uw apparaat.
+      new_in_version: Eerste release v1.0.0
+      saga_features: ''
+    pl:
+      name: AardAppvark Toolkit
+      short_description: Menedżer dApps dla Seeker
+      long_description: >-
+        AardAppvark Toolkit to niezbędny menedżer cyklu życia dApps dla Solana Seeker.
+        Masowe odinstalowywanie, ponowna instalacja z dApp Store, inteligentne ulubione.
+        Pierwsze 4 aplikacje za DARMO, potem 0.01 SOL za operację zbiorczą.
+        Bez analityki i śledzenia. Wszystkie dane przechowywane lokalnie na urządzeniu.
+      new_in_version: Pierwsza wersja v1.0.0
+      saga_features: ''
   android_details:
     locales:
       - en-US
+      - es
+      - fr
+      - de
+      - pt
+      - it
+      - ja
+      - ko
+      - tr
+      - nl
+      - pl
 solana_mobile_dapp_publisher_portal:
   google_store_package: ''
   testing_instructions: >-

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">Altijd vooraan. Elke dApp, elke keer.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_uninstall">Verwijderen</string>
+    <string name="nav_reinstall">Herinstalleren</string>
+    <string name="nav_subscription">Abonnement</string>
+    <string name="nav_settings">Instellingen</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">Welkom bij ADappvark!</string>
+    <string name="welcome_message">Professioneel dApp-lifecyclebeheer voor Seeker-powerusers</string>
+    <string name="setup_required">Installatie vereist</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">dApps scannen</string>
+    <string name="select_all">Alles selecteren</string>
+    <string name="deselect_all">Selectie opheffen</string>
+    <string name="uninstall_selected">Geselecteerde verwijderen</string>
+    <string name="uninstalling">Verwijderen…</string>
+    <string name="uninstall_progress">%1$d van %2$d dApps</string>
+    <string name="uninstall_complete">Verwijderen voltooid!</string>
+    <string name="uninstalled_count">%1$d dApps verwijderd</string>
+    <string name="storage_freed">%1$s vrijgemaakt</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Geselecteerde herinstalleren</string>
+    <string name="reinstalling">Herinstalleren…</string>
+    <string name="reinstall_progress">%1$d van %2$d dApps</string>
+    <string name="reinstall_complete">Herinstallatie voltooid!</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">Geen dApps geselecteerd</string>
+    <string name="error_payment_failed">Betaling mislukt. Probeer het opnieuw.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Bulk verwijdering bevestigen</string>
+    <string name="dialog_confirm_uninstall_message">%1$d dApps verwijderen? Dit kan niet ongedaan worden gemaakt.</string>
+    <string name="learn_more">Meer informatie</string>
+    <string name="cancel">Annuleren</string>
+    <string name="confirm">Bevestigen</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Instellingen</string>
+    <string name="settings_general">Algemeen</string>
+    <string name="settings_about">Over</string>
+    <string name="settings_legal">Juridisch</string>
+    <string name="version">Versie %1$s</string>
+    <string name="privacy_policy">Privacybeleid</string>
+    <string name="terms_of_service">Gebruiksvoorwaarden</string>
+    <string name="open_source_licenses">Open source-licenties</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">Klaar om te graven!</string>
+    <string name="varky_working">dApps doorzoeken…</string>
+    <string name="varky_success">Klaar! 🎉</string>
+    <string name="varky_error">Oeps! Er ging iets mis</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">Totaal dApps</string>
+    <string name="selected_dapps">Geselecteerd</string>
+    <string name="storage_used">Opslag gebruikt</string>
+    <string name="last_operation">Laatste actie</string>
+</resources>

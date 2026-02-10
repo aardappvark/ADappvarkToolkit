@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">Her zaman önde. Her dApp, her seferinde.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_uninstall">Kaldır</string>
+    <string name="nav_reinstall">Yeniden Yükle</string>
+    <string name="nav_subscription">Abonelik</string>
+    <string name="nav_settings">Ayarlar</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">ADappvark\'a hoş geldiniz!</string>
+    <string name="welcome_message">Seeker ileri düzey kullanıcıları için profesyonel dApp yaşam döngüsü yönetimi</string>
+    <string name="setup_required">Kurulum gerekli</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">dApp\'ları tara</string>
+    <string name="select_all">Tümünü seç</string>
+    <string name="deselect_all">Seçimi kaldır</string>
+    <string name="uninstall_selected">Seçilenleri kaldır</string>
+    <string name="uninstalling">Kaldırılıyor…</string>
+    <string name="uninstall_progress">%2$d dApp\'tan %1$d</string>
+    <string name="uninstall_complete">Kaldırma tamamlandı!</string>
+    <string name="uninstalled_count">%1$d dApp kaldırıldı</string>
+    <string name="storage_freed">%1$s boşaltıldı</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Seçilenleri yeniden yükle</string>
+    <string name="reinstalling">Yeniden yükleniyor…</string>
+    <string name="reinstall_progress">%2$d dApp\'tan %1$d</string>
+    <string name="reinstall_complete">Yeniden yükleme tamamlandı!</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">Hiçbir dApp seçilmedi</string>
+    <string name="error_payment_failed">Ödeme başarısız. Lütfen tekrar deneyin.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Toplu kaldırmayı onayla</string>
+    <string name="dialog_confirm_uninstall_message">%1$d dApp kaldırılsın mı? Bu işlem geri alınamaz.</string>
+    <string name="learn_more">Daha fazla bilgi</string>
+    <string name="cancel">İptal</string>
+    <string name="confirm">Onayla</string>
+    <string name="ok">Tamam</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Ayarlar</string>
+    <string name="settings_general">Genel</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="settings_legal">Yasal bilgiler</string>
+    <string name="version">Sürüm %1$s</string>
+    <string name="privacy_policy">Gizlilik politikası</string>
+    <string name="terms_of_service">Kullanım koşulları</string>
+    <string name="open_source_licenses">Açık kaynak lisansları</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">Kazmaya hazır!</string>
+    <string name="varky_working">dApp\'lar aranıyor…</string>
+    <string name="varky_success">Tamamlandı! 🎉</string>
+    <string name="varky_error">Hay aksi! Bir şeyler yanlış gitti</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">Toplam dApp</string>
+    <string name="selected_dapps">Seçili</string>
+    <string name="storage_used">Kullanılan depolama</string>
+    <string name="last_operation">Son işlem</string>
+</resources>

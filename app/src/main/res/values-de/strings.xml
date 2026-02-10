@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">Immer zuerst. Jede dApp, jedes Mal.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Startseite</string>
+    <string name="nav_uninstall">Deinstallieren</string>
+    <string name="nav_reinstall">Neu installieren</string>
+    <string name="nav_subscription">Abonnement</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">Willkommen bei ADappvark!</string>
+    <string name="welcome_message">Professionelles dApp-Lebenszyklusmanagement für Seeker-Nutzer</string>
+    <string name="setup_required">Einrichtung erforderlich</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">dApps scannen</string>
+    <string name="select_all">Alle auswählen</string>
+    <string name="deselect_all">Auswahl aufheben</string>
+    <string name="uninstall_selected">Ausgewählte deinstallieren</string>
+    <string name="uninstalling">Wird deinstalliert…</string>
+    <string name="uninstall_progress">%1$d von %2$d dApps</string>
+    <string name="uninstall_complete">Deinstallation abgeschlossen!</string>
+    <string name="uninstalled_count">%1$d dApps deinstalliert</string>
+    <string name="storage_freed">%1$s freigegeben</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Ausgewählte neu installieren</string>
+    <string name="reinstalling">Wird neu installiert…</string>
+    <string name="reinstall_progress">%1$d von %2$d dApps</string>
+    <string name="reinstall_complete">Neuinstallation abgeschlossen!</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">Keine dApps ausgewählt</string>
+    <string name="error_payment_failed">Zahlung fehlgeschlagen. Bitte erneut versuchen.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Massendeinstallation bestätigen</string>
+    <string name="dialog_confirm_uninstall_message">%1$d dApps deinstallieren? Dies kann nicht rückgängig gemacht werden.</string>
+    <string name="learn_more">Mehr erfahren</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Einstellungen</string>
+    <string name="settings_general">Allgemein</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_legal">Rechtliches</string>
+    <string name="version">Version %1$s</string>
+    <string name="privacy_policy">Datenschutzrichtlinie</string>
+    <string name="terms_of_service">Nutzungsbedingungen</string>
+    <string name="open_source_licenses">Open-Source-Lizenzen</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">Bereit zum Graben!</string>
+    <string name="varky_working">Durchsuche dApps…</string>
+    <string name="varky_success">Alles erledigt! 🎉</string>
+    <string name="varky_error">Hoppla! Etwas ist schiefgelaufen</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">Gesamt dApps</string>
+    <string name="selected_dapps">Ausgewählt</string>
+    <string name="storage_used">Speicher belegt</string>
+    <string name="last_operation">Letzte Aktion</string>
+</resources>

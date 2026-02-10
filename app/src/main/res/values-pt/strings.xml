@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">Primeiro da fila. Cada dApp, sempre.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Início</string>
+    <string name="nav_uninstall">Desinstalar</string>
+    <string name="nav_reinstall">Reinstalar</string>
+    <string name="nav_subscription">Assinatura</string>
+    <string name="nav_settings">Configurações</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">Bem-vindo ao ADappvark!</string>
+    <string name="welcome_message">Gerenciamento profissional do ciclo de vida de dApps para usuários avançados do Seeker</string>
+    <string name="setup_required">Configuração necessária</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">Escanear dApps</string>
+    <string name="select_all">Selecionar tudo</string>
+    <string name="deselect_all">Desmarcar tudo</string>
+    <string name="uninstall_selected">Desinstalar selecionados</string>
+    <string name="uninstalling">Desinstalando…</string>
+    <string name="uninstall_progress">%1$d de %2$d dApps</string>
+    <string name="uninstall_complete">Desinstalação concluída!</string>
+    <string name="uninstalled_count">%1$d dApps desinstalados</string>
+    <string name="storage_freed">%1$s liberado</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Reinstalar selecionados</string>
+    <string name="reinstalling">Reinstalando…</string>
+    <string name="reinstall_progress">%1$d de %2$d dApps</string>
+    <string name="reinstall_complete">Reinstalação concluída!</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">Nenhum dApp selecionado</string>
+    <string name="error_payment_failed">Pagamento falhou. Tente novamente.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Confirmar desinstalação em massa</string>
+    <string name="dialog_confirm_uninstall_message">Desinstalar %1$d dApps? Esta ação não pode ser desfeita.</string>
+    <string name="learn_more">Saiba mais</string>
+    <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Configurações</string>
+    <string name="settings_general">Geral</string>
+    <string name="settings_about">Sobre</string>
+    <string name="settings_legal">Jurídico</string>
+    <string name="version">Versão %1$s</string>
+    <string name="privacy_policy">Política de privacidade</string>
+    <string name="terms_of_service">Termos de serviço</string>
+    <string name="open_source_licenses">Licenças de código aberto</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">Pronto para cavar!</string>
+    <string name="varky_working">Escavando dApps…</string>
+    <string name="varky_success">Tudo pronto! 🎉</string>
+    <string name="varky_error">Ops! Algo deu errado</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">Total de dApps</string>
+    <string name="selected_dapps">Selecionados</string>
+    <string name="storage_used">Armazenamento usado</string>
+    <string name="last_operation">Última operação</string>
+</resources>

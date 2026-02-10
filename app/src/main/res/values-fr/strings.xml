@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">Premier de la file. Chaque dApp, à chaque fois.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_uninstall">Désinstaller</string>
+    <string name="nav_reinstall">Réinstaller</string>
+    <string name="nav_subscription">Abonnement</string>
+    <string name="nav_settings">Paramètres</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">Bienvenue sur ADappvark !</string>
+    <string name="welcome_message">Gestion professionnelle du cycle de vie des dApps pour les utilisateurs avancés de Seeker</string>
+    <string name="setup_required">Configuration requise</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">Scanner les dApps</string>
+    <string name="select_all">Tout sélectionner</string>
+    <string name="deselect_all">Tout désélectionner</string>
+    <string name="uninstall_selected">Désinstaller la sélection</string>
+    <string name="uninstalling">Désinstallation…</string>
+    <string name="uninstall_progress">%1$d sur %2$d dApps</string>
+    <string name="uninstall_complete">Désinstallation terminée !</string>
+    <string name="uninstalled_count">%1$d dApps désinstallées</string>
+    <string name="storage_freed">%1$s libéré</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">Réinstaller la sélection</string>
+    <string name="reinstalling">Réinstallation…</string>
+    <string name="reinstall_progress">%1$d sur %2$d dApps</string>
+    <string name="reinstall_complete">Réinstallation terminée !</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">Aucune dApp sélectionnée</string>
+    <string name="error_payment_failed">Le paiement a échoué. Veuillez réessayer.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">Confirmer la désinstallation groupée</string>
+    <string name="dialog_confirm_uninstall_message">Désinstaller %1$d dApps ? Cette action est irréversible.</string>
+    <string name="learn_more">En savoir plus</string>
+    <string name="cancel">Annuler</string>
+    <string name="confirm">Confirmer</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_general">Général</string>
+    <string name="settings_about">À propos</string>
+    <string name="settings_legal">Mentions légales</string>
+    <string name="version">Version %1$s</string>
+    <string name="privacy_policy">Politique de confidentialité</string>
+    <string name="terms_of_service">Conditions d\'utilisation</string>
+    <string name="open_source_licenses">Licences open source</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">Prêt à creuser !</string>
+    <string name="varky_working">Fouille en cours…</string>
+    <string name="varky_success">C\'est fait ! 🎉</string>
+    <string name="varky_error">Oups ! Quelque chose a mal tourné</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">Total des dApps</string>
+    <string name="selected_dapps">Sélectionnées</string>
+    <string name="storage_used">Stockage utilisé</string>
+    <string name="last_operation">Dernière opération</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">항상 먼저. 모든 dApp, 매번.</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">홈</string>
+    <string name="nav_uninstall">삭제</string>
+    <string name="nav_reinstall">재설치</string>
+    <string name="nav_subscription">구독</string>
+    <string name="nav_settings">설정</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">ADappvark에 오신 것을 환영합니다!</string>
+    <string name="welcome_message">Seeker 고급 사용자를 위한 전문 dApp 수명 주기 관리</string>
+    <string name="setup_required">설정 필요</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">dApp 스캔</string>
+    <string name="select_all">모두 선택</string>
+    <string name="deselect_all">선택 해제</string>
+    <string name="uninstall_selected">선택 항목 삭제</string>
+    <string name="uninstalling">삭제 중…</string>
+    <string name="uninstall_progress">%2$d개 중 %1$d개 dApp</string>
+    <string name="uninstall_complete">삭제 완료!</string>
+    <string name="uninstalled_count">%1$d개 dApp 삭제됨</string>
+    <string name="storage_freed">%1$s 확보됨</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">선택 항목 재설치</string>
+    <string name="reinstalling">재설치 중…</string>
+    <string name="reinstall_progress">%2$d개 중 %1$d개 dApp</string>
+    <string name="reinstall_complete">재설치 완료!</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">선택된 dApp이 없습니다</string>
+    <string name="error_payment_failed">결제에 실패했습니다. 다시 시도해 주세요.</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">일괄 삭제 확인</string>
+    <string name="dialog_confirm_uninstall_message">%1$d개의 dApp을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.</string>
+    <string name="learn_more">자세히 보기</string>
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
+    <string name="ok">확인</string>
+
+    <!-- Settings -->
+    <string name="settings_title">설정</string>
+    <string name="settings_general">일반</string>
+    <string name="settings_about">정보</string>
+    <string name="settings_legal">법적 고지</string>
+    <string name="version">버전 %1$s</string>
+    <string name="privacy_policy">개인정보 처리방침</string>
+    <string name="terms_of_service">이용약관</string>
+    <string name="open_source_licenses">오픈소스 라이선스</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">파헤칠 준비 완료!</string>
+    <string name="varky_working">dApp 파헤치는 중…</string>
+    <string name="varky_success">완료! 🎉</string>
+    <string name="varky_error">이런! 오류가 발생했습니다</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">전체 dApp</string>
+    <string name="selected_dapps">선택됨</string>
+    <string name="storage_used">사용된 저장 공간</string>
+    <string name="last_operation">마지막 작업</string>
+</resources>

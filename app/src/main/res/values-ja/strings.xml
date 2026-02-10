@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_tagline">常に先頭に。すべてのdApp、いつでも。</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">ホーム</string>
+    <string name="nav_uninstall">アンインストール</string>
+    <string name="nav_reinstall">再インストール</string>
+    <string name="nav_subscription">サブスクリプション</string>
+    <string name="nav_settings">設定</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_title">ADappvarkへようこそ！</string>
+    <string name="welcome_message">Seekerパワーユーザー向けのプロフェッショナルなdAppライフサイクル管理</string>
+    <string name="setup_required">セットアップが必要です</string>
+
+    <!-- Uninstall Feature -->
+    <string name="scan_dapps">dAppをスキャン</string>
+    <string name="select_all">すべて選択</string>
+    <string name="deselect_all">選択解除</string>
+    <string name="uninstall_selected">選択したものをアンインストール</string>
+    <string name="uninstalling">アンインストール中…</string>
+    <string name="uninstall_progress">%2$d中%1$dのdApp</string>
+    <string name="uninstall_complete">アンインストール完了！</string>
+    <string name="uninstalled_count">%1$d個のdAppをアンインストールしました</string>
+    <string name="storage_freed">%1$s解放しました</string>
+
+    <!-- Reinstall Feature -->
+    <string name="reinstall_selected">選択したものを再インストール</string>
+    <string name="reinstalling">再インストール中…</string>
+    <string name="reinstall_progress">%2$d中%1$dのdApp</string>
+    <string name="reinstall_complete">再インストール完了！</string>
+
+    <!-- Errors -->
+    <string name="error_no_dapps_selected">dAppが選択されていません</string>
+    <string name="error_payment_failed">支払いに失敗しました。もう一度お試しください。</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_confirm_uninstall_title">一括アンインストールの確認</string>
+    <string name="dialog_confirm_uninstall_message">%1$d個のdAppをアンインストールしますか？この操作は元に戻せません。</string>
+    <string name="learn_more">詳細を見る</string>
+    <string name="cancel">キャンセル</string>
+    <string name="confirm">確認</string>
+    <string name="ok">OK</string>
+
+    <!-- Settings -->
+    <string name="settings_title">設定</string>
+    <string name="settings_general">一般</string>
+    <string name="settings_about">概要</string>
+    <string name="settings_legal">法的情報</string>
+    <string name="version">バージョン %1$s</string>
+    <string name="privacy_policy">プライバシーポリシー</string>
+    <string name="terms_of_service">利用規約</string>
+    <string name="open_source_licenses">オープンソースライセンス</string>
+
+    <!-- Mascot Messages -->
+    <string name="varky_idle">掘る準備完了！</string>
+    <string name="varky_working">dAppを掘り出し中…</string>
+    <string name="varky_success">完了！ 🎉</string>
+    <string name="varky_error">おっと！エラーが発生しました</string>
+
+    <!-- Stats -->
+    <string name="total_dapps">dApp合計</string>
+    <string name="selected_dapps">選択済み</string>
+    <string name="storage_used">使用ストレージ</string>
+    <string name="last_operation">最終操作</string>
+</resources>
