@@ -27,6 +27,8 @@ import androidx.compose.ui.graphics.Color
 import com.adappvark.toolkit.data.UninstallHistory
 import com.adappvark.toolkit.data.UninstalledApp
 import com.adappvark.toolkit.data.ProtectedApps
+import com.adappvark.toolkit.data.model.DAppFilter
+import com.adappvark.toolkit.service.PackageManagerService
 import com.adappvark.toolkit.service.PaymentService
 import com.adappvark.toolkit.service.PaymentMethod
 import com.adappvark.toolkit.ui.components.PaymentConfirmationDialog
@@ -107,11 +109,13 @@ fun ReinstallScreen(
     val scope = rememberCoroutineScope()
     val uninstallHistory = remember { UninstallHistory(context) }
     val protectedApps = remember { ProtectedApps(context) }
+    val packageService = remember { PackageManagerService(context) }
     // Create MWA adapter at composition time (before Activity STARTED) to avoid crash
     val walletAdapter = remember { PaymentService.createWalletAdapter() }
     val paymentService = remember { PaymentService(context, walletAdapter) }
 
     var historyList by remember { mutableStateOf(uninstallHistory.getHistory()) }
+    var installedDApps by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
     var selectedApps by remember { mutableStateOf(setOf<String>()) }
     var favouriteApps by remember { mutableStateOf(protectedApps.getProtectedPackages()) }
     var isReinstalling by remember { mutableStateOf(false) }
@@ -203,6 +207,23 @@ fun ReinstallScreen(
     LaunchedEffect(Unit) {
         // Sync with device state on screen open
         historyList = uninstallHistory.syncWithDeviceState()
+
+        // Scan installed dApps to show as "already installed" faded items
+        val installed = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+        val historyPackages = historyList.map { it.packageName }.toSet()
+        installedDApps = installed
+            .filter { it.packageName !in historyPackages }
+            .map { dApp ->
+                UninstalledApp(
+                    packageName = dApp.packageName,
+                    appName = dApp.appName,
+                    uninstalledAt = 0L,
+                    sizeInBytes = dApp.sizeInBytes,
+                    versionName = dApp.versionName,
+                    reinstalled = true  // Mark as "installed" so it renders faded
+                )
+            }
+            .sortedBy { it.appName.lowercase() }
     }
 
     // Auto-refresh every 30 seconds during reinstall to show newly installed apps
@@ -224,8 +245,8 @@ fun ReinstallScreen(
             .padding(16.dp)
     ) {
         // Header with info
-        if (historyList.isEmpty()) {
-            // Empty state
+        if (historyList.isEmpty() && installedDApps.isEmpty()) {
+            // Empty state - only show if no history AND no installed apps scanned yet
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -525,6 +546,31 @@ fun ReinstallScreen(
                                 protectedApps.toggleProtection(app.packageName)
                                 favouriteApps = protectedApps.getProtectedPackages()
                             }
+                        )
+                    }
+                }
+
+                // Installed dApps Section - shown faded as "already installed"
+                if (installedDApps.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Installed",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
+                        UninstalledAppItem(
+                            app = app,
+                            isSelected = false,
+                            isFavourite = favouriteApps.contains(app.packageName),
+                            onToggle = { },  // Non-interactive
+                            onSingleReinstall = { },  // Already installed
+                            onToggleSkipReinstall = { },
+                            onToggleFavourite = { }
                         )
                     }
                 }

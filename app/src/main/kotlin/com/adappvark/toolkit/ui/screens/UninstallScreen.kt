@@ -19,7 +19,9 @@ import androidx.compose.ui.unit.dp
 import com.adappvark.toolkit.data.model.DAppFilter
 import com.adappvark.toolkit.data.model.DAppInfo
 import com.adappvark.toolkit.data.UninstallHistory
+import com.adappvark.toolkit.data.UninstalledApp
 import com.adappvark.toolkit.data.ProtectedApps
+import androidx.compose.ui.text.style.TextDecoration
 import com.adappvark.toolkit.service.PackageManagerService
 import com.adappvark.toolkit.service.PaymentService
 import com.adappvark.toolkit.ui.components.PaymentConfirmationDialog
@@ -48,6 +50,7 @@ fun UninstallScreen(
     val protectedApps = remember { ProtectedApps(context) }
 
     var dAppList by remember { mutableStateOf<List<DAppInfo>>(emptyList()) }
+    var uninstalledApps by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
     var selectedDApps by remember { mutableStateOf<Set<String>>(emptySet()) }
     var favouriteApps by remember { mutableStateOf(protectedApps.getProtectedPackages()) }
     var isLoading by remember { mutableStateOf(false) }
@@ -99,6 +102,12 @@ fun UninstallScreen(
     LaunchedEffect(currentFilter) {
         isLoading = true
         dAppList = packageService.scanInstalledApps(filter = currentFilter)
+        // Load uninstalled apps (not yet reinstalled) to show as faded items
+        val history = uninstallHistory.getHistory()
+        val installedPackages = dAppList.map { it.packageName }.toSet()
+        uninstalledApps = history
+            .filter { !it.reinstalled && it.packageName !in installedPackages }
+            .sortedBy { it.appName.lowercase() }
         isLoading = false
     }
 
@@ -305,6 +314,23 @@ fun UninstallScreen(
                                 favouriteApps = protectedApps.getProtectedPackages()
                             }
                         )
+                    }
+                }
+
+                // Recently Uninstalled Section - shown faded as "already removed"
+                if (uninstalledApps.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Recently Uninstalled",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(uninstalledApps, key = { "uninstalled_${it.packageName}" }) { app ->
+                        UninstalledDAppItem(app = app)
                     }
                 }
             }
@@ -518,8 +544,14 @@ fun UninstallScreen(
                                     uninstallProgress = null
                                     currentUninstallingApp = null
                                     selectedDApps = emptySet()
-                                    // Rescan
+                                    // Rescan installed apps
                                     dAppList = packageService.scanInstalledApps(filter = currentFilter)
+                                    // Refresh uninstalled list
+                                    val history = uninstallHistory.getHistory()
+                                    val installedPkgs = dAppList.map { it.packageName }.toSet()
+                                    uninstalledApps = history
+                                        .filter { !it.reinstalled && it.packageName !in installedPkgs }
+                                        .sortedBy { it.appName.lowercase() }
                                 }
                             )
                         }
@@ -594,6 +626,57 @@ fun DAppListItem(
                     imageVector = if (isFavourite) Icons.Filled.Star else Icons.Filled.StarOutline,
                     contentDescription = if (isFavourite) "Remove from favourites" else "Add to favourites",
                     tint = if (isFavourite) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun UninstalledDAppItem(app: UninstalledApp) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.DeleteOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = app.appName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                )
+                Text(
+                    text = "v${app.versionName}",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                )
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.error.copy(alpha = 0.15f),
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text = "UNINSTALLED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.error.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
                 )
             }
         }
