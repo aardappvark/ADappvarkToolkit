@@ -20,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import android.util.Log
 import androidx.compose.ui.graphics.Color
@@ -38,8 +37,6 @@ import com.adappvark.toolkit.ui.components.PricingBanner
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 private const val TAG = "ReinstallScreen"
 
@@ -955,8 +952,6 @@ fun UninstalledAppItem(
     onToggleSkipReinstall: () -> Unit = {},
     onToggleFavourite: () -> Unit = {}
 ) {
-    val dateFormat = remember { SimpleDateFormat("MMM d, yyyy", Locale.getDefault()) }
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -967,7 +962,7 @@ fun UninstalledAppItem(
                 app.skipReinstall -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
                 isFavourite -> MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
                 isSelected -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.surfaceVariant
+                else -> MaterialTheme.colorScheme.surface
             }
         )
     ) {
@@ -978,7 +973,6 @@ fun UninstalledAppItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (app.reinstalled) {
-                // Show checkmark for reinstalled apps
                 Icon(
                     imageVector = Icons.Filled.CheckCircle,
                     contentDescription = "Reinstalled",
@@ -986,7 +980,6 @@ fun UninstalledAppItem(
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             } else if (app.skipReinstall) {
-                // Show block icon for skipped apps
                 Icon(
                     imageVector = Icons.Filled.Block,
                     contentDescription = "Skip reinstall",
@@ -1000,66 +993,13 @@ fun UninstalledAppItem(
                 )
             }
 
-            Spacer(modifier = Modifier.width(12.dp))
-
-            // App icon placeholder
-            Icon(
-                imageVector = Icons.Filled.Android,
-                contentDescription = null,
-                modifier = Modifier.size(40.dp),
-                tint = when {
-                    app.reinstalled -> MaterialTheme.colorScheme.tertiary
-                    app.skipReinstall -> MaterialTheme.colorScheme.onSurfaceVariant
-                    else -> MaterialTheme.colorScheme.primary
-                }
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
             Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = app.appName,
-                        style = MaterialTheme.typography.titleMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.weight(1f, fill = false)
-                    )
-                    if (app.reinstalled) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "REINSTALLED",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.tertiary
-                        )
-                    } else if (app.skipReinstall) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "SKIP",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.error
-                        )
-                    }
-                }
-                if (app.reinstalled && app.reinstalledAt != null) {
-                    Text(
-                        text = "Reinstalled: ${dateFormat.format(Date(app.reinstalledAt))}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.tertiary
-                    )
-                } else if (app.skipReinstall) {
-                    Text(
-                        text = "Won't be included in bulk reinstall",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                } else {
-                    Text(
-                        text = "Uninstalled: ${dateFormat.format(Date(app.uninstalledAt))}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                Text(
+                    text = app.appName,
+                    style = MaterialTheme.typography.bodyLarge
+                )
                 Text(
                     text = formatSize(app.sizeInBytes) + " • v${app.versionName}",
                     style = MaterialTheme.typography.bodySmall,
@@ -1067,45 +1007,16 @@ fun UninstalledAppItem(
                 )
             }
 
-            // Action buttons column
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                // Favourite star button
-                IconButton(
-                    onClick = onToggleFavourite,
-                    modifier = Modifier.size(36.dp)
-                ) {
-                    Icon(
-                        imageVector = if (isFavourite) Icons.Filled.Star else Icons.Filled.StarOutline,
-                        contentDescription = if (isFavourite) "Remove from favourites" else "Add to favourites",
-                        tint = if (isFavourite) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                // Quick reinstall button (hidden for already reinstalled apps)
-                if (!app.reinstalled) {
-                    IconButton(
-                        onClick = onSingleReinstall,
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Filled.Download,
-                            contentDescription = "Reinstall",
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
-                }
-                // Skip toggle button (only for non-reinstalled apps)
-                if (!app.reinstalled) {
-                    IconButton(
-                        onClick = onToggleSkipReinstall,
-                        modifier = Modifier.size(36.dp)
-                    ) {
-                        Icon(
-                            imageVector = if (app.skipReinstall) Icons.Filled.Undo else Icons.Filled.Block,
-                            contentDescription = if (app.skipReinstall) "Include in reinstall" else "Don't reinstall",
-                            tint = if (app.skipReinstall) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                }
+            // Favourite star icon
+            IconButton(
+                onClick = onToggleFavourite,
+                modifier = Modifier.size(40.dp)
+            ) {
+                Icon(
+                    imageVector = if (isFavourite) Icons.Filled.Star else Icons.Filled.StarOutline,
+                    contentDescription = if (isFavourite) "Remove from favourites" else "Add to favourites",
+                    tint = if (isFavourite) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }

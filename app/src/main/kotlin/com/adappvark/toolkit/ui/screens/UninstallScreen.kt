@@ -751,20 +751,6 @@ suspend fun performBulkUninstall(
         Log.d(TAG, "[${index + 1}/${installedPackages.size}] Uninstalling: $packageName")
         onProgress(index + 1, installedPackages.size, packageName)
 
-        // Dismiss any lingering system dialog from previous uninstall before starting next one
-        // This clears stale package installer dialogs that may not have been auto-dismissed
-        try {
-            val backIntent = Intent(Intent.ACTION_MAIN).apply {
-                addCategory(Intent.CATEGORY_HOME)
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            // Briefly return to home to clear dialog stack, then proceed
-            context.startActivity(backIntent)
-            delay(200)
-        } catch (e: Exception) {
-            Log.w(TAG, "Could not dismiss lingering dialog: ${e.message}")
-        }
-
         // Trigger standard Android uninstall
         val intent = Intent(Intent.ACTION_DELETE).apply {
             data = Uri.parse("package:$packageName")
