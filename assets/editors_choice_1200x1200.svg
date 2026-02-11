@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1200" viewBox="0 0 1200 1200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1C1B1F"/>
+      <stop offset="50%" style="stop-color:#2D1F3F"/>
+      <stop offset="100%" style="stop-color:#1C1B1F"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9945FF;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#14F195;stop-opacity:0.08"/>
+    </linearGradient>
+    <linearGradient id="iconBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9945FF"/>
+      <stop offset="100%" style="stop-color:#7A2FE0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark background -->
+  <rect width="1200" height="1200" fill="url(#bgGrad)"/>
+  <rect width="1200" height="1200" fill="url(#glowGrad)"/>
+
+  <!-- Left accent line -->
+  <rect x="0" y="0" width="4" height="1200" fill="#9945FF" opacity="0.8"/>
+
+  <!-- === CENTRED AARDVARK (scaled up ~1.8x from banner) === -->
+  <g transform="translate(295, 80)">
+    <circle cx="305" cy="305" r="305" fill="url(#iconBg)"/>
+    <circle cx="305" cy="305" r="282" fill="#7A2FE0" opacity="0.5"/>
+
+    <!-- Aardvark Head (scaled 1.8x from banner version) -->
+    <path fill="#D4A574" d="
+      M464,292
+      C464,227 421,184 356,184
+      C313,184 284,202 263,227
+      L180,281
+      C162,292 162,313 180,324
+      L263,371
+      C284,392 313,410 356,410
+      C421,410 464,371 464,306
+      Z"/>
+    <path fill="#C49764" d="
+      M378,184 C392,151 428,140 450,162
+      C471,184 464,205 443,220
+      C421,230 400,212 392,205 Z"/>
+    <path fill="#E8C9A8" d="
+      M400,173 C410,158 428,151 443,169
+      C454,184 443,202 432,205
+      C421,211 407,194 400,184 Z"/>
+    <path fill="#E8C9A8" d="
+      M180,281 L263,252 L263,349 L180,324
+      C162,313 162,292 180,281 Z"/>
+    <circle fill="#8B6F47" cx="205" cy="302" r="11"/>
+    <circle fill="#FFFFFF" cx="353" cy="259" r="32"/>
+    <circle fill="#2D1F12" cx="353" cy="259" r="18"/>
+    <circle fill="#FFFFFF" cx="346" cy="250" r="7"/>
+    <path fill="none" stroke="#8B6F47" stroke-width="8" stroke-linecap="round"
+      d="M281,331 Q313,360 371,342"/>
+    <rect fill="#14F195" x="418" y="374" width="83" height="65" rx="7"/>
+    <rect fill="#0FD17A" x="439" y="353" width="40" height="22" rx="5"/>
+    <!-- Toolbox wrench symbol -->
+    <path fill="#FFFFFF" d="M448,386 L459,397 L475,383 L470,378 L459,389 L453,383 Z" opacity="0.9"/>
+    <path fill="#FFFFFF" d="M468,400 L478,410 L483,405 L473,395 Z" opacity="0.9"/>
+  </g>
+
+  <!-- === TEXT BELOW AARDVARK === -->
+  <!-- App Name -->
+  <text x="600" y="790" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="72" text-anchor="middle">
+    <tspan fill="#FFFFFF">Aard</tspan><tspan fill="#D0BCFF">App</tspan><tspan fill="#FFFFFF">vark</tspan>
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="855" fill="#14F195" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="42" text-anchor="middle">
+    Toolkit
+  </text>
+
+  <!-- Tagline -->
+  <text x="600" y="920" fill="#CAC4D0" font-family="Arial, Helvetica, sans-serif" font-weight="400" font-size="24" text-anchor="middle">
+    First in line. Every dApp, every time.
+  </text>
+
+  <!-- Feature pills (centred) -->
+  <g transform="translate(600, 970)">
+    <rect x="-250" y="0" width="155" height="40" rx="20" fill="#9945FF" opacity="0.25"/>
+    <rect x="-250" y="0" width="155" height="40" rx="20" fill="none" stroke="#9945FF" stroke-width="1.5" opacity="0.6"/>
+    <text x="-172" y="26" fill="#D0BCFF" font-family="Arial, sans-serif" font-size="15" font-weight="500" text-anchor="middle">Bulk Uninstall</text>
+
+    <rect x="-80" y="0" width="155" height="40" rx="20" fill="#14F195" opacity="0.15"/>
+    <rect x="-80" y="0" width="155" height="40" rx="20" fill="none" stroke="#14F195" stroke-width="1.5" opacity="0.6"/>
+    <text x="-2" y="26" fill="#14F195" font-family="Arial, sans-serif" font-size="15" font-weight="500" text-anchor="middle">Bulk Reinstall</text>
+
+    <rect x="90" y="0" width="160" height="40" rx="20" fill="#D4A574" opacity="0.15"/>
+    <rect x="90" y="0" width="160" height="40" rx="20" fill="none" stroke="#D4A574" stroke-width="1.5" opacity="0.6"/>
+    <text x="170" y="26" fill="#D4A574" font-family="Arial, sans-serif" font-size="15" font-weight="500" text-anchor="middle">Solana Seeker</text>
+  </g>
+
+  <!-- Bottom text -->
+  <text x="600" y="1090" fill="#79747E" font-family="Arial, sans-serif" font-size="18" font-weight="400" text-anchor="middle">Built for Solana Mobile</text>
+  <path fill="#9945FF" opacity="0.6" d="M700,1078 L710,1085 L700,1092 L690,1085 Z"/>
+
+  <!-- Bottom accent line -->
+  <rect x="0" y="1196" width="1200" height="4" fill="#14F195" opacity="0.6"/>
+</svg>
