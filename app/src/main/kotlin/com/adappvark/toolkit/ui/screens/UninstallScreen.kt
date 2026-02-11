@@ -499,6 +499,8 @@ fun UninstallScreen(
             },
             onCancel = {
                 showPaymentError = false
+                // Proceed with uninstall anyway
+                showConfirmDialog = true
             }
         )
     }

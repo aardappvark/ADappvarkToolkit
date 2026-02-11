@@ -791,6 +791,8 @@ fun ReinstallScreen(
             },
             onCancel = {
                 showPaymentError = false
+                // Proceed with reinstall anyway
+                showConfirmDialog = true
             }
         )
     }
