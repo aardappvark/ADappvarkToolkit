@@ -115,7 +115,9 @@ fun ReinstallScreen(
     val paymentService = remember { PaymentService(context, walletAdapter) }
 
     var historyList by remember { mutableStateOf(uninstallHistory.getHistory()) }
-    var installedDApps by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
+    // Installed dApps shown as faded items (not part of history)
+    data class InstalledDApp(val packageName: String, val appName: String, val versionName: String, val sizeInBytes: Long)
+    var installedDApps by remember { mutableStateOf<List<InstalledDApp>>(emptyList()) }
     var selectedApps by remember { mutableStateOf(setOf<String>()) }
     var favouriteApps by remember { mutableStateOf(protectedApps.getProtectedPackages()) }
     var isReinstalling by remember { mutableStateOf(false) }
@@ -208,19 +210,17 @@ fun ReinstallScreen(
         // Sync with device state on screen open
         historyList = uninstallHistory.syncWithDeviceState()
 
-        // Scan installed dApps to show as "already installed" faded items
+        // Scan installed dApps to show as faded "already installed" items
         val installed = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
         val historyPackages = historyList.map { it.packageName }.toSet()
         installedDApps = installed
             .filter { it.packageName !in historyPackages }
             .map { dApp ->
-                UninstalledApp(
+                InstalledDApp(
                     packageName = dApp.packageName,
                     appName = dApp.appName,
-                    uninstalledAt = 0L,
                     sizeInBytes = dApp.sizeInBytes,
-                    versionName = dApp.versionName,
-                    reinstalled = true  // Mark as "installed" so it renders faded
+                    versionName = dApp.versionName
                 )
             }
             .sortedBy { it.appName.lowercase() }
@@ -275,6 +275,32 @@ fun ReinstallScreen(
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+            }
+        } else if (historyList.isEmpty() && installedDApps.isNotEmpty()) {
+            // No uninstall history yet, but show installed dApps as faded items
+            Text(
+                text = "No uninstall history yet. Uninstall dApps from the Uninstall tab to see them here.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Installed",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
+                items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
+                    InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
                 }
             }
         } else {
@@ -563,15 +589,7 @@ fun ReinstallScreen(
                         )
                     }
                     items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
-                        UninstalledAppItem(
-                            app = app,
-                            isSelected = false,
-                            isFavourite = favouriteApps.contains(app.packageName),
-                            onToggle = { },  // Non-interactive
-                            onSingleReinstall = { },  // Already installed
-                            onToggleSkipReinstall = { },
-                            onToggleFavourite = { }
-                        )
+                        InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
                     }
                 }
             }
@@ -1086,6 +1104,57 @@ fun UninstalledAppItem(
                         )
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun InstalledDAppItem(appName: String, versionName: String, sizeInBytes: Long) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.CheckCircle,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = appName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                )
+                Text(
+                    text = formatSize(sizeInBytes) + " • v$versionName",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                )
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.15f),
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text = "INSTALLED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                )
             }
         }
     }
