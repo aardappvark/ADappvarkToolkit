@@ -23,13 +23,13 @@ release:
     - purpose: banner
       uri: assets/banner_1200x600.png
     - purpose: screenshot
-      uri: assets/screenshot_3_home.png
+      uri: assets/1. Screenshot - Home.png
     - purpose: screenshot
-      uri: assets/screenshot_4_uninstall.png
+      uri: assets/2. Screenshot - Reinstall.png
     - purpose: screenshot
-      uri: assets/screenshot_2_reinstall.png
+      uri: assets/3. Screenshot - Settings.png
     - purpose: screenshot
-      uri: assets/screenshot_5_settings.png
+      uri: assets/4. Screenshot - Uninstall.png
   files:
     - purpose: install
       uri: app/build/outputs/apk/release/app-release.apk

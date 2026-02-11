@@ -83,7 +83,8 @@
     <!-- Toolbox Handle -->
     <rect fill="#0FD17A" x="351" y="294" width="38" height="19" rx="4"/>
 
-    <!-- Toolbox "dA" symbol -->
-    <text x="370" y="353" fill="#FFFFFF" font-family="monospace" font-weight="bold" font-size="28" text-anchor="middle">dA</text>
+    <!-- Toolbox wrench symbol -->
+    <path fill="#FFFFFF" d="M358,325 L368,335 L382,321 L378,317 L368,327 L362,321 Z" opacity="0.9"/>
+    <path fill="#FFFFFF" d="M375,338 L385,348 L390,343 L380,333 Z" opacity="0.9"/>
   </g>
 </svg>

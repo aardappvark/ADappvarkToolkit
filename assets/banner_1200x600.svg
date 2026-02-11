@@ -58,18 +58,20 @@
       d="M156,184 Q174,200 206,190"/>
     <rect fill="#14F195" x="232" y="208" width="46" height="36" rx="4"/>
     <rect fill="#0FD17A" x="244" y="196" width="22" height="12" rx="3"/>
-    <text x="255" y="233" fill="#FFFFFF" font-family="monospace" font-weight="bold" font-size="16" text-anchor="middle">dA</text>
+    <!-- Toolbox wrench symbol -->
+    <path fill="#FFFFFF" d="M249,214 L255,220 L264,211 L261,208 L255,214 L252,211 Z" opacity="0.9"/>
+    <path fill="#FFFFFF" d="M260,222 L266,228 L269,225 L263,219 Z" opacity="0.9"/>
   </g>
 
   <!-- === RIGHT SIDE: TEXT (shifted left, smaller font) === -->
   <g transform="translate(420, 0)">
     <!-- App Name -->
-    <text x="0" y="195" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="60">
-      <tspan fill="#FFFFFF">A</tspan><tspan fill="#D0BCFF">Dapp</tspan><tspan fill="#FFFFFF">vark</tspan>
+    <text x="0" y="185" fill="#FFFFFF" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="52">
+      <tspan fill="#FFFFFF">Aard</tspan><tspan fill="#D0BCFF">App</tspan><tspan fill="#FFFFFF">vark</tspan>
     </text>
 
     <!-- Subtitle -->
-    <text x="4" y="240" fill="#14F195" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="28">
+    <text x="4" y="235" fill="#14F195" font-family="Arial, Helvetica, sans-serif" font-weight="600" font-size="30">
       Toolkit
     </text>
 
