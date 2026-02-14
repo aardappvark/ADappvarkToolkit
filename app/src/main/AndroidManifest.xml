@@ -23,6 +23,13 @@
     <!-- Wake lock for long operations -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- SYSTEM_ALERT_WINDOW: Required on Android 14+ (API 34+) to launch activities
+         from background during bulk reinstall. When ADappvark opens the dApp Store,
+         it goes to background. Without this permission, Android blocks subsequent
+         activity launches (BAL - Background Activity Launch restrictions).
+         Apps with "Display over other apps" permission are BAL-exempt. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <!-- Location permissions for sanctions/geo-restriction compliance -->
     <!-- Used to verify user is not in sanctioned jurisdiction (OFAC, EU, UK, UN sanctions) -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -57,6 +64,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Foreground service for bulk reinstall (keeps app in foreground state
+             so Android 14+ doesn't block activity launches) -->
+        <service
+            android:name=".service.ReinstallForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
 
         <!-- File Provider for sharing -->
         <provider

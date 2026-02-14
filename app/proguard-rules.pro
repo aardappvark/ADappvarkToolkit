@@ -13,6 +13,10 @@
 -keep class com.solana.mobilewalletadapter.** { *; }
 -dontwarn com.solana.mobilewalletadapter.**
 
+# Keep seeker-verify (SGT verification) classes
+-keep class com.midmightbit.sgt.** { *; }
+-dontwarn com.midmightbit.sgt.**
+
 # Keep data classes
 -keep class com.adappvark.toolkit.data.model.** { *; }
 

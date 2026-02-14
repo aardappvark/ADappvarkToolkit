@@ -19,6 +19,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.adappvark.toolkit.BuildConfig
+import com.adappvark.toolkit.service.CreditManager
+import com.adappvark.toolkit.service.SeekerVerificationService
 import com.adappvark.toolkit.service.TermsAcceptanceService
 import com.adappvark.toolkit.service.UserPreferencesManager
 import com.adappvark.toolkit.AppConfig
@@ -31,6 +33,8 @@ fun SettingsScreen(
     val context = LocalContext.current
     val userPrefs = remember { UserPreferencesManager(context) }
     val termsService = remember { TermsAcceptanceService(context) }
+    val seekerVerifier = remember { SeekerVerificationService(context) }
+    val creditManager = remember { CreditManager(context) }
 
     var showTermsDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
@@ -97,6 +101,41 @@ fun SettingsScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
+
+                    // SGT verification status
+                    if (seekerVerifier.isVerifiedSeeker()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Filled.Verified,
+                                contentDescription = "Verified Seeker",
+                                tint = Color(0xFF9945FF),
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text(
+                                text = "Verified Seeker",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color(0xFF9945FF)
+                            )
+                            seekerVerifier.getSgtMemberNumber()?.let { num ->
+                                Text(
+                                    text = "  #$num",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color(0xFF14F195)
+                                )
+                            }
+                        }
+                    }
+
+                    // Credit balance
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = "Credits: ${creditManager.getBalance()} available",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
                     // Consent record info
                     val consentRecord = termsService.getConsentRecord()
@@ -547,9 +586,11 @@ fun SettingsScreen(
             confirmButton = {
                 Button(
                     onClick = {
-                        // Delete all data
+                        // Delete all data (GDPR Right to Erasure)
                         termsService.deleteAllConsentData()
                         userPrefs.resetAll()
+                        seekerVerifier.resetAll()
+                        creditManager.resetAll()
 
                         Toast.makeText(context, "All data deleted. Please restart the app.", Toast.LENGTH_LONG).show()
                         showDeleteConfirmDialog = false

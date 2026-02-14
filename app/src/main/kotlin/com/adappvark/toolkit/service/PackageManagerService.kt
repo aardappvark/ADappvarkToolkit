@@ -114,8 +114,14 @@ class PackageManagerService(private val context: Context) {
             
             DAppFilter.DAPP_STORE_ONLY -> {
                 val installSource = getInstallSource(packageInfo.packageName)
-                installSource == "com.solanamobile.apps" || 
-                installSource == "com.solanamobile.dappstore"
+                // Match apps explicitly installed by the dApp Store
+                installSource == "com.solanamobile.apps" ||
+                installSource == "com.solanamobile.dappstore" ||
+                // Also match non-system, non-Play Store apps (installer=null)
+                // These are typically dApp Store or ADB-installed Solana ecosystem apps
+                // The dApp Store doesn't always set itself as the installer source
+                (installSource == null && appInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0
+                    && appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP == 0)
             }
             
             DAppFilter.LARGE_SIZE -> {

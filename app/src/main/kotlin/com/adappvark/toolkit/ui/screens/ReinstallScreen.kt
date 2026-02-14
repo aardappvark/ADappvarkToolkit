@@ -21,20 +21,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import android.os.Build
+import android.provider.Settings
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import com.adappvark.toolkit.data.UninstallHistory
 import com.adappvark.toolkit.data.UninstalledApp
 import com.adappvark.toolkit.data.ProtectedApps
+import com.adappvark.toolkit.data.DAppStoreRegistry
 import com.adappvark.toolkit.data.model.DAppFilter
 import com.adappvark.toolkit.service.PackageManagerService
-import com.adappvark.toolkit.service.PaymentService
-import com.adappvark.toolkit.service.PaymentMethod
-import com.adappvark.toolkit.ui.components.PaymentConfirmationDialog
-import com.adappvark.toolkit.ui.components.PaymentErrorDialog
-import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
-import com.adappvark.toolkit.ui.components.PricingBanner
-import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
+import com.adappvark.toolkit.service.ReinstallForegroundService
+import com.adappvark.toolkit.ui.components.TemporarilyFreeBanner
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -99,22 +97,19 @@ private fun setKeepScreenOn(context: Context, keepOn: Boolean) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReinstallScreen(
-    activityResultSender: ActivityResultSender
-) {
+fun ReinstallScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val uninstallHistory = remember { UninstallHistory(context) }
     val protectedApps = remember { ProtectedApps(context) }
     val packageService = remember { PackageManagerService(context) }
-    // Create MWA adapter at composition time (before Activity STARTED) to avoid crash
-    val walletAdapter = remember { PaymentService.createWalletAdapter() }
-    val paymentService = remember { PaymentService(context, walletAdapter) }
 
     var historyList by remember { mutableStateOf(uninstallHistory.getHistory()) }
     // Installed dApps shown as faded items (not part of history)
     data class InstalledDApp(val packageName: String, val appName: String, val versionName: String, val sizeInBytes: Long)
     var installedDApps by remember { mutableStateOf<List<InstalledDApp>>(emptyList()) }
+    // dApp Store apps not installed on the device
+    var notInstalledDApps by remember { mutableStateOf<List<DAppStoreRegistry.DAppEntry>>(emptyList()) }
     var selectedApps by remember { mutableStateOf(setOf<String>()) }
     var favouriteApps by remember { mutableStateOf(protectedApps.getProtectedPackages()) }
     var isReinstalling by remember { mutableStateOf(false) }
@@ -125,15 +120,10 @@ fun ReinstallScreen(
     var showConfirmDialog by remember { mutableStateOf(false) }
     var showBatteryWarning by remember { mutableStateOf(false) }
     var showBatteryError by remember { mutableStateOf(false) }
-    var showPaymentDialog by remember { mutableStateOf(false) }
-    var showPaymentSuccess by remember { mutableStateOf(false) }
-    var showPaymentError by remember { mutableStateOf(false) }
-    var paymentErrorMessage by remember { mutableStateOf("") }
-    var lastTransactionSignature by remember { mutableStateOf("") }
-    var isProcessingPayment by remember { mutableStateOf(false) }
     var appsToReinstall by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
     var sortOption by remember { mutableStateOf(SortOption.ALPHABETICAL) }
     var showSortMenu by remember { mutableStateOf(false) }
+    var showOverlayPermissionDialog by remember { mutableStateOf(false) }
 
     // Separate favourites and regular apps
     val (favouritesList, regularList) = remember(historyList, favouriteApps, sortOption) {
@@ -221,6 +211,21 @@ fun ReinstallScreen(
                 )
             }
             .sortedBy { it.appName.lowercase() }
+
+        // Also scan dApp Store apps to discover dApps not in the static registry.
+        // Uses DAPP_STORE_ONLY filter to ensure only dApp Store apps appear (no Google/Play Store apps).
+        val dAppStoreDeviceApps = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+        val discoveredExtras = dAppStoreDeviceApps
+            .filter { !DAppStoreRegistry.isExcluded(it.packageName) }
+            .map { DAppStoreRegistry.DAppEntry(it.packageName, it.appName, "Discovered") }
+        val mergedRegistry = DAppStoreRegistry.mergedWith(discoveredExtras)
+
+        // Compute dApp Store apps that are NOT installed and NOT in history
+        val allKnownPackages = historyPackages +
+            installed.map { it.packageName }.toSet()
+        notInstalledDApps = mergedRegistry
+            .filter { it.packageName !in allKnownPackages }
+            .sortedBy { it.displayName.lowercase() }
     }
 
     // Auto-refresh every 30 seconds during reinstall to show newly installed apps
@@ -242,8 +247,8 @@ fun ReinstallScreen(
             .padding(16.dp)
     ) {
         // Header with info
-        if (historyList.isEmpty() && installedDApps.isEmpty()) {
-            // Empty state - only show if no history AND no installed apps scanned yet
+        if (historyList.isEmpty() && installedDApps.isEmpty() && notInstalledDApps.isEmpty()) {
+            // Truly empty state - no history, no installed apps, no registry
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -274,7 +279,7 @@ fun ReinstallScreen(
                     )
                 }
             }
-        } else if (historyList.isEmpty() && installedDApps.isNotEmpty()) {
+        } else if (historyList.isEmpty() && (installedDApps.isNotEmpty() || notInstalledDApps.isNotEmpty())) {
             // No uninstall history yet, but show installed dApps as faded items
             Text(
                 text = "No uninstall history yet. Uninstall dApps from the Uninstall tab to see them here.",
@@ -298,6 +303,29 @@ fun ReinstallScreen(
                 }
                 items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
                     InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
+                }
+
+                // Not-installed dApp Store apps
+                if (notInstalledDApps.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Available in dApp Store",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                        NotInstalledDAppItem(
+                            displayName = entry.displayName,
+                            category = entry.category,
+                            onInstall = {
+                                openDAppStore(context, entry.packageName)
+                            }
+                        )
+                    }
                 }
             }
         } else {
@@ -589,6 +617,29 @@ fun ReinstallScreen(
                         InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
                     }
                 }
+
+                // Not-installed dApp Store apps
+                if (notInstalledDApps.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Available in dApp Store",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                        NotInstalledDAppItem(
+                            displayName = entry.displayName,
+                            category = entry.category,
+                            onInstall = {
+                                openDAppStore(context, entry.packageName)
+                            }
+                        )
+                    }
+                }
             }
 
             // Reinstall button - only show if there are eligible apps selected (non-reinstalled, non-skipped)
@@ -597,19 +648,22 @@ fun ReinstallScreen(
                 app?.reinstalled != true && app?.skipReinstall != true
             }
 
-            // Payment system: Free for up to 4 apps, 5+ requires payment per operation
-            val isPaymentRequired = paymentService.isPaymentRequired(eligibleSelected.size)
-            val pricingSummary = paymentService.getPricingSummary(eligibleSelected.size)
-
             if (eligibleSelected.isNotEmpty()) {
-                // Pricing Banner
-                PricingBanner(selectedCount = eligibleSelected.size)
+                // Temporarily Free Banner
+                TemporarilyFreeBanner(selectedCount = eligibleSelected.size)
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        // Check battery before showing confirmation or payment
+                        // Check overlay permission first (required on Android 14+ for BAL)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+                            !Settings.canDrawOverlays(context)) {
+                            showOverlayPermissionDialog = true
+                            return@Button
+                        }
+
+                        // Check battery before showing confirmation
                         val apps = historyList.filter { it.packageName in eligibleSelected && !it.reinstalled && !it.skipReinstall }
 
                         // Log what we're about to reinstall (debug builds only)
@@ -621,31 +675,15 @@ fun ReinstallScreen(
                         when (batteryState) {
                             BatteryStatus.CRITICAL -> showBatteryError = true
                             BatteryStatus.LOW -> showBatteryWarning = true
-                            BatteryStatus.OK -> {
-                                // If payment required, show payment dialog first
-                                if (isPaymentRequired) {
-                                    showPaymentDialog = true
-                                } else {
-                                    showConfirmDialog = true
-                                }
-                            }
+                            BatteryStatus.OK -> showConfirmDialog = true
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
                     enabled = !isReinstalling
                 ) {
-                    if (isPaymentRequired) {
-                        Icon(Icons.Filled.Payment, contentDescription = null)
-                    } else {
-                        Icon(Icons.Filled.Download, contentDescription = null)
-                    }
+                    Icon(Icons.Filled.Download, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        if (isPaymentRequired)
-                            "Pay & Reinstall ${eligibleSelected.size} dApps"
-                        else
-                            "Reinstall ${eligibleSelected.size} dApps"
-                    )
+                    Text("Reinstall ${eligibleSelected.size} dApps")
                 }
             }
         }
@@ -705,95 +743,6 @@ fun ReinstallScreen(
         )
     }
 
-    // Payment Dialog for 5+ apps
-    if (showPaymentDialog) {
-        val eligibleSelected = selectedApps.filter { pkg ->
-            val app = historyList.find { it.packageName == pkg }
-            app?.reinstalled != true && app?.skipReinstall != true
-        }
-        val pricingSummary = paymentService.getPricingSummary(eligibleSelected.size)
-
-        PaymentConfirmationDialog(
-            pricingSummary = pricingSummary,
-            operationType = "reinstall",
-            onPayWithSOL = {
-                isProcessingPayment = true
-                scope.launch {
-                    paymentService.requestSOLPayment(
-                        activityResultSender = activityResultSender,
-                        appCount = eligibleSelected.size,
-                        onSuccess = { signature ->
-                            lastTransactionSignature = signature
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentSuccess = true
-                        },
-                        onError = { error ->
-                            paymentErrorMessage = error
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentError = true
-                        }
-                    )
-                }
-            },
-            onPayWithSKR = {
-                isProcessingPayment = true
-                scope.launch {
-                    paymentService.requestSKRPayment(
-                        activityResultSender = activityResultSender,
-                        appCount = eligibleSelected.size,
-                        onSuccess = { signature ->
-                            lastTransactionSignature = signature
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentSuccess = true
-                        },
-                        onError = { error ->
-                            paymentErrorMessage = error
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentError = true
-                        }
-                    )
-                }
-            },
-            onCancel = {
-                showPaymentDialog = false
-            },
-            isProcessing = isProcessingPayment
-        )
-    }
-
-    // Payment Success Dialog
-    if (showPaymentSuccess) {
-        PaymentSuccessDialog(
-            transactionSignature = lastTransactionSignature,
-            paymentMethod = PaymentMethod.SOL,
-            onContinue = {
-                showPaymentSuccess = false
-                // Now proceed with reinstall confirmation
-                showConfirmDialog = true
-            }
-        )
-    }
-
-    // Payment Error Dialog
-    if (showPaymentError) {
-        PaymentErrorDialog(
-            errorMessage = paymentErrorMessage,
-            onRetry = {
-                showPaymentError = false
-                showPaymentDialog = true
-            },
-            onCancel = {
-                showPaymentError = false
-                // Proceed with reinstall anyway
-                showConfirmDialog = true
-            }
-        )
-    }
-
     // Battery warning dialog (10-19% and not charging)
     if (showBatteryWarning) {
         val (batteryPct, _, _) = getBatteryStatus(context)
@@ -837,7 +786,7 @@ fun ReinstallScreen(
         val (batteryPct, isCharging, _) = getBatteryStatus(context)
         // Filter out skipped apps for accurate estimate
         val appsNotSkipped = appsToReinstall.filter { !it.skipReinstall }
-        val estimatedMinutes = (appsNotSkipped.size * 25) / 60 + 1 // ~25 seconds per app with longer waits
+        val estimatedMinutes = (appsNotSkipped.size * 7) / 60 + 1 // ~7 seconds per app with auto-tap
 
         AlertDialog(
             onDismissRequest = { showConfirmDialog = false },
@@ -935,6 +884,57 @@ fun ReinstallScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showConfirmDialog = false }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
+
+    // Overlay permission dialog (required on Android 14+ for background activity launches)
+    if (showOverlayPermissionDialog) {
+        AlertDialog(
+            onDismissRequest = { showOverlayPermissionDialog = false },
+            icon = { Icon(Icons.Filled.Layers, contentDescription = null, tint = MaterialTheme.colorScheme.primary) },
+            title = { Text("Permission Required") },
+            text = {
+                Column {
+                    Text(
+                        "Android requires the \"Display over other apps\" permission for bulk reinstall to work.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        "This allows ADappvark to switch between the dApp Store and itself during the reinstall cycle.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        "Tap \"Open Settings\" and enable the toggle for ADappvark Toolkit, then come back and try again.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showOverlayPermissionDialog = false
+                        // Open system overlay permission settings for this app
+                        val intent = Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:${context.packageName}")
+                        ).apply {
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        }
+                        context.startActivity(intent)
+                    }
+                ) {
+                    Text("Open Settings")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showOverlayPermissionDialog = false }) {
                     Text("Cancel")
                 }
             }
@@ -1125,6 +1125,66 @@ private fun openDAppStore(context: android.content.Context, packageName: String)
 }
 
 /**
+ * Tap the Install/Download button on the dApp Store app detail page via ADB.
+ * Uses the same ADB server reverse port forward as silent uninstall.
+ *
+ * Button position determined from uiautomator dump:
+ * bounds="[924,684][1140,828]" → center at (1032, 756)
+ * Screen: 1200x2670 (Seeker device)
+ */
+private suspend fun tapInstallButton(): Boolean = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+    try {
+        val socket = java.net.Socket()
+        socket.soTimeout = 5000
+        try {
+            socket.connect(java.net.InetSocketAddress("127.0.0.1", 5037), 2000)
+        } catch (e: Exception) {
+            Log.w(TAG, "ADB server not available for tap: ${e.message}")
+            return@withContext false
+        }
+
+        socket.use { sock ->
+            val os = sock.getOutputStream()
+            val inputStream = sock.getInputStream()
+
+            fun sendMsg(msg: String) {
+                val hexLen = String.format("%04x", msg.length)
+                os.write(hexLen.toByteArray(Charsets.US_ASCII))
+                os.write(msg.toByteArray(Charsets.US_ASCII))
+                os.flush()
+            }
+            fun readStatus(): String {
+                val buf = ByteArray(4)
+                var off = 0
+                while (off < 4) {
+                    val n = inputStream.read(buf, off, 4 - off)
+                    if (n < 0) return "EOF"
+                    off += n
+                }
+                return String(buf, Charsets.US_ASCII)
+            }
+
+            sendMsg("host:transport-any")
+            if (readStatus() != "OKAY") return@withContext false
+
+            // Tap the Install button on dApp Store detail page
+            // Confirmed via uiautomator: bounds=[924,684][1140,828], center=(1032,756)
+            sendMsg("shell:input tap 1032 756")
+            if (readStatus() != "OKAY") return@withContext false
+
+            // Read response
+            val buf = ByteArray(1024)
+            try { inputStream.read(buf) } catch (_: Exception) {}
+        }
+        Log.d(TAG, "Tapped Install button via ADB at (1032, 756)")
+        true
+    } catch (e: Exception) {
+        Log.w(TAG, "Failed to tap Install button: ${e.message}")
+        false
+    }
+}
+
+/**
  * Bring ADappvark back to the foreground
  */
 private fun bringAppToForeground(context: android.content.Context) {
@@ -1163,6 +1223,10 @@ private suspend fun performBulkReinstall(
 ) {
     onStart()
 
+    // Start foreground service to prevent Android 14+ from blocking
+    // background activity launches (BAL) when switching between apps
+    ReinstallForegroundService.start(context)
+
     // Log for debugging (stripped in release builds)
     Log.d(TAG, "Bulk reinstall started - ${apps.size} apps")
 
@@ -1172,52 +1236,81 @@ private suspend fun performBulkReinstall(
     val appsToProcess = apps.filter { !it.skipReinstall }
     Log.d(TAG, "Processing ${appsToProcess.size} apps after skip filter")
 
+    // Track whether auto-tap is available (affects retry strategy)
+    var autoTapAvailable = false
+
     appsToProcess.forEachIndexed { index, app ->
         Log.d(TAG, "Processing ${index + 1}/${appsToProcess.size}: ${app.appName}")
         onProgress(index + 1, appsToProcess.size, app.appName)
+        ReinstallForegroundService.updateProgress(context, index + 1, appsToProcess.size, app.appName)
 
         // Open dApp Store for this app
         openDAppStore(context, app.packageName)
 
-        // Wait for the dApp Store page to load and user to tap Install
+        // Wait for dApp Store page to load — 5s gives the store time to render
+        // even when it's busy processing a large download queue
         delay(5000)
 
-        // Return to ADappvark after giving user time to install
-        bringAppToForeground(context)
-        delay(1500)  // Give time for ADappvark to come to front
+        // Auto-tap the Install/Download button via ADB
+        val tapped = tapInstallButton()
+        if (tapped) {
+            autoTapAvailable = true
+            Log.d(TAG, "Auto-tapped Install for ${app.appName}")
+            // Just long enough to register the tap — do NOT wait too long
+            // or the button changes to Cancel and a retry tap would abort it
+            delay(1000)
+        } else {
+            // ADB not available — give user time to manually tap Install
+            Log.d(TAG, "No ADB tap — waiting for manual install of ${app.appName}")
+            delay(10000)
+        }
 
-        // Update progress message
-        onProgress(index + 1, appsToProcess.size, "${app.appName} (opened in dApp Store)")
+        // Return to ADappvark
+        bringAppToForeground(context)
+        delay(1500)
+
+        // Every 50 apps, take a longer 15s breather for large batches
+        // This lets the dApp Store process its download queue
+        if ((index + 1) % 50 == 0 && index < appsToProcess.size - 1) {
+            Log.d(TAG, "Long pause (15s) after ${index + 1} apps — large batch breather")
+            onProgress(index + 1, appsToProcess.size, "Download breather (${index + 1}/${appsToProcess.size})...")
+            delay(15000)
+        }
+        // Every 10 apps, pause for 8 seconds to let downloads catch up
+        else if ((index + 1) % 10 == 0 && index < appsToProcess.size - 1) {
+            Log.d(TAG, "Pausing 8s after ${index + 1} apps to let downloads catch up...")
+            onProgress(index + 1, appsToProcess.size, "Letting downloads catch up...")
+            delay(8000)
+        }
 
         // Brief pause before next app
         if (index < appsToProcess.size - 1) {
-            delay(1500)
+            delay(500)
         }
     }
 
-    // Wait a moment then sync with device state
-    delay(3000)
+    // Wait for downloads to progress, then sync
+    delay(5000)
     uninstallHistory.syncWithDeviceState()
     onAppReinstalled("")
 
-    // Count how many are already installed
     val installedCount = appsToProcess.count { uninstallHistory.isAppInstalled(it.packageName) }
     val pendingCount = appsToProcess.size - installedCount
 
-    // Auto-retry phase: if some apps weren't installed (dApp Store cooldown/timeout),
-    // retry them automatically at no additional cost to the user
-    if (pendingCount > 0) {
-        Log.d(TAG, "Auto-retry: $pendingCount apps not yet installed, retrying...")
+    // IMPORTANT: Do NOT retry when auto-tap was used.
+    // After tapping Install, the button changes to Cancel while downloading.
+    // A retry would tap Cancel, aborting the download. Instead, let downloads
+    // finish in the background and tell user to tap Refresh later.
+    if (pendingCount > 0 && !autoTapAvailable) {
+        // Manual mode retry — user might have missed tapping Install on some apps
+        Log.d(TAG, "Manual-mode retry: $pendingCount apps not yet installed")
         android.widget.Toast.makeText(
             context,
             "$installedCount installed. Retrying $pendingCount remaining apps...",
             android.widget.Toast.LENGTH_SHORT
         ).show()
 
-        // Wait for dApp Store to recover from any cooldown
         delay(5000)
-
-        // Get the apps that still need installing
         val retryApps = appsToProcess.filter { !uninstallHistory.isAppInstalled(it.packageName) }
 
         retryApps.forEachIndexed { index, app ->
@@ -1227,13 +1320,12 @@ private suspend fun performBulkReinstall(
                 "${app.appName} (retry)")
 
             openDAppStore(context, app.packageName)
-            delay(5000)
-
+            // Manual only — give user time to tap
+            delay(10000)
             bringAppToForeground(context)
-            delay(2000)
+            delay(1500)
         }
 
-        // Final sync
         delay(3000)
         uninstallHistory.syncWithDeviceState()
         onAppReinstalled("")
@@ -1243,17 +1335,21 @@ private suspend fun performBulkReinstall(
 
         val message = when {
             finalInstalledCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
-            finalPendingCount > 0 -> "$finalInstalledCount installed. $finalPendingCount downloading in background - tap Refresh to check."
+            finalPendingCount > 0 -> "$finalInstalledCount installed. $finalPendingCount downloading in background — tap Refresh to check."
             else -> "Reinstall complete. Tap Refresh to check status."
         }
         android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
     } else {
         val message = when {
             installedCount == appsToProcess.size -> "All ${appsToProcess.size} apps reinstalled!"
+            pendingCount > 0 -> "$installedCount installed. $pendingCount downloading in background — tap Refresh to check."
             else -> "Reinstall triggered. Tap Refresh to check status."
         }
         android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
     }
+
+    // Stop foreground service — reinstall cycle complete
+    ReinstallForegroundService.stop(context)
 
     onComplete()
 }

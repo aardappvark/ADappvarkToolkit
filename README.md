@@ -10,11 +10,12 @@ The essential dApp lifecycle manager for Solana Seeker.
 
 ## Features
 
-- **Bulk Uninstall** - Clean up dApps in seconds with one-tap bulk removal
-- **Bulk Reinstall** - Restore your entire dApp collection from the Solana dApp Store
+- **Bulk Uninstall** - Clean up dApps in seconds with silent ADB-powered removal
+- **Bulk Reinstall** - Restore your entire dApp collection from the Solana dApp Store with auto-install
 - **Smart Favourites** - Star your favourite dApps for quick access
-- **Wallet Login** - Non-custodial authentication via Solana Mobile Wallet Adapter
-- **Simple Pricing** - First 4 apps FREE per operation, then 0.01 SOL for 5+
+- **SGT Verification** - Seeker Genesis Token holders get 2 free credits
+- **Wallet Login** - Non-custodial authentication via Solana Mobile Wallet Adapter (SIWS)
+- **Temporarily Free** - All features free during early access
 
 ---
 
@@ -43,7 +44,8 @@ Designed specifically for the Solana Seeker device. Uses standard Android intent
 - **UI:** Jetpack Compose (Material 3)
 - **Wallet:** Solana Mobile Wallet Adapter 2.0
 - **Payments:** On-chain SOL/SKR transfers
-- **Target:** Android 14 (API 34), Min SDK 26
+- **SGT Verification:** seeker-verify 1.1.0
+- **Target:** Android 14+ (API 34), Min SDK 26
 
 ---
 

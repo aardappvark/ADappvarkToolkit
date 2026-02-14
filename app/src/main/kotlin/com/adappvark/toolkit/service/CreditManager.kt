@@ -15,7 +15,8 @@ import com.adappvark.toolkit.config.PaymentConfig
  * - 1 credit = bulk operation on 5+ apps (uninstall or reinstall)
  * - Up to 4 apps per operation are FREE
  * - Adding/removing favourites is FREE (no credit cost)
- * - 1 FREE credit granted on first wallet connect to Seeker device
+ * - Verified Seeker devices: 2 FREE credits (1 bulk uninstall + 1 bulk reinstall)
+ * - Non-Seeker wallets: 1 FREE credit on first wallet connect
  */
 class CreditManager(context: Context) {
 
@@ -200,17 +201,33 @@ class CreditManager(context: Context) {
     }
 
     /**
-     * Grant 1 free credit on first wallet connect to Seeker device
+     * Grant free credits on first wallet connect.
+     *
+     * Verified Seeker devices: 2 credits (1 bulk uninstall + 1 bulk reinstall)
+     * Non-Seeker wallets: 1 credit
+     *
      * @param walletAddress The connected wallet public key
-     * @return true if credit was granted, false if already received
+     * @param isVerifiedSeeker true if wallet holds a valid SGT
+     * @return number of credits granted (0 if already received)
      */
-    fun grantWalletConnectCredit(walletAddress: String): Boolean {
+    fun grantWalletConnectCredit(walletAddress: String, isVerifiedSeeker: Boolean = false): Boolean {
         if (hasReceivedFreeCredit()) {
             return false
         }
 
-        // Add 1 free credit
-        addCredits(1, "seeker_wallet_connect_bonus")
+        val creditCount = if (isVerifiedSeeker) {
+            SeekerVerificationService.SEEKER_BONUS_CREDITS  // 2 credits for verified Seeker
+        } else {
+            1  // 1 credit for non-Seeker wallets
+        }
+
+        val transactionId = if (isVerifiedSeeker) {
+            "seeker_sgt_verified_bonus"
+        } else {
+            "wallet_connect_bonus"
+        }
+
+        addCredits(creditCount, transactionId)
 
         // Mark as granted and store wallet info
         prefs.edit()
@@ -218,6 +235,26 @@ class CreditManager(context: Context) {
             .putString(KEY_CONNECTED_WALLET, walletAddress)
             .putLong(KEY_WALLET_CONNECT_TIME, System.currentTimeMillis())
             .apply()
+
+        return true
+    }
+
+    /**
+     * Upgrade from 1 generic credit to 2 Seeker credits if verified after initial connect
+     * Only works if the user already received 1 generic credit but is now verified as Seeker
+     *
+     * @param walletAddress The connected wallet public key
+     * @return true if upgrade was applied, false if not applicable
+     */
+    fun upgradeToSeekerBonus(walletAddress: String): Boolean {
+        if (!hasReceivedFreeCredit()) return false
+
+        // Check if they got the generic bonus (not the Seeker one)
+        val lastTx = prefs.getString(KEY_LAST_TRANSACTION, null)
+        if (lastTx == "seeker_sgt_verified_bonus") return false  // Already Seeker bonus
+
+        // Add 1 extra credit (upgrade from 1 → 2)
+        addCredits(1, "seeker_sgt_upgrade_bonus")
 
         return true
     }

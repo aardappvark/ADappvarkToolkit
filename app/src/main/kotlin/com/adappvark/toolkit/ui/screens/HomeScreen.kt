@@ -13,9 +13,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 import com.adappvark.toolkit.data.UninstallHistory
 import com.adappvark.toolkit.data.model.DAppFilter
+import com.adappvark.toolkit.service.CreditManager
 import com.adappvark.toolkit.service.PackageManagerService
+import com.adappvark.toolkit.service.SeekerVerificationService
 import com.adappvark.toolkit.service.UserPreferencesManager
 import com.adappvark.toolkit.ui.components.AardvarkIcon
 @Composable
@@ -26,6 +29,8 @@ fun HomeScreen(
     val packageService = remember { PackageManagerService(context) }
     val uninstallHistory = remember { UninstallHistory(context) }
     val userPrefs = remember { UserPreferencesManager(context) }
+    val seekerVerifier = remember { SeekerVerificationService(context) }
+    val creditManager = remember { CreditManager(context) }
 
     var isWalletConnected by remember { mutableStateOf(userPrefs.isWalletConnected()) }
     var walletAddress by remember { mutableStateOf(userPrefs.getShortWalletAddress()) }
@@ -35,6 +40,11 @@ fun HomeScreen(
     var totalStorageMB by remember { mutableStateOf(0L) }
     var uninstallCount by remember { mutableStateOf(0) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
+
+    // Seeker verification state
+    val isVerifiedSeeker = remember { seekerVerifier.isVerifiedSeeker() }
+    val sgtMemberNumber = remember { seekerVerifier.getSgtMemberNumber() }
+    val creditBalance = remember { creditManager.getBalance() }
 
     // Load stats
     LaunchedEffect(Unit) {
@@ -100,6 +110,20 @@ fun HomeScreen(
                 walletName = walletName ?: "Solana Wallet",
                 onDisconnect = { showDisconnectDialog = true }
             )
+
+            // Seeker Verification Badge
+            if (isVerifiedSeeker) {
+                Spacer(modifier = Modifier.height(8.dp))
+                SeekerVerifiedCard(sgtMemberNumber = sgtMemberNumber)
+            }
+
+            // Credit Balance Card
+            Spacer(modifier = Modifier.height(8.dp))
+            CreditBalanceCard(
+                balance = creditBalance,
+                isVerifiedSeeker = isVerifiedSeeker
+            )
+
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -385,6 +409,111 @@ data class SetupItem(
     val isComplete: Boolean,
     val description: String
 )
+
+@Composable
+fun SeekerVerifiedCard(sgtMemberNumber: Long?) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFF9945FF).copy(alpha = 0.15f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Verified,
+                contentDescription = "Verified Seeker",
+                tint = Color(0xFF9945FF),
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = "Verified Seeker",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF9945FF)
+                    )
+                    sgtMemberNumber?.let { num ->
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(
+                            text = "#$num",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFF14F195)
+                        )
+                    }
+                }
+                Text(
+                    text = "SGT holder — 2 free bulk operations granted",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Icon(
+                imageVector = Icons.Filled.PhoneAndroid,
+                contentDescription = null,
+                tint = Color(0xFF9945FF),
+                modifier = Modifier.size(20.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun CreditBalanceCard(balance: Int, isVerifiedSeeker: Boolean) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Token,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = "Credits",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
+                )
+                Text(
+                    text = "$balance available",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+
+            Text(
+                text = if (balance > 0) "✓ Ready" else "Buy credits",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = if (balance > 0) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
+            )
+        }
+    }
+}
 
 @Composable
 fun WalletInfoCard(

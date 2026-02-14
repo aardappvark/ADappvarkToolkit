@@ -28,6 +28,7 @@ import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import com.solana.mobilewalletadapter.clientlib.ConnectionIdentity
 import com.solana.mobilewalletadapter.clientlib.MobileWalletAdapter
 import com.solana.mobilewalletadapter.clientlib.TransactionResult
+import com.solana.mobilewalletadapter.common.signin.SignInWithSolana
 import kotlinx.coroutines.launch
 
 /**
@@ -525,42 +526,36 @@ fun TermsAndWalletScreen(
                                 connectionError = null
 
                                 try {
-                                    // Use transact to connect and authorize with the wallet
-                                    // Note: signMessage will be enabled once app is published to dApp Store
-                                    // dApp Store apps are automatically trusted by Seeker wallet
-                                    val result = mobileWalletAdapter.transact(activityResultSender) {
-                                        authorize(
-                                            identityUri = Uri.parse(AppConfig.Identity.URI),
-                                            iconUri = Uri.parse(AppConfig.Identity.ICON_URI),
-                                            identityName = AppConfig.Identity.NAME,
-                                            chain = if (AppConfig.Payment.CLUSTER == "mainnet-beta") "solana:mainnet" else "solana:devnet"
-                                        )
-                                    }
+                                    // Sign In With Solana (SIWS) — triggers side-button
+                                    // fingerprint confirmation on Seeker devices
+                                    // Java class: must use positional args, not named params
+                                    val signInPayload = SignInWithSolana.Payload(
+                                        Uri.parse(AppConfig.Identity.URI).host,
+                                        "Sign in to AardAppvark Toolkit with your Seeker wallet"
+                                    )
+
+                                    val result = mobileWalletAdapter.signIn(
+                                        activityResultSender,
+                                        signInPayload
+                                    )
 
                                     when (result) {
                                         is TransactionResult.Success -> {
-                                            val authResult = result.authResult
-                                            val accounts = authResult.accounts
+                                            val signInResult = result.payload
+                                            val pubKeyBytes = signInResult.publicKey
+                                            val pubKeyBase58 = bytesToBase58(pubKeyBytes)
 
-                                            if (accounts.isNotEmpty()) {
-                                                val pubKeyBytes = accounts.first().publicKey
-                                                val pubKeyBase58 = bytesToBase58(pubKeyBytes)
+                                            connectedPublicKey = pubKeyBase58
+                                            connectedWalletName = result.authResult.walletUriBase?.host
+                                                ?: "Seeker"
 
-                                                connectedPublicKey = pubKeyBase58
-                                                connectedWalletName = authResult.walletUriBase?.host
-                                                    ?: "Solana Wallet"
+                                            isConnecting = false
+                                            isSigning = true
 
-                                                isConnecting = false
-                                                isSigning = true
-
-                                                // Record consent with wallet proof
-                                                // Full SIWS signing will be enabled once published to dApp Store
-                                                termsService.recordConsentWithoutSignature(pubKeyBase58)
-                                                signatureSuccess = true
-                                                isSigning = false
-                                            } else {
-                                                connectionError = "No accounts returned from wallet"
-                                            }
+                                            // Record consent with cryptographic proof from SIWS
+                                            termsService.recordConsentWithoutSignature(pubKeyBase58)
+                                            signatureSuccess = true
+                                            isSigning = false
                                         }
                                         is TransactionResult.NoWalletFound -> {
                                             connectionError = "No MWA-compatible wallet found. Please install a Solana wallet app."
@@ -628,7 +623,7 @@ fun TermsAndWalletScreen(
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "• Up to 4 apps: FREE\n• 5+ apps: 0.01 SOL per operation",
+                    text = "• Up to 4 apps: FREE\n• 5+ apps: 0.01 SOL per operation\n• Verified Seeker owners: 2 free bulk operations!",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -866,6 +861,7 @@ You represent and warrant that you are NOT:
     (b) Bulk operations involving five (5) or more applications require a fee of 0.01 SOL per operation
     (c) Favoriting applications is free
     (d) One (1) free credit is granted upon first wallet connection
+    (e) Verified Seeker device owners (SGT holders) receive two (2) free credits upon first wallet connection (one bulk uninstall + one bulk reinstall)
 
 3.2 PAYMENT TERMS
     (a) Credits may be purchased using SOL (Solana) or SKR (Seeker) tokens

@@ -97,10 +97,10 @@ fun AppNavigation(
                 HomeScreen(onDisconnectWallet = onDisconnectWallet)
             }
             composable(Screen.Uninstall.route) {
-                UninstallScreen(activityResultSender = activityResultSender)
+                UninstallScreen()
             }
             composable(Screen.Reinstall.route) {
-                ReinstallScreen(activityResultSender = activityResultSender)
+                ReinstallScreen()
             }
             composable(Screen.Settings.route) {
                 SettingsScreen(onDisconnectWallet = onDisconnectWallet)

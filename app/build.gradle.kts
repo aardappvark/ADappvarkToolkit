@@ -21,8 +21,8 @@ android {
         applicationId = "com.adappvark.toolkit"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 4
+        versionName = "1.0.3"
         resourceConfigurations += listOf("en", "es", "fr", "de", "pt", "it", "ja", "ko", "tr", "nl", "pl")
     }
 
@@ -85,4 +85,7 @@ dependencies {
     
     implementation("com.solanamobile:mobile-wallet-adapter-clientlib-ktx:2.0.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
+
+    // SGT (Seeker Genesis Token) verification
+    implementation("com.github.aardappvark:seeker-verify:1.1.0")
 }

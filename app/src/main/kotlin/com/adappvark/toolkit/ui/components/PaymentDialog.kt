@@ -204,20 +204,29 @@ fun PaymentOptionButton(
 /**
  * Simple info banner to show pricing on selection screens
  * First 4 apps are free, 5+ apps require 0.01 SOL per bulk operation
+ *
+ * NOTE: Payment is temporarily disabled — kept for future re-enablement
  */
 @Composable
 fun PricingBanner(
     selectedCount: Int,
     modifier: Modifier = Modifier
 ) {
-    val isFree = selectedCount <= 4
+    TemporarilyFreeBanner(selectedCount = selectedCount, modifier = modifier)
+}
 
+/**
+ * Banner that shows all operations are temporarily free.
+ * Replaces PricingBanner while payment is disabled.
+ */
+@Composable
+fun TemporarilyFreeBanner(
+    selectedCount: Int,
+    modifier: Modifier = Modifier
+) {
     Card(
         colors = CardDefaults.cardColors(
-            containerColor = if (isFree)
-                MaterialTheme.colorScheme.secondaryContainer
-            else
-                MaterialTheme.colorScheme.tertiaryContainer
+            containerColor = MaterialTheme.colorScheme.secondaryContainer
         ),
         modifier = modifier.fillMaxWidth()
     ) {
@@ -228,12 +237,9 @@ fun PricingBanner(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = if (isFree) Icons.Filled.CheckCircle else Icons.Filled.Info,
+                imageVector = Icons.Filled.CheckCircle,
                 contentDescription = null,
-                tint = if (isFree)
-                    Color(0xFF4CAF50)
-                else
-                    MaterialTheme.colorScheme.tertiary,
+                tint = Color(0xFF4CAF50),
                 modifier = Modifier.size(20.dp)
             )
 
@@ -241,33 +247,15 @@ fun PricingBanner(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (isFree) "Free Operation" else "Bulk Operation",
+                    text = "Temporarily Free",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
-                    color = if (isFree)
-                        MaterialTheme.colorScheme.onSecondaryContainer
-                    else
-                        MaterialTheme.colorScheme.onTertiaryContainer
+                    color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
                 Text(
-                    text = if (isFree)
-                        "First 4 apps are free"
-                    else
-                        "$selectedCount apps • 0.01 SOL (or 1 SKR) per operation",
+                    text = "$selectedCount apps selected — all operations are free during early access",
                     style = MaterialTheme.typography.bodySmall,
-                    color = if (isFree)
-                        MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
-                    else
-                        MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
-                )
-            }
-
-            if (!isFree) {
-                Text(
-                    text = "0.01",
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
                 )
             }
         }

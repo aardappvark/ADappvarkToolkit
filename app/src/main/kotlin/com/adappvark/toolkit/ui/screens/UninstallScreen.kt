@@ -21,47 +21,34 @@ import com.adappvark.toolkit.data.model.DAppInfo
 import com.adappvark.toolkit.data.UninstallHistory
 import com.adappvark.toolkit.data.UninstalledApp
 import com.adappvark.toolkit.data.ProtectedApps
+import com.adappvark.toolkit.data.DAppStoreRegistry
 import androidx.compose.ui.text.style.TextDecoration
 import com.adappvark.toolkit.service.PackageManagerService
-import com.adappvark.toolkit.service.PaymentService
-import com.adappvark.toolkit.ui.components.PaymentConfirmationDialog
-import com.adappvark.toolkit.ui.components.PaymentErrorDialog
-import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
-import com.adappvark.toolkit.ui.components.PricingBanner
-import com.adappvark.toolkit.service.PaymentMethod
+import com.adappvark.toolkit.service.ShizukuManager
+import com.adappvark.toolkit.ui.components.TemporarilyFreeBanner
 import android.util.Log
-import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UninstallScreen(
-    activityResultSender: ActivityResultSender
-) {
+fun UninstallScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     val packageService = remember { PackageManagerService(context) }
-    // Create MWA adapter at composition time (before Activity STARTED) to avoid crash
-    val walletAdapter = remember { PaymentService.createWalletAdapter() }
-    val paymentService = remember { PaymentService(context, walletAdapter) }
     val uninstallHistory = remember { UninstallHistory(context) }
     val protectedApps = remember { ProtectedApps(context) }
 
     var dAppList by remember { mutableStateOf<List<DAppInfo>>(emptyList()) }
     var uninstalledApps by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
+    // dApp Store apps that are NOT currently installed on the device
+    var notInstalledDApps by remember { mutableStateOf<List<DAppStoreRegistry.DAppEntry>>(emptyList()) }
     var selectedDApps by remember { mutableStateOf<Set<String>>(emptySet()) }
     var favouriteApps by remember { mutableStateOf(protectedApps.getProtectedPackages()) }
     var isLoading by remember { mutableStateOf(false) }
     var isUninstalling by remember { mutableStateOf(false) }
     var showConfirmDialog by remember { mutableStateOf(false) }
-    var showPaymentDialog by remember { mutableStateOf(false) }
-    var showPaymentSuccess by remember { mutableStateOf(false) }
-    var showPaymentError by remember { mutableStateOf(false) }
-    var paymentErrorMessage by remember { mutableStateOf("") }
-    var lastTransactionSignature by remember { mutableStateOf("") }
-    var isProcessingPayment by remember { mutableStateOf(false) }
     var currentFilter by remember { mutableStateOf(DAppFilter.DAPP_STORE_ONLY) }
     var sortOption by remember { mutableStateOf(SortOption.ALPHABETICAL) }
     var showSortMenu by remember { mutableStateOf(false) }
@@ -92,9 +79,6 @@ fun UninstallScreen(
         }
     }
 
-    // Payment system: Free for up to 4 apps, 5+ requires payment per operation
-    val isPaymentRequired = paymentService.isPaymentRequired(selectedDApps.size)
-    val pricingSummary = paymentService.getPricingSummary(selectedDApps.size)
     var uninstallProgress by remember { mutableStateOf<Pair<Int, Int>?>(null) }
     var currentUninstallingApp by remember { mutableStateOf<String?>(null) }
 
@@ -108,6 +92,22 @@ fun UninstallScreen(
         uninstalledApps = history
             .filter { !it.reinstalled && it.packageName !in installedPackages }
             .sortedBy { it.appName.lowercase() }
+
+        // Also scan dApp Store apps to discover dApps not in the static registry.
+        // Uses DAPP_STORE_ONLY filter to ensure only dApp Store apps appear (no Google/Play Store apps).
+        val dAppStoreDeviceApps = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+        val discoveredExtras = dAppStoreDeviceApps
+            .filter { !DAppStoreRegistry.isExcluded(it.packageName) }
+            .map { DAppStoreRegistry.DAppEntry(it.packageName, it.appName, "Discovered") }
+        val mergedRegistry = DAppStoreRegistry.mergedWith(discoveredExtras)
+
+        // Compute dApp Store apps that are NOT installed on the device
+        // These are shown as faded items below the installed apps
+        val allInstalledPackages = installedPackages + uninstalledApps.map { it.packageName }.toSet()
+        notInstalledDApps = mergedRegistry
+            .filter { it.packageName !in allInstalledPackages }
+            .sortedBy { it.displayName.lowercase() }
+
         isLoading = false
     }
 
@@ -236,7 +236,7 @@ fun UninstallScreen(
             ) {
                 CircularProgressIndicator()
             }
-        } else if (sortedDAppList.isEmpty()) {
+        } else if (sortedDAppList.isEmpty() && notInstalledDApps.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -246,6 +246,69 @@ fun UninstallScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
+            }
+        } else if (sortedDAppList.isEmpty() && notInstalledDApps.isNotEmpty()) {
+            // No installed dApps but we have registry entries to show
+            Text(
+                text = "No dApp Store apps installed yet. Tap any app below to install from the dApp Store.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Recently Uninstalled Section
+                if (uninstalledApps.isNotEmpty()) {
+                    item {
+                        Text(
+                            text = "Recently Uninstalled",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(uninstalledApps, key = { "uninstalled_${it.packageName}" }) { app ->
+                        UninstalledDAppItem(app = app)
+                    }
+                }
+
+                item {
+                    Text(
+                        text = "Available in dApp Store",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                        modifier = Modifier.padding(vertical = 4.dp)
+                    )
+                }
+                items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                    NotInstalledDAppItem(
+                        displayName = entry.displayName,
+                        category = entry.category,
+                        onInstall = {
+                            try {
+                                val intent = Intent(Intent.ACTION_VIEW).apply {
+                                    data = Uri.parse("solanadappstore://details?id=${entry.packageName}")
+                                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                }
+                                context.startActivity(intent)
+                            } catch (e: Exception) {
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse("market://details?id=${entry.packageName}")
+                                        setPackage("com.solanamobile.dappstore")
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    }
+                                    context.startActivity(intent)
+                                } catch (_: Exception) {}
+                            }
+                        }
+                    )
+                }
             }
         } else {
             LazyColumn(
@@ -333,6 +396,46 @@ fun UninstallScreen(
                         UninstalledDAppItem(app = app)
                     }
                 }
+
+                // Not-installed dApp Store apps - shown faded at the bottom
+                if (notInstalledDApps.isNotEmpty()) {
+                    item {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "Available in dApp Store",
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+                    }
+                    items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                        NotInstalledDAppItem(
+                            displayName = entry.displayName,
+                            category = entry.category,
+                            onInstall = {
+                                // Open dApp Store listing for this app
+                                try {
+                                    val intent = Intent(Intent.ACTION_VIEW).apply {
+                                        data = Uri.parse("solanadappstore://details?id=${entry.packageName}")
+                                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    }
+                                    context.startActivity(intent)
+                                } catch (e: Exception) {
+                                    // Fallback: try market intent
+                                    try {
+                                        val intent = Intent(Intent.ACTION_VIEW).apply {
+                                            data = Uri.parse("market://details?id=${entry.packageName}")
+                                            setPackage("com.solanamobile.dappstore")
+                                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                        }
+                                        context.startActivity(intent)
+                                    } catch (_: Exception) {}
+                                }
+                            }
+                        )
+                    }
+                }
             }
         }
 
@@ -389,123 +492,25 @@ fun UninstallScreen(
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        // Pricing Banner
+        // Temporarily Free Banner
         if (selectedDApps.isNotEmpty()) {
-            PricingBanner(selectedCount = selectedDApps.size)
+            TemporarilyFreeBanner(selectedCount = selectedDApps.size)
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         // Uninstall Button
         Button(
-            onClick = {
-                if (isPaymentRequired) {
-                    showPaymentDialog = true
-                } else {
-                    showConfirmDialog = true
-                }
-            },
+            onClick = { showConfirmDialog = true },
             modifier = Modifier.fillMaxWidth(),
             enabled = selectedDApps.isNotEmpty() && !isUninstalling
         ) {
-            if (isPaymentRequired) {
-                Icon(Icons.Filled.Payment, contentDescription = null)
-            } else {
-                Icon(Icons.Filled.Delete, contentDescription = null)
-            }
+            Icon(Icons.Filled.Delete, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                if (isPaymentRequired)
-                    "Pay & Uninstall ${selectedDApps.size} dApps"
-                else
-                    "Uninstall ${selectedDApps.size} dApps"
-            )
+            Text("Uninstall ${selectedDApps.size} dApps")
         }
     }
 
-    // Payment Dialog for 5+ apps
-    if (showPaymentDialog) {
-        PaymentConfirmationDialog(
-            pricingSummary = pricingSummary,
-            operationType = "uninstall",
-            onPayWithSOL = {
-                isProcessingPayment = true
-                scope.launch {
-                    paymentService.requestSOLPayment(
-                        activityResultSender = activityResultSender,
-                        appCount = selectedDApps.size,
-                        onSuccess = { signature ->
-                            lastTransactionSignature = signature
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentSuccess = true
-                        },
-                        onError = { error ->
-                            paymentErrorMessage = error
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentError = true
-                        }
-                    )
-                }
-            },
-            onPayWithSKR = {
-                isProcessingPayment = true
-                scope.launch {
-                    paymentService.requestSKRPayment(
-                        activityResultSender = activityResultSender,
-                        appCount = selectedDApps.size,
-                        onSuccess = { signature ->
-                            lastTransactionSignature = signature
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentSuccess = true
-                        },
-                        onError = { error ->
-                            paymentErrorMessage = error
-                            isProcessingPayment = false
-                            showPaymentDialog = false
-                            showPaymentError = true
-                        }
-                    )
-                }
-            },
-            onCancel = {
-                showPaymentDialog = false
-            },
-            isProcessing = isProcessingPayment
-        )
-    }
-
-    // Payment Success Dialog
-    if (showPaymentSuccess) {
-        PaymentSuccessDialog(
-            transactionSignature = lastTransactionSignature,
-            paymentMethod = PaymentMethod.SOL,
-            onContinue = {
-                showPaymentSuccess = false
-                // Now proceed with uninstall
-                showConfirmDialog = true
-            }
-        )
-    }
-
-    // Payment Error Dialog
-    if (showPaymentError) {
-        PaymentErrorDialog(
-            errorMessage = paymentErrorMessage,
-            onRetry = {
-                showPaymentError = false
-                showPaymentDialog = true
-            },
-            onCancel = {
-                showPaymentError = false
-                // Proceed with uninstall anyway
-                showConfirmDialog = true
-            }
-        )
-    }
-
-    // Confirmation Dialog (for free operations or after payment)
+    // Confirmation Dialog
     if (showConfirmDialog) {
         AlertDialog(
             onDismissRequest = { showConfirmDialog = false },
@@ -554,6 +559,16 @@ fun UninstallScreen(
                                     uninstalledApps = history
                                         .filter { !it.reinstalled && it.packageName !in installedPkgs }
                                         .sortedBy { it.appName.lowercase() }
+                                    // Refresh not-installed dApp Store list (merged with device scan)
+                                    val dAppStoreApps2 = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+                                    val extras2 = dAppStoreApps2
+                                        .filter { !DAppStoreRegistry.isExcluded(it.packageName) }
+                                        .map { DAppStoreRegistry.DAppEntry(it.packageName, it.appName, "Discovered") }
+                                    val merged2 = DAppStoreRegistry.mergedWith(extras2)
+                                    val allKnown = installedPkgs + uninstalledApps.map { it.packageName }.toSet()
+                                    notInstalledDApps = merged2
+                                        .filter { it.packageName !in allKnown }
+                                        .sortedBy { it.displayName.lowercase() }
                                 }
                             )
                         }
@@ -685,13 +700,69 @@ fun UninstalledDAppItem(app: UninstalledApp) {
     }
 }
 
+@Composable
+fun NotInstalledDAppItem(
+    displayName: String,
+    category: String,
+    onInstall: () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onInstall() },
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
+        )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Filled.GetApp,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = displayName,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                )
+                Text(
+                    text = category,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.3f)
+                )
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
+                shape = MaterialTheme.shapes.small
+            ) {
+                Text(
+                    text = "NOT INSTALLED",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                )
+            }
+        }
+    }
+}
+
 /**
- * Perform bulk uninstall using standard Android uninstall intents.
+ * Perform bulk uninstall.
  *
- * Uses adaptive waiting: after firing each ACTION_DELETE intent,
- * polls PackageManager to confirm the package is actually gone
- * before proceeding to the next one. The user confirms each
- * uninstall via the standard system dialog.
+ * Strategy:
+ * 1. Try Shizuku silent uninstall first (pm uninstall --user 0) — no confirmation dialogs
+ * 2. Fall back to standard ACTION_DELETE intents if Shizuku is not available
  */
 suspend fun performBulkUninstall(
     context: android.content.Context,
@@ -703,11 +774,6 @@ suspend fun performBulkUninstall(
     onStart()
     val TAG = "BulkUninstall"
 
-    // Pre-operation: hint GC to free memory before bulk operation
-    // This helps prevent system popup dialogs caused by memory pressure
-    Runtime.getRuntime().gc()
-    delay(500)
-
     // Filter to only packages that are actually still installed
     val pm = context.packageManager
     val installedPackages = packageNames.filter { packageName ->
@@ -715,97 +781,43 @@ suspend fun performBulkUninstall(
             pm.getPackageInfo(packageName, 0)
             true
         } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
-            false // Skip - already uninstalled
+            false
         }
     }
 
     Log.d(TAG, "Starting bulk uninstall: ${installedPackages.size} packages (filtered from ${packageNames.size})")
 
-    // Track packages that failed to uninstall for retry
-    val failedPackages = mutableListOf<String>()
+    // Try silent uninstall (Shizuku binder, ADB TCP, or direct pm — no confirmation dialogs)
+    val shizukuManager = ShizukuManager(context)
+    val canSilent = shizukuManager.canSilentUninstall()
+    Log.d(TAG, "Shizuku available: ${shizukuManager.isShizukuAvailable()}, ADB TCP available: canSilent=$canSilent")
 
-    installedPackages.forEachIndexed { index, packageName ->
-        // Double-check still installed right before triggering (in case prior uninstall removed it)
-        val stillInstalled = try {
-            pm.getPackageInfo(packageName, 0)
-            true
-        } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
-            false
+    if (canSilent) {
+        // Silent uninstall — tries Shizuku binder, then ADB TCP, then direct pm
+        Log.d(TAG, "Using silent uninstall (Shizuku/ADB TCP/direct pm)")
+        val results = shizukuManager.bulkUninstall(
+            packageNames = installedPackages,
+            onProgress = onProgress
+        )
+
+        val successCount = results.count { it.second.isSuccess }
+        val failCount = results.count { it.second.isFailure }
+        Log.d(TAG, "Shizuku uninstall complete: $successCount succeeded, $failCount failed")
+
+        if (failCount > 0) {
+            val failedNames = results.filter { it.second.isFailure }.map { it.first }
+            Log.w(TAG, "Failed packages: ${failedNames.joinToString()}")
         }
+    } else {
+        // Fallback: standard Android uninstall intents (shows confirmation dialog per app)
+        Log.d(TAG, "No silent uninstall method available — falling back to ACTION_DELETE intents")
 
-        if (!stillInstalled) {
-            Log.d(TAG, "[${ index + 1}/${installedPackages.size}] $packageName already gone, skipping")
-            onProgress(index + 1, installedPackages.size, "$packageName (already removed)")
-            return@forEachIndexed
-        }
-
-        // Every 5 packages: let the system breathe to prevent memory-pressure popups
-        // This is a mitigation for occasional system "not responding" dialogs on
-        // devices with limited RAM (like Solana Seeker) during rapid sequential uninstalls
-        if (index > 0 && index % 5 == 0) {
-            Log.d(TAG, "Breathing pause at package #$index to reduce memory pressure")
-            Runtime.getRuntime().gc()
-            delay(1500)
-        }
-
-        Log.d(TAG, "[${index + 1}/${installedPackages.size}] Uninstalling: $packageName")
-        onProgress(index + 1, installedPackages.size, packageName)
-
-        // Trigger standard Android uninstall
-        val intent = Intent(Intent.ACTION_DELETE).apply {
-            data = Uri.parse("package:$packageName")
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
-        context.startActivity(intent)
-
-        // Adaptive wait: poll until the package is actually gone
-        // or we hit the timeout (max 15 seconds per app)
-        val maxWaitMs = 15_000L
-        val pollIntervalMs = 500L
-        var waited = 0L
-        var uninstalled = false
-
-        // Initial wait for the dialog to appear and user to confirm
-        delay(1000)
-        waited += 1000
-
-        while (waited < maxWaitMs) {
-            val isGone = try {
-                pm.getPackageInfo(packageName, 0)
-                false // Still installed
-            } catch (e: android.content.pm.PackageManager.NameNotFoundException) {
-                true // Successfully uninstalled
-            }
-
-            if (isGone) {
-                uninstalled = true
-                Log.d(TAG, "  ✓ $packageName removed after ${waited}ms")
-                break
-            }
-
-            delay(pollIntervalMs)
-            waited += pollIntervalMs
-        }
-
-        if (!uninstalled) {
-            Log.w(TAG, "  ✗ $packageName NOT removed after ${waited}ms (timeout)")
-            failedPackages.add(packageName)
-        }
-
-        // Settle time before next intent - slightly longer to prevent dialog accumulation
-        // that can cause system popup windows on memory-constrained devices
+        Runtime.getRuntime().gc()
         delay(500)
-    }
 
-    // Retry phase: attempt failed packages one more time
-    if (failedPackages.isNotEmpty()) {
-        Log.d(TAG, "Retry phase: ${failedPackages.size} packages failed first attempt")
-        delay(2000) // Let system settle before retrying
+        val failedPackages = mutableListOf<String>()
 
-        val retryFailed = mutableListOf<String>()
-
-        failedPackages.forEachIndexed { index, packageName ->
-            // Check if it was actually uninstalled in the meantime
+        installedPackages.forEachIndexed { index, packageName ->
             val stillInstalled = try {
                 pm.getPackageInfo(packageName, 0)
                 true
@@ -814,16 +826,18 @@ suspend fun performBulkUninstall(
             }
 
             if (!stillInstalled) {
-                Log.d(TAG, "  Retry [${index + 1}/${failedPackages.size}] $packageName already gone")
+                Log.d(TAG, "[${index + 1}/${installedPackages.size}] $packageName already gone, skipping")
+                onProgress(index + 1, installedPackages.size, "$packageName (already removed)")
                 return@forEachIndexed
             }
 
-            Log.d(TAG, "  Retry [${index + 1}/${failedPackages.size}] $packageName")
-            onProgress(
-                installedPackages.size - failedPackages.size + index + 1,
-                installedPackages.size + failedPackages.size,
-                "$packageName (retry)"
-            )
+            if (index > 0 && index % 5 == 0) {
+                Runtime.getRuntime().gc()
+                delay(1500)
+            }
+
+            Log.d(TAG, "[${index + 1}/${installedPackages.size}] Uninstalling: $packageName")
+            onProgress(index + 1, installedPackages.size, packageName)
 
             val intent = Intent(Intent.ACTION_DELETE).apply {
                 data = Uri.parse("package:$packageName")
@@ -831,16 +845,16 @@ suspend fun performBulkUninstall(
             }
             context.startActivity(intent)
 
-            // Adaptive wait for retry (same logic, slightly longer max)
-            val maxRetryWaitMs = 20_000L
+            // Adaptive wait: poll until the package is gone or timeout
+            val maxWaitMs = 15_000L
             val pollIntervalMs = 500L
             var waited = 0L
             var uninstalled = false
 
-            delay(1500) // Slightly longer initial wait on retry
-            waited += 1500
+            delay(1000)
+            waited += 1000
 
-            while (waited < maxRetryWaitMs) {
+            while (waited < maxWaitMs) {
                 val isGone = try {
                     pm.getPackageInfo(packageName, 0)
                     false
@@ -850,7 +864,7 @@ suspend fun performBulkUninstall(
 
                 if (isGone) {
                     uninstalled = true
-                    Log.d(TAG, "  ✓ Retry: $packageName removed after ${waited}ms")
+                    Log.d(TAG, "  ✓ $packageName removed after ${waited}ms")
                     break
                 }
 
@@ -859,19 +873,18 @@ suspend fun performBulkUninstall(
             }
 
             if (!uninstalled) {
-                Log.w(TAG, "  ✗ Retry: $packageName still NOT removed after ${waited}ms")
-                retryFailed.add(packageName)
+                Log.w(TAG, "  ✗ $packageName NOT removed after ${waited}ms (timeout)")
+                failedPackages.add(packageName)
             }
 
-            delay(300)
+            delay(500)
         }
 
-        if (retryFailed.isNotEmpty()) {
-            Log.w(TAG, "Final: ${retryFailed.size} packages could not be uninstalled: ${retryFailed.joinToString()}")
+        if (failedPackages.isNotEmpty()) {
+            Log.w(TAG, "${failedPackages.size} packages failed: ${failedPackages.joinToString()}")
         }
     }
 
-    // Final settle
     delay(1000)
     Log.d(TAG, "Bulk uninstall complete")
 

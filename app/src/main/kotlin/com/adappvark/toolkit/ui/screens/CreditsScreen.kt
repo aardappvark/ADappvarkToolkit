@@ -48,7 +48,7 @@ fun CreditsScreen() {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Payment Info Card
+        // Pricing Info Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -68,7 +68,7 @@ fun CreditsScreen() {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "Payment Information",
+                        text = "Pricing",
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
                     )
@@ -77,12 +77,7 @@ fun CreditsScreen() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = "• Up to 4 apps per operation: FREE\n" +
-                           "• 5+ apps: 0.01 SOL per operation\n" +
-                           "• Accepts SOL and SKR (Seeker) tokens\n" +
-                           "• Payments via Solana Mobile Wallet\n" +
-                           "• All payments are non-refundable\n" +
-                           "• Verify transactions on Solscan",
+                    text = "All uninstall and reinstall operations are temporarily free during early access. Enjoy unlimited use while we build out the full experience!",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSecondaryContainer
                 )
@@ -191,23 +186,19 @@ fun HowCreditsWorkCard() {
 
             CreditInfoRow(
                 icon = Icons.Filled.CheckCircle,
-                text = "Up to 4 apps per operation: FREE"
-            )
-            CreditInfoRow(
-                icon = Icons.Filled.Payment,
-                text = "5+ apps: 0.01 SOL per bulk operation"
+                text = "All operations are temporarily free"
             )
             CreditInfoRow(
                 icon = Icons.Filled.Star,
-                text = "Favouriting apps is free"
+                text = "Favouriting apps is always free"
             )
             CreditInfoRow(
                 icon = Icons.Filled.CardGiftcard,
-                text = "1 FREE credit on first wallet connect"
+                text = "SGT holders get 2 free credits"
             )
             CreditInfoRow(
                 icon = Icons.Filled.Schedule,
-                text = "Credits expire 12 months after purchase"
+                text = "Paid tiers coming soon"
             )
         }
     }
