@@ -1,7 +1,9 @@
 package com.adappvark.toolkit.ui.screens
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -9,18 +11,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
 import com.adappvark.toolkit.data.UninstallHistory
+import com.adappvark.toolkit.data.ProtectedApps
 import com.adappvark.toolkit.data.model.DAppFilter
+import com.adappvark.toolkit.service.AppSettingsManager
 import com.adappvark.toolkit.service.CreditManager
 import com.adappvark.toolkit.service.PackageManagerService
 import com.adappvark.toolkit.service.SeekerVerificationService
 import com.adappvark.toolkit.service.UserPreferencesManager
-import com.adappvark.toolkit.ui.components.AardvarkIcon
+import com.adappvark.toolkit.ui.components.AnimatedAardvarkIcon
+import com.adappvark.toolkit.ui.theme.*
+
 @Composable
 fun HomeScreen(
     onDisconnectWallet: () -> Unit = {}
@@ -31,27 +38,45 @@ fun HomeScreen(
     val userPrefs = remember { UserPreferencesManager(context) }
     val seekerVerifier = remember { SeekerVerificationService(context) }
     val creditManager = remember { CreditManager(context) }
+    val appSettings = remember { AppSettingsManager(context) }
 
     var isWalletConnected by remember { mutableStateOf(userPrefs.isWalletConnected()) }
     var walletAddress by remember { mutableStateOf(userPrefs.getShortWalletAddress()) }
     var fullWalletAddress by remember { mutableStateOf(userPrefs.getWalletPublicKey()) }
     var walletName by remember { mutableStateOf(userPrefs.getWalletName()) }
+    val protectedApps = remember { ProtectedApps(context) }
+
     var dAppCount by remember { mutableStateOf(0) }
     var totalStorageMB by remember { mutableStateOf(0L) }
     var uninstallCount by remember { mutableStateOf(0) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
 
+    // Analytics state
+    var reinstalledCount by remember { mutableStateOf(0) }
+    var pendingReinstallCount by remember { mutableStateOf(0) }
+    var storageRecoveredMB by remember { mutableStateOf(0L) }
+    var favouriteCount by remember { mutableStateOf(0) }
+    var reinstallRate by remember { mutableStateOf(0f) }
+
     // Seeker verification state
     val isVerifiedSeeker = remember { seekerVerifier.isVerifiedSeeker() }
     val sgtMemberNumber = remember { seekerVerifier.getSgtMemberNumber() }
-    val creditBalance = remember { creditManager.getBalance() }
 
     // Load stats
     LaunchedEffect(Unit) {
         val dApps = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
         dAppCount = dApps.size
         totalStorageMB = dApps.sumOf { it.sizeInBytes } / (1024 * 1024)
-        uninstallCount = uninstallHistory.getHistory().size
+
+        val history = uninstallHistory.getHistory()
+        uninstallCount = history.size
+        reinstalledCount = history.count { it.reinstalled }
+        pendingReinstallCount = history.count { !it.reinstalled && !it.skipReinstall }
+        storageRecoveredMB = history.filter { !it.reinstalled }.sumOf { it.sizeInBytes } / (1024 * 1024)
+        favouriteCount = protectedApps.getProtectedPackages().size
+        reinstallRate = if (history.isNotEmpty()) {
+            (reinstalledCount.toFloat() / history.size) * 100f
+        } else 0f
     }
 
     Column(
@@ -61,47 +86,73 @@ fun HomeScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Welcome Section
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // App Icon - Custom Aardvark
-        Card(
-            modifier = Modifier.size(120.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
-        ) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                AardvarkIcon(
-                    size = 90.dp,
-                    color = MaterialTheme.colorScheme.primary,
-                    filled = true
-                )
-            }
-        }
-
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Hero: Animated Aardvark icon with glow
+        AnimatedAardvarkIcon(
+            size = 100.dp,
+            glowColor = SolanaPurple
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         Text(
-            text = "Welcome to AardAppvark!",
+            text = "AardAppvark",
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
+            fontWeight = FontWeight.Bold,
+            color = SolanaPurple,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Text(
+            text = "First in line. Every dApp, every time.",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = "First in line. Every dApp, every time.",
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center
-        )
+        // Editor's Choice / Seeker Toolkit badge
+        GlassCard(
+            glowColor = SolanaGreenGlow,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.AutoAwesome,
+                    contentDescription = null,
+                    tint = SolanaGreen,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "Seeker Toolkit",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = SolanaGreen
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "•",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f)
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Text(
+                    text = "Built for Solana Seeker",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                )
+            }
+        }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Connected Wallet Card
         if (isWalletConnected && walletAddress != null) {
@@ -117,44 +168,70 @@ fun HomeScreen(
                 SeekerVerifiedCard(sgtMemberNumber = sgtMemberNumber)
             }
 
-            // Credit Balance Card
-            Spacer(modifier = Modifier.height(8.dp))
-            CreditBalanceCard(
-                balance = creditBalance,
-                isVerifiedSeeker = isVerifiedSeeker
-            )
-
+            Spacer(modifier = Modifier.height(16.dp))
+        } else if (userPrefs.hasSkippedWallet()) {
+            // No wallet — show connect CTA
+            GlassCard(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.AccountBalanceWallet,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(24.dp)
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = "No Wallet Connected",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "Connect Seeker Genesis Token for free full functionality",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Button(
+                    onClick = { onDisconnectWallet() },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = SolanaPurple
+                    )
+                ) {
+                    Icon(Icons.Filled.AccountBalanceWallet, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Connect Wallet")
+                }
+            }
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        // Setup Checklist
-        SetupChecklistCard(
-            title = "Setup Checklist",
-            items = listOf(
-                SetupItem(
-                    "Wallet Connected",
-                    isWalletConnected,
-                    if (isWalletConnected && walletAddress != null) walletAddress!! else "Connect Solana wallet"
-                )
-            ),
-            onConnectWallet = {
-                // Wallet is already connected during onboarding
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Quick Stats Card
-        QuickStatsCard(
+        // Analytics Dashboard
+        AnalyticsDashboardCard(
             dAppCount = dAppCount,
             storageMB = totalStorageMB,
-            uninstallCount = uninstallCount
+            uninstallCount = uninstallCount,
+            reinstalledCount = reinstalledCount,
+            pendingReinstallCount = pendingReinstallCount,
+            storageRecoveredMB = storageRecoveredMB,
+            favouriteCount = favouriteCount,
+            reinstallRate = reinstallRate
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Features Overview
         FeaturesCard()
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 
     // Disconnect Wallet Confirmation Dialog
@@ -171,7 +248,7 @@ fun HomeScreen(
             title = { Text("Disconnect Wallet?") },
             text = {
                 Text(
-                    "This will disconnect your wallet from AardAppvark. You will need to reconnect and re-accept the Terms of Service to continue using the app."
+                    "This will disconnect your wallet from AardAppvark. You will need to reconnect and re-accept the Terms of Service to continue using the dApp."
                 )
             },
             confirmButton = {
@@ -198,119 +275,117 @@ fun HomeScreen(
 }
 
 @Composable
-fun SetupChecklistCard(
-    title: String,
-    items: List<SetupItem>,
-    onConnectWallet: () -> Unit = {}
-) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            items.forEach { item ->
-                SetupItemRow(
-                    item = item,
-                    onClick = {
-                        when (item.title) {
-                            "Connect Wallet" -> onConnectWallet()
-                        }
-                    }
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-        }
-    }
-}
-
-@Composable
-fun SetupItemRow(item: SetupItem, onClick: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = if (item.isComplete) Icons.Filled.CheckCircle else Icons.Filled.RadioButtonUnchecked,
-            contentDescription = null,
-            tint = if (item.isComplete)
-                Color(0xFF4CAF50) // Green checkmark
-            else
-                MaterialTheme.colorScheme.outline
-        )
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = item.title,
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Text(
-                text = item.description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-        }
-
-        if (!item.isComplete) {
-            TextButton(onClick = onClick) {
-                Text("Setup")
-            }
-        }
-    }
-}
-
-@Composable
-fun QuickStatsCard(
+fun AnalyticsDashboardCard(
     dAppCount: Int = 0,
     storageMB: Long = 0,
-    uninstallCount: Int = 0
+    uninstallCount: Int = 0,
+    reinstalledCount: Int = 0,
+    pendingReinstallCount: Int = 0,
+    storageRecoveredMB: Long = 0,
+    favouriteCount: Int = 0,
+    reinstallRate: Float = 0f
 ) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        )
+        glowColor = SolanaPurpleGlow
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Quick Stats",
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+            Icon(
+                imageVector = Icons.Filled.Analytics,
+                contentDescription = null,
+                tint = SolanaPurple,
+                modifier = Modifier.size(20.dp)
             )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = "Analytics Dashboard",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Top row: Installed / Storage Used / Favourites
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            StatItem(
+                label = "Installed",
+                value = dAppCount.toString(),
+                sublabel = "dApps"
+            )
+            StatItem(
+                label = "Storage",
+                value = formatStorage(storageMB),
+                sublabel = "used"
+            )
+            StatItem(
+                label = "Favourites",
+                value = favouriteCount.toString(),
+                sublabel = "protected"
+            )
+        }
+
+        if (uninstallCount > 0) {
+            Spacer(modifier = Modifier.height(12.dp))
+
+            GlassDivider()
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // Bottom row: Uninstalled / Reinstalled / Recovered
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 StatItem(
-                    label = "Installed",
-                    value = dAppCount.toString(),
-                    sublabel = "dApps"
-                )
-                StatItem(
-                    label = "Storage",
-                    value = formatStorage(storageMB),
-                    sublabel = "used"
-                )
-                StatItem(
                     label = "Uninstalled",
                     value = uninstallCount.toString(),
                     sublabel = "total"
                 )
+                StatItem(
+                    label = "Reinstalled",
+                    value = reinstalledCount.toString(),
+                    sublabel = "${reinstallRate.toInt()}% rate"
+                )
+                StatItem(
+                    label = "Recovered",
+                    value = formatStorage(storageRecoveredMB),
+                    sublabel = "freed"
+                )
+            }
+
+            // Pending reinstall indicator
+            if (pendingReinstallCount > 0) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    color = SolanaPurple.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Pending,
+                            contentDescription = null,
+                            tint = SolanaPurple,
+                            modifier = Modifier.size(16.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = "$pendingReinstallCount dApp${if (pendingReinstallCount != 1) "s" else ""} available for reinstall",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = SolanaPurple
+                        )
+                    }
+                }
             }
         }
     }
@@ -335,18 +410,19 @@ fun StatItem(
         Text(
             text = value,
             style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            fontWeight = FontWeight.Bold,
+            color = SolanaGreen
         )
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            color = MaterialTheme.colorScheme.onSurface
         )
         if (sublabel != null) {
             Text(
                 text = sublabel,
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
     }
@@ -354,46 +430,57 @@ fun StatItem(
 
 @Composable
 fun FeaturesCard() {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth()
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Icon(
+                imageVector = Icons.Filled.Stars,
+                contentDescription = null,
+                tint = SolanaPurple,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = "Features",
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            FeatureRow(Icons.Filled.Delete, "Bulk Uninstall", "Clean up dApps in seconds")
-            FeatureRow(Icons.Filled.Download, "Batch Reinstall", "Restore your dApp collection")
-            FeatureRow(Icons.Filled.AccountBalanceWallet, "Wallet Login", "Connect with Solana wallet")
         }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        HomeFeatureRow(Icons.Filled.Delete, "Bulk Uninstall", "Clean up dApps in seconds", SolanaPurple)
+        HomeFeatureRow(Icons.Filled.Download, "Batch Reinstall", "Restore your dApp collection", SolanaGreen)
+        HomeFeatureRow(Icons.Filled.AutoMode, "Auto-Accept", "Skip system dialogs automatically", AardvarkTan)
+        HomeFeatureRow(Icons.Filled.AccountBalanceWallet, "Wallet Login", "Sign in with Solana (SIWS)", SolanaPurple)
     }
 }
 
 @Composable
-fun FeatureRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, desc: String) {
+fun HomeFeatureRow(icon: androidx.compose.ui.graphics.vector.ImageVector, title: String, desc: String, tint: Color = SolanaPurple) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary
+            tint = tint,
+            modifier = Modifier.size(20.dp)
         )
 
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(12.dp))
 
         Column {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 text = desc,
@@ -412,22 +499,18 @@ data class SetupItem(
 
 @Composable
 fun SeekerVerifiedCard(sgtMemberNumber: Long?) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF9945FF).copy(alpha = 0.15f)
-        )
+        glowColor = SolanaGreenGlow
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
                 imageVector = Icons.Filled.Verified,
                 contentDescription = "Verified Seeker",
-                tint = Color(0xFF9945FF),
+                tint = SolanaPurple,
                 modifier = Modifier.size(24.dp)
             )
 
@@ -439,7 +522,7 @@ fun SeekerVerifiedCard(sgtMemberNumber: Long?) {
                         text = "Verified Seeker",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF9945FF)
+                        color = SolanaPurple
                     )
                     sgtMemberNumber?.let { num ->
                         Spacer(modifier = Modifier.width(6.dp))
@@ -447,70 +530,31 @@ fun SeekerVerifiedCard(sgtMemberNumber: Long?) {
                             text = "#$num",
                             style = MaterialTheme.typography.titleSmall,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF14F195)
+                            color = SolanaGreen
                         )
                     }
                 }
                 Text(
-                    text = "SGT holder — 2 free bulk operations granted",
+                    text = "SGT holder — dApp 100% unlocked",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            Icon(
-                imageVector = Icons.Filled.PhoneAndroid,
-                contentDescription = null,
-                tint = Color(0xFF9945FF),
-                modifier = Modifier.size(20.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun CreditBalanceCard(balance: Int, isVerifiedSeeker: Boolean) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.5f)
-        )
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Token,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.size(24.dp)
-            )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = "Credits",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.7f)
-                )
-                Text(
-                    text = "$balance available",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+            // Green check badge
+            Surface(
+                shape = RoundedCornerShape(8.dp),
+                color = SolanaGreen.copy(alpha = 0.1f)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.LockOpen,
+                    contentDescription = null,
+                    tint = SolanaGreen,
+                    modifier = Modifier
+                        .padding(6.dp)
+                        .size(18.dp)
                 )
             }
-
-            Text(
-                text = if (balance > 0) "✓ Ready" else "Buy credits",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = if (balance > 0) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
-            )
         }
     }
 }
@@ -521,24 +565,19 @@ fun WalletInfoCard(
     walletName: String,
     onDisconnect: () -> Unit
 ) {
-    Card(
+    GlassCard(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+        glowColor = SolanaPurpleGlow
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Wallet icon
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                modifier = Modifier.size(48.dp)
+            // Wallet icon with glow ring
+            Surface(
+                modifier = Modifier.size(44.dp),
+                shape = RoundedCornerShape(12.dp),
+                color = SolanaPurple.copy(alpha = 0.15f)
             ) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -547,8 +586,8 @@ fun WalletInfoCard(
                     Icon(
                         imageVector = Icons.Filled.AccountBalanceWallet,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(28.dp)
+                        tint = SolanaPurple,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
@@ -560,25 +599,23 @@ fun WalletInfoCard(
                 Text(
                     text = walletName,
                     style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                 )
                 Text(
                     text = walletAddress,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = SolanaPurple
                 )
             }
 
-            // Disconnect button
-            IconButton(
-                onClick = onDisconnect
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.LinkOff,
-                    contentDescription = "Disconnect Wallet",
-                    tint = MaterialTheme.colorScheme.error
-                )
-            }
+            // Connected indicator
+            Icon(
+                imageVector = Icons.Filled.CheckCircle,
+                contentDescription = "Connected",
+                tint = SolanaGreen,
+                modifier = Modifier.size(20.dp)
+            )
         }
     }
 }

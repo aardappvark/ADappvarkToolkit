@@ -1,98 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Stylized Aardvark Head - Centered in safe zone (18dp inset) -->
-    <!-- Safe zone is 66x66 centered, so design within 21-87 range -->
+    <!--
+        Aardvark silhouette — matches the AnimatedAardvarkIcon / AardvarkIcon
+        used on the app's home screen. Solana purple-to-green gradient fill.
 
-    <!-- Main Head Shape -->
-    <path
-        android:fillColor="#D4A574"
-        android:pathData="
-            M78,52
-            C78,40 70,32 58,32
-            C50,32 44,35 40,40
-            L25,50
-            C22,52 22,56 25,58
-            L40,66
-            C44,70 50,74 58,74
-            C70,74 78,66 78,54
-            Z"/>
+        Mapping from AardvarkIcon.kt Canvas (0-100) to adaptive icon (108x108):
+          icon_coord = 21 + (canvas_coord / 100) * 66
+        Safe zone: 21,21 to 87,87 (66x66 centered area)
+    -->
+
+    <!-- Aardvark head silhouette with gradient fill -->
+    <path android:pathData="
+        M77.1,44.1
+        C73.8,34.2 60.6,30.9 50.7,34.2
+        C40.8,35.52 30.9,44.1 24.3,50.7
+        C22.32,52.68 22.32,55.32 24.3,57.3
+        C30.9,61.92 40.8,59.28 50.7,57.3
+        C57.3,59.28 63.9,63.9 70.5,60.6
+        C75.12,57.3 79.08,50.7 77.1,44.1
+        Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="24"
+                android:startY="30"
+                android:endX="79"
+                android:endY="64"
+                android:startColor="#9945FF"
+                android:endColor="#14F195" />
+        </aapt:attr>
+    </path>
 
     <!-- Ear -->
-    <path
-        android:fillColor="#C49764"
-        android:pathData="
-            M62,32
-            C65,26 72,24 76,28
-            C80,32 78,38 74,40
-            C70,42 66,38 64,36
-            Z"/>
+    <path android:pathData="
+        M67.2,37.5
+        C70.5,27.6 77.1,26.28 79.08,34.2
+        C80.4,39.48 77.1,42.12 72.48,40.8
+        Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:type="linear"
+                android:startX="67"
+                android:startY="26"
+                android:endX="80"
+                android:endY="43"
+                android:startColor="#9945FF"
+                android:endColor="#14F195" />
+        </aapt:attr>
+    </path>
 
-    <!-- Inner Ear -->
-    <path
-        android:fillColor="#E8C9A8"
-        android:pathData="
-            M66,30
-            C68,27 72,26 74,29
-            C76,32 74,35 72,36
-            C70,37 67,34 66,32
-            Z"/>
-
-    <!-- Snout/Nose (Long characteristic aardvark nose) -->
-    <path
-        android:fillColor="#E8C9A8"
-        android:pathData="
-            M25,50
-            L40,44
-            L40,62
-            L25,56
-            C22,54 22,52 25,50
-            Z"/>
-
-    <!-- Nostril -->
-    <path
-        android:fillColor="#8B6F47"
-        android:pathData="M28,52 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0"/>
-
-    <!-- Eye White -->
+    <!-- Eye white -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M52,46 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0"/>
+        android:pathData="M61.92,46.08 a2.64,2.64 0 1,1 5.28,0 a2.64,2.64 0 1,1 -5.28,0"/>
 
-    <!-- Eye Pupil -->
+    <!-- Eye pupil -->
     <path
-        android:fillColor="#2D1F12"
-        android:pathData="M55,46 a3,3 0 1,1 6,0 a3,3 0 1,1 -6,0"/>
-
-    <!-- Eye Highlight -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M56,44 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0"/>
-
-    <!-- Smile -->
-    <path
-        android:fillColor="#8B6F47"
-        android:strokeWidth="1.5"
-        android:pathData="M44,58 Q52,64 62,60"/>
-
-    <!-- dApp Toolbox Badge (bottom right) -->
-    <path
-        android:fillColor="#14F195"
-        android:pathData="M70,66 L70,78 L86,78 L86,66 Z"/>
-
-    <!-- Toolbox Handle -->
-    <path
-        android:fillColor="#0FD17A"
-        android:pathData="M75,62 L75,66 L81,66 L81,62 Z"/>
-
-    <!-- Toolbox "d" symbol -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M74,70 L74,76 L76,76 L76,72 L78,72 L78,76 L80,76 L80,70 Z
-                         M82,70 L82,76 L84,76 L84,70 Z"/>
+        android:fillColor="#0A0A12"
+        android:pathData="M63.12,46.08 a1.45,1.45 0 1,1 2.9,0 a1.45,1.45 0 1,1 -2.9,0"/>
 
 </vector>

@@ -2,65 +2,76 @@
 
 ## Priority Order
 
-### 1. Solana dApp Store Submission (FIRST)
-Get the dApp live on the Seeker dApp Store before applying for any grants.
-This is a prerequisite for the Solana Mobile grant.
+### 1. MONOLITH Hackathon (CURRENT — Deadline March 9, 2026)
+- $125K+ in prizes (10x $10K winners + 5x $5K honorable mentions)
+- **$10K bonus** for best SKR integration
+- Submit via align.nexus / solanamobile.com/hackathon
+- Judging: Mobile-first UX, Solana Mobile Stack integration, creative Solana usage, vision & clarity
 
-### 2. Solana Mobile Grants (AFTER dApp Store launch)
+### 2. Solana dApp Store Submission
+Get the dApp live on the Seeker dApp Store.
+This is a prerequisite for the Solana Mobile builder grant.
+
+### 3. Solana Mobile Builder Grants (AFTER dApp Store launch)
 - URL: https://airtable.com/appw7jfRXG6Joia2b/pagGNMPX6qleBYHNp/form
+- Up to $10K per team
+- Requires: mobile-first UX, SMS integration, detailed budget, public good commitment
+- Grants are awarded AFTER dApp is submitted to the store
 - Apply after the dApp is live and has initial usage metrics
-- Demonstrate value to the Seeker ecosystem
 - Highlight: Only dApp lifecycle management tool for Seeker
 
-### 3. Superteam Grants (FUTURE)
+### 4. Superteam Grants (FUTURE)
 - URL: https://superteam.fun/earn/grants
 - Equity-free grants for Solana ecosystem projects
 - STRATEGY: Fork the codebase and create an open-source version:
   - Remove payment gateways (SOL/SKR fees)
-  - Remove credit system
   - Make all features free
   - Open source under MIT or Apache 2.0 license
   - Position as a public good for the Solana ecosystem
-- This increases chances of approval significantly
 - Keep the paid version on dApp Store as the commercial product
-- The open-source fork would be a separate project/repo
 
-## dApp Store Submission Checklist
+## Payment Model (v1.0.5 — Feb 2026)
 
-### Critical (Must Complete Before Submission)
-- [ ] Set production wallet address in AppConfig.kt (replace placeholder)
-- [ ] Switch from devnet to mainnet-beta
-- [ ] Test on real Seeker device with Shizuku
-- [ ] Create release signing keystore
-- [ ] Build signed release APK
-- [ ] Deploy website at https://aardappvark.github.io/ADappvarkToolkit
-- [ ] Privacy Policy live at https://aardappvark.github.io/ADappvarkToolkit/privacy.html
-- [ ] Terms of Service live at https://aardappvark.github.io/ADappvarkToolkit/terms.html
-- [ ] Set up support email (aardappvark@proton.me)
-- [ ] GitHub repo for licensing/legal URLs
+| Tier | Price | Details |
+|------|-------|---------|
+| Free | $0 | Up to 4 apps per bulk operation |
+| Bulk (5+ apps) | 1 SKR / 0.01 SOL | Flat fee per operation |
+| Auto-Accept | 1 SKR / 0.01 SOL | 7-day pass, auto-tap system dialogs |
+| SGT Holders | Full unlock | Verified Seeker Genesis Token holders |
 
-### Assets Needed
-- [ ] App icon (512x512)
-- [ ] Feature graphic (1200x600)
-- [ ] Screenshots (1080x1920 or 1080x2400, minimum 4)
-- [ ] Promo video (optional, 30-60 seconds)
-
-### GitHub Setup Required
-- [ ] Create GitHub repository (public or private)
-- [ ] Host legal documents (Privacy Policy, Terms, Licenses)
-- [ ] Set up GitHub Pages or link to aardappvark.com
-- [ ] APK can be hosted in GitHub Releases as alternative distribution
-
-## Payment Model (Consolidated - Feb 9, 2026)
-- Up to 4 apps per operation: FREE
-- 5+ apps per operation: 0.01 SOL flat fee
-- 1 free credit on first wallet connect
+- All payments are real on-chain SOL transfers via MWA
+- SKR pricing displayed in UI, processed as SOL equivalent
+- No subscription model — one-time pass or per-operation
 - Credits expire 12 months after purchase
-- Accepts SOL and SKR (Seeker) tokens
-- No subscription model (removed)
-- No credit bundles (removed)
+
+## Solana Mobile Stack Integration
+
+| Component | Status | Details |
+|-----------|--------|---------|
+| Mobile Wallet Adapter 2.0 | ✅ | SIWS with side-button fingerprint |
+| Sign In With Solana (SIWS) | ✅ | Full authentication flow |
+| On-chain payments | ✅ | Real SOL transfers to treasury |
+| SGT verification | ✅ | seeker-verify 1.1.0 library |
+| SKR token | ⚠️ Partial | Pricing displayed, processes as SOL |
+| Seed Vault | ✅ Indirect | SIWS triggers Seeker side-button |
+
+## Hackathon Strengths
+
+- **Unique product** — Only dApp lifecycle management tool for Seeker
+- **Real on-chain payments** — Not mocked, actual SOL transfers
+- **SGT verification** — Real on-chain SGT checking via seeker-verify
+- **SIWS** — Side-button fingerprint, not basic authorize()
+- **Liquid glass UI** — Eye-catching glassmorphism design
+- **Privacy-first** — Zero analytics, GDPR/CCPA, geo-blocking
+- **Production-ready** — Release APK signed, deployed to Seeker
+
+## Hackathon Gaps (Priority Actions)
+
+1. **Real SKR payment** — Implement actual SPL token transfer for $10K SKR bonus
+2. **Demo video** — Record for "Vision & Clarity" judging criteria
+3. **Submit to dApp Store** — Looks great on hackathon submission
 
 ## Notes
-- The credit bundle pricing model was removed in favour of simple per-operation flat fee
-- The subscription model (weekly plans) was removed - dead code remains but is not wired into navigation
-- Free tier changed from 5 to 4 apps for consistency across all UI and legal text
+- v1.0.5 introduced: Liquid glass UI, redesigned entry screen, payment-gated auto-accept, animated logo
+- Free tier is 4 apps (consistent across all UI and legal text)
+- Auto-accept is a 7-day pass, not a subscription

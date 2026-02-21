@@ -50,23 +50,26 @@ fun AardAppvarkApp(activityResultSender: ActivityResultSender) {
     val seekerVerifier = remember { SeekerVerificationService(context) }
     val creditManager = remember { CreditManager(context) }
 
-    // Check if onboarding is complete (T&C accepted AND wallet connected)
+    // Check if onboarding is complete (T&C accepted AND wallet connected or skipped)
     var isOnboardingComplete by remember {
-        mutableStateOf(userPrefs.hasAcceptedTerms() && userPrefs.isWalletConnected())
+        mutableStateOf(userPrefs.isOnboardingComplete())
     }
 
     if (!isOnboardingComplete) {
-        // Show combined Terms & Wallet screen
+        // Show welcome/sign-in screen
         TermsAndWalletScreen(
             activityResultSender = activityResultSender,
             onComplete = { publicKey, walletName ->
-                // Record T&C acceptance with wallet address
-                userPrefs.acceptTerms(publicKey)
-
-                // Save wallet connection
-                userPrefs.saveWalletConnection(publicKey, walletName)
-
-                // Mark onboarding complete
+                if (publicKey != null && walletName != null) {
+                    // Wallet sign-in path
+                    userPrefs.acceptTerms(publicKey)
+                    userPrefs.saveWalletConnection(publicKey, walletName)
+                    userPrefs.clearSkippedWallet()
+                } else {
+                    // Skip-wallet path — T&C accepted without wallet
+                    userPrefs.acceptTerms("SKIPPED")
+                    userPrefs.setSkippedWallet()
+                }
                 userPrefs.setOnboardingComplete()
                 isOnboardingComplete = true
             },

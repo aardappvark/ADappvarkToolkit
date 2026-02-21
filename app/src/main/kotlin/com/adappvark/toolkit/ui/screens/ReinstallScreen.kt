@@ -14,9 +14,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -24,15 +27,25 @@ import androidx.compose.ui.unit.dp
 import android.os.Build
 import android.provider.Settings
 import android.util.Log
+import android.view.HapticFeedbackConstants
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalView
 import com.adappvark.toolkit.data.UninstallHistory
 import com.adappvark.toolkit.data.UninstalledApp
 import com.adappvark.toolkit.data.ProtectedApps
 import com.adappvark.toolkit.data.DAppStoreRegistry
 import com.adappvark.toolkit.data.model.DAppFilter
+import com.adappvark.toolkit.service.AppSettingsManager
 import com.adappvark.toolkit.service.PackageManagerService
+import com.adappvark.toolkit.service.PaymentService
+import com.adappvark.toolkit.service.SeekerVerificationService
 import com.adappvark.toolkit.service.ReinstallForegroundService
-import com.adappvark.toolkit.ui.components.TemporarilyFreeBanner
+import com.adappvark.toolkit.ui.components.BulkOperationBanner
+import com.adappvark.toolkit.ui.components.BulkPaymentChoiceDialog
+import com.adappvark.toolkit.ui.components.PaymentSuccessDialog
+import com.adappvark.toolkit.ui.components.PaymentErrorDialog
+import com.adappvark.toolkit.service.PaymentMethod
+import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -97,12 +110,25 @@ private fun setKeepScreenOn(context: Context, keepOn: Boolean) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReinstallScreen() {
+fun ReinstallScreen(
+    activityResultSender: ActivityResultSender? = null
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val view = LocalView.current
     val uninstallHistory = remember { UninstallHistory(context) }
     val protectedApps = remember { ProtectedApps(context) }
     val packageService = remember { PackageManagerService(context) }
+    val appSettings = remember { AppSettingsManager(context) }
+    val seekerVerifier = remember { SeekerVerificationService(context) }
+    val userPrefs = remember { com.adappvark.toolkit.service.UserPreferencesManager(context) }
+    // MobileWalletAdapter must be created at composition time (before Activity STARTED)
+    val walletAdapter = remember { PaymentService.createWalletAdapter() }
+    val paymentService = remember { PaymentService(context, walletAdapter) }
+
+    // Reactive wallet/SGT state
+    val isWalletConnected = userPrefs.isWalletConnected()
+    val isSgtVerified = if (isWalletConnected) seekerVerifier.isVerifiedSeeker() else false
 
     var historyList by remember { mutableStateOf(uninstallHistory.getHistory()) }
     // Installed dApps shown as faded items (not part of history)
@@ -123,12 +149,69 @@ fun ReinstallScreen() {
     var appsToReinstall by remember { mutableStateOf<List<UninstalledApp>>(emptyList()) }
     var sortOption by remember { mutableStateOf(SortOption.ALPHABETICAL) }
     var showSortMenu by remember { mutableStateOf(false) }
+
+    // Payment dialog state (non-SGT bulk operations)
+    var showPaymentDialog by remember { mutableStateOf(false) }
+    var paymentInProgress by remember { mutableStateOf(false) }
+    var paymentMessage by remember { mutableStateOf("Processing payment...") }
+    var paymentError by remember { mutableStateOf<String?>(null) }
+    var paymentSuccess by remember { mutableStateOf<String?>(null) }
+    var paymentApproved by remember { mutableStateOf(false) }
     var showOverlayPermissionDialog by remember { mutableStateOf(false) }
+    var searchQuery by remember { mutableStateOf("") }
+
+    val pullRefreshState = rememberPullToRefreshState()
+
+    // Handle pull-to-refresh
+    if (pullRefreshState.isRefreshing) {
+        LaunchedEffect(true) {
+            historyList = uninstallHistory.syncWithDeviceState()
+            val installed = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+            val historyPackages = historyList.map { it.packageName }.toSet()
+            installedDApps = installed
+                .filter { it.packageName !in historyPackages }
+                .map { dApp ->
+                    InstalledDApp(
+                        packageName = dApp.packageName,
+                        appName = dApp.appName,
+                        sizeInBytes = dApp.sizeInBytes,
+                        versionName = dApp.versionName
+                    )
+                }
+                .sortedBy { it.appName.lowercase() }
+            val dAppStoreDeviceApps = packageService.scanInstalledApps(filter = DAppFilter.DAPP_STORE_ONLY)
+            val discoveredExtras = dAppStoreDeviceApps
+                .filter { !DAppStoreRegistry.isExcluded(it.packageName) }
+                .map { DAppStoreRegistry.DAppEntry(it.packageName, it.appName, "Discovered") }
+            val mergedRegistry = DAppStoreRegistry.mergedWith(discoveredExtras)
+            val allKnownPackages = historyPackages + installed.map { it.packageName }.toSet()
+            notInstalledDApps = mergedRegistry
+                .filter { it.packageName !in allKnownPackages }
+                .sortedBy { it.displayName.lowercase() }
+            pullRefreshState.endRefresh()
+        }
+    }
+
+    // Filter history by search query
+    val filteredHistoryList = remember(historyList, searchQuery) {
+        if (searchQuery.isBlank()) historyList
+        else historyList.filter { it.appName.contains(searchQuery, ignoreCase = true) }
+    }
+
+    // Filter installed and not-installed lists by search too
+    val filteredInstalledDApps = remember(installedDApps, searchQuery) {
+        if (searchQuery.isBlank()) installedDApps
+        else installedDApps.filter { it.appName.contains(searchQuery, ignoreCase = true) }
+    }
+    val filteredNotInstalledDApps = remember(notInstalledDApps, searchQuery) {
+        if (searchQuery.isBlank()) notInstalledDApps
+        else notInstalledDApps.filter { it.displayName.contains(searchQuery, ignoreCase = true) }
+    }
 
     // Separate favourites and regular apps
-    val (favouritesList, regularList) = remember(historyList, favouriteApps, sortOption) {
-        val favs = historyList.filter { favouriteApps.contains(it.packageName) }
-        val regs = historyList.filter { !favouriteApps.contains(it.packageName) }
+    val (favouritesList, regularList) = remember(filteredHistoryList, favouriteApps, sortOption) {
+        val favs = filteredHistoryList.filter { favouriteApps.contains(it.packageName) }
+        val regs = filteredHistoryList.filter { !favouriteApps.contains(it.packageName) }
 
         // Sort function based on option
         fun sortList(list: List<UninstalledApp>): List<UninstalledApp> {
@@ -153,8 +236,8 @@ fun ReinstallScreen() {
     }
 
     // Combined sorted list for counts
-    val sortedHistoryList = remember(historyList, sortOption) {
-        historyList.sortedWith(
+    val sortedHistoryList = remember(filteredHistoryList, sortOption) {
+        filteredHistoryList.sortedWith(
             compareBy<UninstalledApp> { app ->
                 // Status priority: 0 = pending (not reinstalled, not skipped), 1 = skipped, 2 = reinstalled
                 when {
@@ -241,14 +324,39 @@ fun ReinstallScreen() {
         }
     }
 
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(pullRefreshState.nestedScrollConnection)
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        // Search bar - show when there's content to search
+        if (historyList.isNotEmpty() || installedDApps.isNotEmpty() || notInstalledDApps.isNotEmpty()) {
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                modifier = Modifier.fillMaxWidth(),
+                placeholder = { Text("Search dApps...") },
+                leadingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
+                trailingIcon = {
+                    if (searchQuery.isNotEmpty()) {
+                        IconButton(onClick = { searchQuery = "" }) {
+                            Icon(Icons.Filled.Clear, contentDescription = "Clear search")
+                        }
+                    }
+                },
+                singleLine = true
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+
         // Header with info
         if (historyList.isEmpty() && installedDApps.isEmpty() && notInstalledDApps.isEmpty()) {
-            // Truly empty state - no history, no installed apps, no registry
+            // Illustrated empty state - truly empty
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -259,13 +367,22 @@ fun ReinstallScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Download,
-                        contentDescription = null,
-                        modifier = Modifier.size(64.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    Spacer(modifier = Modifier.height(16.dp))
+                    // Stacked icon illustration
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Filled.Restore,
+                            contentDescription = null,
+                            modifier = Modifier.size(80.dp),
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.History,
+                            contentDescription = null,
+                            modifier = Modifier.size(48.dp),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
                     Text(
                         text = "No Uninstall History",
                         style = MaterialTheme.typography.titleLarge,
@@ -273,20 +390,65 @@ fun ReinstallScreen() {
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
-                        text = "Apps you uninstall using ADappvark will appear here for easy reinstallation.",
+                        text = "Apps you uninstall using AarDappvark will appear here for easy reinstallation.",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        textAlign = TextAlign.Center
                     )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Surface(
+                        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.ArrowBack,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Head to the Uninstall tab to get started",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
                 }
             }
         } else if (historyList.isEmpty() && (installedDApps.isNotEmpty() || notInstalledDApps.isNotEmpty())) {
-            // No uninstall history yet, but show installed dApps as faded items
-            Text(
-                text = "No uninstall history yet. Uninstall dApps from the Uninstall tab to see them here.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+            // Illustrated hint - no history yet but there are apps to show
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.SwapVert,
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp),
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "No uninstall history yet",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Uninstall dApps from the Uninstall tab to see them here for easy reinstall",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
@@ -301,12 +463,12 @@ fun ReinstallScreen() {
                         modifier = Modifier.padding(vertical = 4.dp)
                     )
                 }
-                items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
+                items(filteredInstalledDApps, key = { "installed_${it.packageName}" }) { app ->
                     InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
                 }
 
                 // Not-installed dApp Store apps
-                if (notInstalledDApps.isNotEmpty()) {
+                if (filteredNotInstalledDApps.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
@@ -317,7 +479,7 @@ fun ReinstallScreen() {
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
-                    items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                    items(filteredNotInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
                         NotInstalledDAppItem(
                             displayName = entry.displayName,
                             category = entry.category,
@@ -366,12 +528,16 @@ fun ReinstallScreen() {
                 }
                 Row {
                     TextButton(onClick = {
+                        if (appSettings.isSelectionHapticsEnabled()) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
                         // Only select non-reinstalled apps
                         selectedApps = pendingApps.map { it.packageName }.toSet()
                     }) {
                         Text("Select All")
                     }
-                    TextButton(onClick = { selectedApps = emptySet() }) {
+                    TextButton(onClick = {
+                        if (appSettings.isSelectionHapticsEnabled()) view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                        selectedApps = emptySet()
+                    }) {
                         Text("Clear")
                     }
                     // Sort dropdown
@@ -602,7 +768,7 @@ fun ReinstallScreen() {
                 }
 
                 // Installed dApps Section - shown faded as "already installed"
-                if (installedDApps.isNotEmpty()) {
+                if (filteredInstalledDApps.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
@@ -613,13 +779,13 @@ fun ReinstallScreen() {
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
-                    items(installedDApps, key = { "installed_${it.packageName}" }) { app ->
+                    items(filteredInstalledDApps, key = { "installed_${it.packageName}" }) { app ->
                         InstalledDAppItem(appName = app.appName, versionName = app.versionName, sizeInBytes = app.sizeInBytes)
                     }
                 }
 
                 // Not-installed dApp Store apps
-                if (notInstalledDApps.isNotEmpty()) {
+                if (filteredNotInstalledDApps.isNotEmpty()) {
                     item {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
@@ -630,7 +796,7 @@ fun ReinstallScreen() {
                             modifier = Modifier.padding(vertical = 4.dp)
                         )
                     }
-                    items(notInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
+                    items(filteredNotInstalledDApps, key = { "notinstalled_${it.packageName}" }) { entry ->
                         NotInstalledDAppItem(
                             displayName = entry.displayName,
                             category = entry.category,
@@ -649,13 +815,25 @@ fun ReinstallScreen() {
             }
 
             if (eligibleSelected.isNotEmpty()) {
-                // Temporarily Free Banner
-                TemporarilyFreeBanner(selectedCount = eligibleSelected.size)
+                // SGT-aware banner
+                BulkOperationBanner(
+                    selectedCount = eligibleSelected.size,
+                    isSgtVerified = isSgtVerified,
+                    operationType = "reinstall"
+                )
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     onClick = {
+                        if (appSettings.isReinstallHapticsEnabled()) view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+
+                        // Payment gate: 5+ dApps without SGT requires payment
+                        if (eligibleSelected.size >= 5 && !isSgtVerified && !paymentApproved) {
+                            showPaymentDialog = true
+                            return@Button
+                        }
+
                         // Check overlay permission first (required on Android 14+ for BAL)
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
                             !Settings.canDrawOverlays(context)) {
@@ -666,7 +844,6 @@ fun ReinstallScreen() {
                         // Check battery before showing confirmation
                         val apps = historyList.filter { it.packageName in eligibleSelected && !it.reinstalled && !it.skipReinstall }
 
-                        // Log what we're about to reinstall (debug builds only)
                         Log.d(TAG, "Reinstall button clicked - ${apps.size} apps selected")
 
                         appsToReinstall = apps
@@ -688,6 +865,12 @@ fun ReinstallScreen() {
             }
         }
     }
+
+    PullToRefreshContainer(
+        state = pullRefreshState,
+        modifier = Modifier.align(Alignment.TopCenter)
+    )
+    } // end Box
 
     // Clear history confirmation dialog
     if (showClearDialog) {
@@ -940,6 +1123,118 @@ fun ReinstallScreen() {
             }
         )
     }
+
+    // Payment choice dialog (non-SGT bulk operations)
+    if (showPaymentDialog) {
+        BulkPaymentChoiceDialog(
+            selectedCount = selectedApps.size,
+            operationType = "reinstall",
+            onPayWithSOL = {
+                if (activityResultSender == null) {
+                    paymentError = "Wallet not available. Please connect a wallet first."
+                    showPaymentDialog = false
+                    return@BulkPaymentChoiceDialog
+                }
+                paymentInProgress = true
+                paymentMessage = "Requesting SOL payment..."
+                scope.launch {
+                    try {
+                        paymentService.requestSOLPayment(
+                            activityResultSender = activityResultSender,
+                            appCount = selectedApps.size,
+                            onSuccess = { signature ->
+                                paymentInProgress = false
+                                showPaymentDialog = false
+                                paymentSuccess = signature
+                                paymentApproved = true
+                            },
+                            onError = { error ->
+                                paymentInProgress = false
+                                showPaymentDialog = false
+                                paymentError = error
+                            }
+                        )
+                    } catch (e: Exception) {
+                        paymentInProgress = false
+                        showPaymentDialog = false
+                        paymentError = e.message ?: "Payment failed"
+                    }
+                }
+            },
+            onPayWithSKR = {
+                if (activityResultSender == null) {
+                    paymentError = "Wallet not available. Please connect a wallet first."
+                    showPaymentDialog = false
+                    return@BulkPaymentChoiceDialog
+                }
+                paymentInProgress = true
+                paymentMessage = "Requesting SKR payment..."
+                scope.launch {
+                    try {
+                        paymentService.requestSKRPayment(
+                            activityResultSender = activityResultSender,
+                            appCount = selectedApps.size,
+                            onSuccess = { signature ->
+                                paymentInProgress = false
+                                showPaymentDialog = false
+                                paymentSuccess = signature
+                                paymentApproved = true
+                            },
+                            onError = { error ->
+                                paymentInProgress = false
+                                showPaymentDialog = false
+                                paymentError = error
+                            }
+                        )
+                    } catch (e: Exception) {
+                        paymentInProgress = false
+                        showPaymentDialog = false
+                        paymentError = e.message ?: "Payment failed"
+                    }
+                }
+            },
+            onCancel = {
+                showPaymentDialog = false
+                paymentInProgress = false
+            },
+            isProcessing = paymentInProgress,
+            processingMessage = paymentMessage
+        )
+    }
+
+    // Payment success — proceed with reinstall
+    if (paymentSuccess != null) {
+        PaymentSuccessDialog(
+            transactionSignature = paymentSuccess!!,
+            paymentMethod = PaymentMethod.SOL,
+            onContinue = {
+                paymentSuccess = null
+                // Now proceed with reinstall (payment approved)
+                val apps = historyList.filter { it.packageName in selectedApps && !it.reinstalled && !it.skipReinstall }
+                appsToReinstall = apps
+                val (_, _, batteryState) = getBatteryStatus(context)
+                when (batteryState) {
+                    BatteryStatus.CRITICAL -> showBatteryError = true
+                    BatteryStatus.LOW -> showBatteryWarning = true
+                    BatteryStatus.OK -> showConfirmDialog = true
+                }
+            }
+        )
+    }
+
+    // Payment error dialog
+    if (paymentError != null) {
+        PaymentErrorDialog(
+            errorMessage = paymentError!!,
+            onRetry = {
+                paymentError = null
+                showPaymentDialog = true
+            },
+            onCancel = {
+                paymentError = null
+            }
+        )
+    }
 }
 
 @Composable
@@ -952,10 +1247,16 @@ fun UninstalledAppItem(
     onToggleSkipReinstall: () -> Unit = {},
     onToggleFavourite: () -> Unit = {}
 ) {
+    val view = LocalView.current
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { if (!app.reinstalled && !app.skipReinstall) onToggle() },
+            .clickable {
+                if (!app.reinstalled && !app.skipReinstall) {
+                    view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                    onToggle()
+                }
+            },
         colors = CardDefaults.cardColors(
             containerColor = when {
                 app.reinstalled -> MaterialTheme.colorScheme.tertiaryContainer
@@ -1009,7 +1310,10 @@ fun UninstalledAppItem(
 
             // Favourite star icon
             IconButton(
-                onClick = onToggleFavourite,
+                onClick = {
+                    view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                    onToggleFavourite()
+                },
                 modifier = Modifier.size(40.dp)
             ) {
                 Icon(

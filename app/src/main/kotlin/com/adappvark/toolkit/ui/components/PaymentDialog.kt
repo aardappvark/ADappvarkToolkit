@@ -202,64 +202,208 @@ fun PaymentOptionButton(
 }
 
 /**
- * Simple info banner to show pricing on selection screens
- * First 4 apps are free, 5+ apps require 0.01 SOL per bulk operation
- *
- * NOTE: Payment is temporarily disabled — kept for future re-enablement
+ * SGT-aware banner for bulk operations.
+ * Shows different states based on Seeker Genesis Token detection.
  */
 @Composable
-fun PricingBanner(
+fun BulkOperationBanner(
     selectedCount: Int,
+    isSgtVerified: Boolean,
+    operationType: String, // "uninstall" or "reinstall"
     modifier: Modifier = Modifier
 ) {
-    TemporarilyFreeBanner(selectedCount = selectedCount, modifier = modifier)
+    if (isSgtVerified) {
+        // SGT detected — free bulk operations
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF14F195).copy(alpha = 0.1f)
+            ),
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Verified,
+                    contentDescription = null,
+                    tint = Color(0xFF14F195),
+                    modifier = Modifier.size(20.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "Seeker Genesis Token Detected",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF14F195)
+                    )
+                    Text(
+                        text = "$selectedCount apps selected — bulk free $operationType unlocked",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFF14F195).copy(alpha = 0.7f)
+                    )
+                }
+            }
+        }
+    } else {
+        // No SGT — payment required
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = Color(0xFF9945FF).copy(alpha = 0.1f)
+            ),
+            modifier = modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Lock,
+                    contentDescription = null,
+                    tint = Color(0xFF9945FF),
+                    modifier = Modifier.size(20.dp)
+                )
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = "No Seeker Genesis Token Detected",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF9945FF)
+                    )
+                    Text(
+                        text = "$selectedCount apps selected — payment required for bulk $operationType",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color(0xFF9945FF).copy(alpha = 0.7f)
+                    )
+                }
+            }
+        }
+    }
 }
 
 /**
- * Banner that shows all operations are temporarily free.
- * Replaces PricingBanner while payment is disabled.
+ * Kept for backwards compatibility — delegates to BulkOperationBanner
  */
 @Composable
 fun TemporarilyFreeBanner(
     selectedCount: Int,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer
-        ),
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+    BulkOperationBanner(
+        selectedCount = selectedCount,
+        isSgtVerified = true,
+        operationType = "operation",
+        modifier = modifier
+    )
+}
+
+/**
+ * Payment choice dialog — shown when non-SGT user attempts bulk operation (5+ dApps)
+ */
+@Composable
+fun BulkPaymentChoiceDialog(
+    selectedCount: Int,
+    operationType: String, // "uninstall" or "reinstall"
+    onPayWithSOL: () -> Unit,
+    onPayWithSKR: () -> Unit,
+    onCancel: () -> Unit,
+    isProcessing: Boolean = false,
+    processingMessage: String = "Processing payment..."
+) {
+    AlertDialog(
+        onDismissRequest = { if (!isProcessing) onCancel() },
+        icon = {
             Icon(
-                imageVector = Icons.Filled.CheckCircle,
+                imageVector = Icons.Filled.Lock,
                 contentDescription = null,
-                tint = Color(0xFF4CAF50),
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(40.dp),
+                tint = Color(0xFF9945FF)
             )
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Column(modifier = Modifier.weight(1f)) {
+        },
+        title = {
+            Text(
+                text = "No Seeker Genesis Token Detected",
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
-                    text = "Temporarily Free",
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                    text = "Bulk $operationType of $selectedCount dApps requires payment.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
                 )
-                Text(
-                    text = "$selectedCount apps selected — all operations are free during early access",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
-                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (isProcessing) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CircularProgressIndicator()
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = processingMessage,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                } else {
+                    Text(
+                        text = "Select payment method:",
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    // SOL Payment Button
+                    PaymentOptionButton(
+                        label = "Pay with SOL",
+                        amount = "0.01 SOL",
+                        icon = Icons.Filled.CurrencyBitcoin,
+                        onClick = onPayWithSOL,
+                        isPrimary = true
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // SKR Payment Button
+                    PaymentOptionButton(
+                        label = "Pay with SKR",
+                        amount = "1 SKR",
+                        icon = Icons.Filled.Token,
+                        onClick = onPayWithSKR,
+                        isPrimary = false,
+                        subtitle = "Seeker Token"
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            // Empty - payment buttons are in the content
+        },
+        dismissButton = {
+            if (!isProcessing) {
+                TextButton(onClick = onCancel) {
+                    Text("Cancel")
+                }
             }
         }
-    }
+    )
 }
 
 /**

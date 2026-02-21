@@ -75,8 +75,8 @@ class PackageManagerService(private val context: Context) {
     private fun getPackageStorageSize(packageName: String): Long {
         return try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
-            val appInfo = packageInfo.applicationInfo
-            
+            val appInfo = packageInfo.applicationInfo ?: return 0L
+
             // Basic size estimation (code + data dirs)
             // Note: This is approximate. Full size calculation requires StorageStatsManager
             // which needs additional permissions
@@ -90,7 +90,7 @@ class PackageManagerService(private val context: Context) {
      * Check if package should be included based on filter
      */
     private fun shouldIncludePackage(packageInfo: PackageInfo, filter: DAppFilter): Boolean {
-        val appInfo = packageInfo.applicationInfo
+        val appInfo = packageInfo.applicationInfo ?: return false
 
         // Never include our own app or critical dependencies in the list
         val excludedPackages = setOf(
@@ -108,10 +108,10 @@ class PackageManagerService(private val context: Context) {
             filter != DAppFilter.ALL) {
             return false
         }
-        
+
         return when (filter) {
             DAppFilter.ALL -> true
-            
+
             DAppFilter.DAPP_STORE_ONLY -> {
                 val installSource = getInstallSource(packageInfo.packageName)
                 // Match apps explicitly installed by the dApp Store
@@ -123,12 +123,12 @@ class PackageManagerService(private val context: Context) {
                 (installSource == null && appInfo.flags and ApplicationInfo.FLAG_SYSTEM == 0
                     && appInfo.flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP == 0)
             }
-            
+
             DAppFilter.LARGE_SIZE -> {
                 val size = getPackageStorageSize(packageInfo.packageName)
                 size > 100 * 1024 * 1024  // > 100MB
             }
-            
+
             DAppFilter.OLD_INSTALLS -> {
                 val installTime = packageInfo.firstInstallTime
                 val thirtyDaysAgo = System.currentTimeMillis() - (30 * 24 * 60 * 60 * 1000)
@@ -140,13 +140,13 @@ class PackageManagerService(private val context: Context) {
     /**
      * Create DAppInfo from PackageInfo
      */
-    private fun createDAppInfo(packageInfo: PackageInfo): DAppInfo {
-        val appInfo = packageInfo.applicationInfo
+    private fun createDAppInfo(packageInfo: PackageInfo): DAppInfo? {
+        val appInfo = packageInfo.applicationInfo ?: return null
         val appName = packageManager.getApplicationLabel(appInfo).toString()
         val icon = packageManager.getApplicationIcon(appInfo)
         val size = getPackageStorageSize(packageInfo.packageName)
         val installSource = getInstallSource(packageInfo.packageName)
-        
+
         return DAppInfo(
             packageName = packageInfo.packageName,
             appName = appName,

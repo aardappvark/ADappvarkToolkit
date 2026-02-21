@@ -37,6 +37,7 @@ class UserPreferencesManager(context: Context) {
 
         // Onboarding
         private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
+        private const val KEY_SKIPPED_WALLET = "skipped_wallet"
         private const val KEY_NOTIFICATION_PERMISSION_ASKED = "notification_permission_asked"
         private const val KEY_NOTIFICATION_ENABLED = "notification_enabled"
 
@@ -153,10 +154,31 @@ class UserPreferencesManager(context: Context) {
     // ==================== Onboarding ====================
 
     /**
-     * Check if onboarding is complete (T&C accepted + wallet connected)
+     * Check if onboarding is complete (T&C accepted + wallet connected OR skipped)
      */
     fun isOnboardingComplete(): Boolean {
-        return hasAcceptedTerms() && isWalletConnected()
+        return hasAcceptedTerms() && (isWalletConnected() || hasSkippedWallet())
+    }
+
+    /**
+     * Mark that the user skipped wallet connection
+     */
+    fun setSkippedWallet() {
+        prefs.edit().putBoolean(KEY_SKIPPED_WALLET, true).apply()
+    }
+
+    /**
+     * Check if user skipped wallet connection
+     */
+    fun hasSkippedWallet(): Boolean {
+        return prefs.getBoolean(KEY_SKIPPED_WALLET, false)
+    }
+
+    /**
+     * Clear the skipped-wallet flag (when user later connects a wallet)
+     */
+    fun clearSkippedWallet() {
+        prefs.edit().putBoolean(KEY_SKIPPED_WALLET, false).apply()
     }
 
     /**

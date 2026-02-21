@@ -6,16 +6,17 @@ import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import com.adappvark.toolkit.AppConfig
 import com.adappvark.toolkit.data.model.SubscriptionPlan
-import com.adappvark.toolkit.util.Base58
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * Manager for Solana Mobile Wallet Adapter payments
- * Handles subscription payments via MWA
+ * Manager for Solana payments via Mobile Wallet Adapter.
  *
- * Note: This is a simplified implementation for initial build.
- * Full MWA integration will be added when testing on device.
+ * Current state: All bulk operations are temporarily free during the hackathon/launch period.
+ * When the free period ends, this manager will handle real SPL token transfers (SKR)
+ * via MWA for non-SGT users.
+ *
+ * SGT (Seeker Genesis Token) holders always get free access — verified via seeker-verify.
  */
 class SolanaPaymentManager(
     private val context: Context,
@@ -37,29 +38,30 @@ class SolanaPaymentManager(
     private var authToken: String? = null
 
     /**
-     * Request payment for a subscription plan
-     * @return Result with transaction signature on success
+     * Request payment for a subscription plan.
+     *
+     * Currently returns a free-tier grant since all operations are temporarily free.
+     * When real payments are enabled, this will build and send an SPL token transfer
+     * via MWA to the payment wallet.
+     *
+     * @return Result with payment result on success
      */
     suspend fun requestSubscriptionPayment(
         plan: SubscriptionPlan
     ): Result<PaymentResult> = withContext(Dispatchers.IO) {
         try {
-            // For testing/demo, simulate a successful payment
-            // In production with real MWA, this would:
-            // 1. Connect to wallet
-            // 2. Build transaction
-            // 3. Sign and send via MWA
-
-            // Generate a mock transaction signature for testing
-            val mockSignature = "test_" + System.currentTimeMillis().toString(16) + "_" +
-                plan.name.lowercase().take(8)
+            // Temporarily free — no real payment required during launch period.
+            // This path will be replaced with real MWA SPL token transfer when
+            // the free period ends and SKR payments are enabled.
+            val grantId = "free_grant_${System.currentTimeMillis()}"
 
             Result.success(
                 PaymentResult(
-                    transactionSignature = mockSignature,
+                    transactionSignature = grantId,
                     plan = plan,
-                    amount = plan.getPriceInSol(),
-                    timestamp = System.currentTimeMillis()
+                    amount = 0.0,  // Free during launch
+                    timestamp = System.currentTimeMillis(),
+                    isFreeGrant = true
                 )
             )
 
@@ -69,18 +71,16 @@ class SolanaPaymentManager(
     }
 
     /**
-     * Connect to Solana wallet
-     * Opens the wallet app for authorization
+     * Connect to Solana wallet.
+     * Opens the wallet app for authorization.
      */
     fun connectWallet(): Boolean {
         return try {
-            // Create MWA intent to connect to wallet
             val intent = Intent(Intent.ACTION_VIEW).apply {
                 data = Uri.parse("solana-wallet://")
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
-            // Check if any wallet app can handle this
             if (intent.resolveActivity(context.packageManager) != null) {
                 activityLauncher?.launch(intent) ?: context.startActivity(intent)
                 true
@@ -107,17 +107,18 @@ class SolanaPaymentManager(
     }
 
     /**
-     * Verify transaction on-chain
+     * Verify transaction on-chain.
      * @param signature Transaction signature to verify
      * @return true if transaction is confirmed
      */
     suspend fun verifyTransaction(signature: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            // For mock transactions (starting with "test_"), always return success
-            if (signature.startsWith("test_")) {
+            // Free grants are always valid — no on-chain verification needed
+            if (signature.startsWith("free_grant_")) {
                 return@withContext Result.success(true)
             }
 
+            // Real on-chain verification for actual SPL token transfers
             val rpcClient = SolanaRpcClient()
             val result = rpcClient.confirmTransaction(signature)
             if (result.isSuccess) {
@@ -156,12 +157,14 @@ data class PaymentResult(
     val transactionSignature: String,
     val plan: SubscriptionPlan,
     val amount: Double,
-    val timestamp: Long
+    val timestamp: Long,
+    val isFreeGrant: Boolean = false
 ) {
     /**
      * Get short signature for display (first 8 + last 8 chars)
      */
     fun getShortSignature(): String {
+        if (isFreeGrant) return "Free Grant"
         return if (transactionSignature.length >= 16) {
             "${transactionSignature.take(8)}...${transactionSignature.takeLast(8)}"
         } else {
@@ -170,9 +173,10 @@ data class PaymentResult(
     }
 
     /**
-     * Get Solscan URL for this transaction
+     * Get Solscan URL for this transaction (only for real on-chain transactions)
      */
-    fun getSolscanUrl(): String {
+    fun getSolscanUrl(): String? {
+        if (isFreeGrant) return null
         return "https://solscan.io/tx/$transactionSignature"
     }
 }

@@ -17,8 +17,8 @@ import com.solana.mobilewalletadapter.clientlib.TransactionResult
  * - 5+ apps: 0.01 SOL (or 1 SKR) per bulk operation
  *
  * Payment Options:
- * - SOL (Solana native token)
- * - SKR (Seeker token - future implementation)
+ * - SOL (Solana native token) via SystemProgram::Transfer
+ * - SKR (Seeker SPL token) via TokenProgram::TransferChecked
  */
 class PaymentService(
     private val context: Context,
@@ -41,8 +41,8 @@ class PaymentService(
         // Treasury wallet address - uses centralized AppConfig
         val TREASURY_WALLET = AppConfig.Payment.WALLET_ADDRESS
 
-        // SKR token mint address (replace with actual when available)
-        const val SKR_TOKEN_MINT = "SKRTokenMint11111111111111111111111111111"
+        // SKR token mint address (official Seeker token)
+        const val SKR_TOKEN_MINT = "SKRbvo6Gf7GondiT3BbTfuRDPqLWei4j2Qy2NPGZhW3"
 
         // Lamports per SOL
         private const val LAMPORTS_PER_SOL = 1_000_000_000L
@@ -212,7 +212,7 @@ class PaymentService(
         }
 
         val adapter = mobileWalletAdapter ?: run {
-            onError("Payment service not properly initialized. Please restart the app.")
+            onError("Payment service not properly initialized. Please restart the dApp.")
             return
         }
 
@@ -317,11 +317,10 @@ class PaymentService(
     }
 
     /**
-     * Request SKR token payment from user's wallet
-     * Performs geo-restriction check before processing.
-     * Note: SKR token payment requires SPL token transfer implementation
+     * Request SKR token payment from user's wallet.
+     * Builds a real SPL Token TransferChecked transaction, signs via MWA, and submits to network.
+     * Includes CreateAssociatedTokenAccount for the treasury if needed.
      */
-    @Suppress("UNUSED_PARAMETER")
     suspend fun requestSKRPayment(
         activityResultSender: ActivityResultSender,
         appCount: Int,
@@ -334,7 +333,7 @@ class PaymentService(
             return
         }
 
-        // Pre-transaction compliance check: geo-restriction
+        // Pre-transaction compliance check: geo-restriction + wallet screening
         val geoService = GeoRestrictionService(context)
         val geoResult = geoService.checkGeoRestriction()
         if (geoResult is GeoRestrictionService.GeoCheckResult.Blocked) {
@@ -346,9 +345,115 @@ class PaymentService(
             return
         }
 
-        // SKR payment implementation would be similar to SOL but using SPL token transfer
-        // For now, show that SKR is coming soon
-        onError("SKR payments coming soon! Please use SOL for now.")
+        val adapter = mobileWalletAdapter ?: run {
+            onError("Payment service not properly initialized. Please restart the dApp.")
+            return
+        }
+
+        // Step 1: Get recent blockhash
+        val blockhashResult = rpcClient.getRecentBlockhash()
+        val blockhashData = blockhashResult.getOrElse { e ->
+            onError("Failed to get blockhash: ${e.message}")
+            return
+        }
+        Log.d(TAG, "SKR payment — got blockhash: ${blockhashData.blockhash}")
+
+        // Step 2: Get SKR token decimals from on-chain mint
+        val tokenInfoResult = rpcClient.getTokenSupply(SKR_TOKEN_MINT)
+        val tokenInfo = tokenInfoResult.getOrElse { e ->
+            onError("Failed to get SKR token info: ${e.message}")
+            return
+        }
+        val decimals = tokenInfo.decimals
+        Log.d(TAG, "SKR token decimals: $decimals")
+
+        // Step 3: Check if treasury already has an ATA for SKR
+        val treasuryAtaResult = rpcClient.getTokenAccountsByOwner(TREASURY_WALLET, SKR_TOKEN_MINT)
+        val treasuryHasAta = treasuryAtaResult.getOrNull()?.isNotEmpty() == true
+        Log.d(TAG, "Treasury has SKR ATA: $treasuryHasAta")
+
+        // Step 4: Decode addresses
+        val treasuryPubkey: ByteArray
+        val mintPubkey: ByteArray
+        val blockhashBytes: ByteArray
+        try {
+            treasuryPubkey = decodeBase58(TREASURY_WALLET)
+            require(treasuryPubkey.size == 32) { "Treasury wallet decoded to ${treasuryPubkey.size} bytes" }
+            mintPubkey = decodeBase58(SKR_TOKEN_MINT)
+            require(mintPubkey.size == 32) { "SKR mint decoded to ${mintPubkey.size} bytes" }
+            blockhashBytes = decodeBase58(blockhashData.blockhash)
+            require(blockhashBytes.size == 32) { "Blockhash decoded to ${blockhashBytes.size} bytes" }
+        } catch (e: Exception) {
+            onError("Invalid address configuration: ${e.message}")
+            return
+        }
+
+        // Step 5: Calculate token amount in smallest units
+        val tokenAmount = (amount * Math.pow(10.0, decimals.toDouble())).toLong()
+        Log.d(TAG, "SKR transfer: $amount SKR = $tokenAmount smallest units (decimals=$decimals)")
+
+        try {
+            // Step 6: Connect to wallet, authorize, build SPL tx, sign & send
+            val result = adapter.transact(activityResultSender) {
+                val authResult = authorize(
+                    identityUri = Uri.parse(AppConfig.Identity.URI),
+                    iconUri = Uri.parse(AppConfig.Identity.ICON_URI),
+                    identityName = AppConfig.Identity.NAME,
+                    chain = if (AppConfig.Payment.CLUSTER == "mainnet-beta") "solana:mainnet" else "solana:devnet"
+                )
+
+                val userPubkey = authResult.accounts.firstOrNull()?.publicKey
+                    ?: throw Exception("No account returned from wallet authorization")
+
+                Log.d(TAG, "SKR payment — user pubkey: ${userPubkey.size} bytes")
+
+                // Wallet sanctions check
+                val walletAddress = encodeBase58(userPubkey)
+                if (geoService.isWalletSanctioned(walletAddress)) {
+                    throw Exception("Wallet $walletAddress is on a sanctions list. Transaction blocked.")
+                }
+
+                // Build SPL token TransferChecked transaction
+                val transactionMessage = txBuilder.buildSplTransferCheckedTransaction(
+                    fromWallet = userPubkey,
+                    toWallet = treasuryPubkey,
+                    mint = mintPubkey,
+                    amount = tokenAmount,
+                    decimals = decimals,
+                    recentBlockhash = blockhashBytes,
+                    createRecipientAta = !treasuryHasAta
+                )
+
+                Log.d(TAG, "Built SKR SPL transaction: ${transactionMessage.size} bytes (createAta=${!treasuryHasAta})")
+
+                signAndSendTransactions(
+                    transactions = arrayOf(transactionMessage)
+                )
+            }
+
+            when (result) {
+                is TransactionResult.Success -> {
+                    val signatures = result.payload.signatures
+                    val signature = if (signatures.isNotEmpty()) {
+                        encodeBase58(signatures[0])
+                    } else {
+                        "SKR_TX_${System.currentTimeMillis()}"
+                    }
+                    Log.d(TAG, "SKR payment successful! Signature: $signature")
+                    onSuccess(signature)
+                }
+                is TransactionResult.NoWalletFound -> {
+                    onError("No wallet found. Please install a Solana wallet app.")
+                }
+                is TransactionResult.Failure -> {
+                    Log.e(TAG, "SKR payment failed", result.e)
+                    onError(result.e.message ?: "SKR payment failed. Please try again.")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "SKR payment error", e)
+            onError(e.message ?: "SKR payment failed unexpectedly.")
+        }
     }
 }
 

@@ -5,14 +5,14 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Solana gradient purple background -->
+    <!-- AMOLED dark background matching app theme -->
     <path
         android:pathData="M0,0 L108,0 L108,108 L0,108 Z"
-        android:fillColor="#9945FF"/>
+        android:fillColor="#0A0A12"/>
 
-    <!-- Inner circle for depth -->
+    <!-- Subtle radial glow hint (Solana purple, very low alpha) -->
     <path
-        android:pathData="M54,54 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"
-        android:fillColor="#7A2FE0"/>
+        android:pathData="M54,54 m-42,0 a42,42 0 1,1 84,0 a42,42 0 1,1 -84,0"
+        android:fillColor="#1A0D2E"/>
 
 </vector>

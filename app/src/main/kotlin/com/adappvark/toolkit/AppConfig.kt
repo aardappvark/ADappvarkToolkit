@@ -11,9 +11,9 @@ object AppConfig {
     object Payment {
         const val WALLET_ADDRESS = "DD4aPDhf396NhNDxa4PBVf1u3uzCUP2QYm2dFMmJWq2Q"
 
-        // Production: mainnet-beta
+        // Production: mainnet-beta via Helius
         const val CLUSTER = "mainnet-beta"
-        const val RPC_ENDPOINT = "https://api.mainnet-beta.solana.com"
+        const val RPC_ENDPOINT = "https://mainnet.helius-rpc.com/?api-key=15319bf4-5b40-4958-ac8d-6313aa55eb92"
 
         // For testing, use devnet:
         // const val CLUSTER = "devnet"

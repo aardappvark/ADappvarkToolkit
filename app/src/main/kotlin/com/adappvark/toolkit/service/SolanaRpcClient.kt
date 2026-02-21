@@ -232,7 +232,86 @@ class SolanaRpcClient {
             connection.disconnect()
         }
     }
+
+    /**
+     * Get token supply and decimals for an SPL token mint
+     */
+    suspend fun getTokenSupply(mintAddress: String): Result<TokenInfo> = withContext(Dispatchers.IO) {
+        try {
+            val requestBody = buildJsonObject {
+                put("jsonrpc", "2.0")
+                put("id", 1)
+                put("method", "getTokenSupply")
+                putJsonArray("params") {
+                    add(mintAddress)
+                }
+            }
+
+            val response = makeRpcCall(requestBody.toString())
+
+            val value = response["result"]?.jsonObject?.get("value")?.jsonObject
+                ?: return@withContext Result.failure(Exception("Invalid token supply response"))
+
+            val decimals = value["decimals"]?.jsonPrimitive?.int
+                ?: return@withContext Result.failure(Exception("No decimals in response"))
+
+            val amount = value["amount"]?.jsonPrimitive?.content ?: "0"
+
+            Result.success(TokenInfo(decimals = decimals, supply = amount))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Get token accounts owned by a wallet for a specific mint.
+     * Returns the list of token account addresses (ATAs).
+     */
+    suspend fun getTokenAccountsByOwner(
+        ownerAddress: String,
+        mintAddress: String
+    ): Result<List<String>> = withContext(Dispatchers.IO) {
+        try {
+            val requestBody = buildJsonObject {
+                put("jsonrpc", "2.0")
+                put("id", 1)
+                put("method", "getTokenAccountsByOwner")
+                putJsonArray("params") {
+                    add(ownerAddress)
+                    addJsonObject {
+                        put("mint", mintAddress)
+                    }
+                    addJsonObject {
+                        put("encoding", "jsonParsed")
+                    }
+                }
+            }
+
+            val response = makeRpcCall(requestBody.toString())
+
+            val accountsArray = response["result"]?.jsonObject?.get("value")?.jsonArray
+                ?: return@withContext Result.success(emptyList())
+
+            val addresses = mutableListOf<String>()
+            for (i in 0 until accountsArray.size) {
+                val pubkey = accountsArray[i].jsonObject["pubkey"]?.jsonPrimitive?.content
+                if (pubkey != null) addresses.add(pubkey)
+            }
+
+            Result.success(addresses)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
+
+/**
+ * Token info from mint
+ */
+data class TokenInfo(
+    val decimals: Int,
+    val supply: String
+)
 
 /**
  * Blockhash response

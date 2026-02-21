@@ -15,14 +15,14 @@ val localProperties = Properties().apply {
 
 android {
     namespace = "com.adappvark.toolkit"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.adappvark.toolkit"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 4
-        versionName = "1.0.3"
+        targetSdk = 35
+        versionCode = 7
+        versionName = "1.0.6"
         resourceConfigurations += listOf("en", "es", "fr", "de", "pt", "it", "ja", "ko", "tr", "nl", "pl")
     }
 

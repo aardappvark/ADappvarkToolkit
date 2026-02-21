@@ -1,5 +1,13 @@
 # AardAppvark Toolkit ProGuard Rules
 
+# --- Manifest-declared classes (instantiated by Android framework via reflection) ---
+
+# Activity (declared in AndroidManifest.xml)
+-keep class com.adappvark.toolkit.MainActivity { *; }
+
+# Service (declared in AndroidManifest.xml)
+-keep class com.adappvark.toolkit.service.ReinstallForegroundService { *; }
+
 # Keep Shizuku classes
 -keep class rikka.shizuku.** { *; }
 -keep class moe.shizuku.** { *; }
@@ -36,8 +44,8 @@
 -keep interface androidx.compose.** { *; }
 -dontwarn androidx.compose.**
 
-# Keep Accessibility Service (required for system registration)
--keep class com.adappvark.toolkit.service.AutoUninstallService { *; }
+# Keep UninstallDaemon (launched externally via app_process, not referenced by app code)
+-keep class com.adappvark.toolkit.daemon.UninstallDaemon { *; }
 
 # Keep service classes that use reflection or JSON parsing
 -keep class com.adappvark.toolkit.service.Blockhash { *; }
@@ -50,6 +58,28 @@
 -keep class com.adappvark.toolkit.service.GeoRestrictionService$GeoCheckResult$* { *; }
 -keep class com.adappvark.toolkit.service.PaymentTransactionResult { *; }
 -keep class com.adappvark.toolkit.service.PaymentTransactionResult$* { *; }
+
+# Kotlin coroutines
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# Compose runtime
+-keep class androidx.compose.runtime.** { *; }
+-keepclassmembers class * {
+    @androidx.compose.runtime.Composable <methods>;
+}
+
+# OkHttp + Okio (MWA transitive dependency)
+-dontwarn okhttp3.**
+-dontwarn okio.**
+
+# Security Crypto + Tink (if present transitively)
+-dontwarn com.google.api.client.**
+-dontwarn com.google.errorprone.annotations.**
+-dontwarn org.joda.time.**
 
 # Keep enum classes
 -keepclassmembers enum * {

@@ -1,12 +1,19 @@
 package com.adappvark.toolkit.ui.navigation
 
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -17,6 +24,7 @@ import com.adappvark.toolkit.ui.screens.HomeScreen
 import com.adappvark.toolkit.ui.screens.UninstallScreen
 import com.adappvark.toolkit.ui.screens.ReinstallScreen
 import com.adappvark.toolkit.ui.screens.SettingsScreen
+import com.adappvark.toolkit.ui.theme.*
 import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
 
 /**
@@ -30,7 +38,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
 }
 
 /**
- * Main app navigation with bottom nav bar
+ * Main app navigation with glass-styled navigation bars
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,59 +59,142 @@ fun AppNavigation(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = currentDestination?.route?.replaceFirstChar { it.uppercase() } ?: "AardAppvark"
+            Column {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = currentDestination?.route?.replaceFirstChar { it.uppercase() } ?: "AardAppvark",
+                            fontWeight = FontWeight.Bold
+                        )
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = DeepSpace1.copy(alpha = 0.85f),
+                        titleContentColor = MaterialTheme.colorScheme.onSurface
                     )
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
-            )
+                // Gradient bottom border
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    SolanaPurple.copy(alpha = 0.4f),
+                                    SolanaGreen.copy(alpha = 0.3f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
+            }
         },
         bottomBar = {
-            NavigationBar {
-                items.forEach { screen ->
-                    NavigationBarItem(
-                        icon = { Icon(screen.icon, contentDescription = screen.title) },
-                        label = { Text(screen.title) },
-                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
-                        onClick = {
-                            navController.navigate(screen.route) {
-                                // Pop up to the start destination of the graph to
-                                // avoid building up a large stack of destinations
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
+            Column {
+                // Gradient top border
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(
+                            Brush.horizontalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    SolanaPurple.copy(alpha = 0.3f),
+                                    SolanaGreen.copy(alpha = 0.2f),
+                                    Color.Transparent
+                                )
+                            )
+                        )
+                )
+                NavigationBar(
+                    containerColor = Color.Black.copy(alpha = 0.85f),
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                ) {
+                    items.forEach { screen ->
+                        val isSelected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
+                        NavigationBarItem(
+                            icon = {
+                                Icon(
+                                    screen.icon,
+                                    contentDescription = screen.title,
+                                    tint = if (isSelected) SolanaPurple else MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            },
+                            label = {
+                                Text(
+                                    screen.title,
+                                    color = if (isSelected) SolanaPurple else MaterialTheme.colorScheme.onSurfaceVariant,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                )
+                            },
+                            selected = isSelected,
+                            onClick = {
+                                navController.navigate(screen.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                                // Avoid multiple copies of the same destination
-                                launchSingleTop = true
-                                // Restore state when reselecting a previously selected item
-                                restoreState = true
-                            }
-                        }
-                    )
+                            },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = SolanaPurple,
+                                selectedTextColor = SolanaPurple,
+                                indicatorColor = SolanaPurple.copy(alpha = 0.12f),
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        )
+                    }
                 }
             }
-        }
+        },
+        containerColor = DeepSpace1
     ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screen.Home.route,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            enterTransition = {
+                fadeIn(animationSpec = tween(300)) + slideInHorizontally(
+                    initialOffsetX = { it / 4 },
+                    animationSpec = tween(300)
+                )
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(300)) + slideOutHorizontally(
+                    targetOffsetX = { -it / 4 },
+                    animationSpec = tween(300)
+                )
+            },
+            popEnterTransition = {
+                fadeIn(animationSpec = tween(300)) + slideInHorizontally(
+                    initialOffsetX = { -it / 4 },
+                    animationSpec = tween(300)
+                )
+            },
+            popExitTransition = {
+                fadeOut(animationSpec = tween(300)) + slideOutHorizontally(
+                    targetOffsetX = { it / 4 },
+                    animationSpec = tween(300)
+                )
+            }
         ) {
             composable(Screen.Home.route) {
                 HomeScreen(onDisconnectWallet = onDisconnectWallet)
             }
             composable(Screen.Uninstall.route) {
-                UninstallScreen()
+                UninstallScreen(activityResultSender = activityResultSender)
             }
             composable(Screen.Reinstall.route) {
-                ReinstallScreen()
+                ReinstallScreen(activityResultSender = activityResultSender)
             }
             composable(Screen.Settings.route) {
-                SettingsScreen(onDisconnectWallet = onDisconnectWallet)
+                SettingsScreen(
+                    onDisconnectWallet = onDisconnectWallet
+                )
             }
         }
     }

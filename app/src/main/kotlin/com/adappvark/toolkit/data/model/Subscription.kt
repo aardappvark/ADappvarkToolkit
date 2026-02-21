@@ -48,6 +48,18 @@ enum class SubscriptionPlan(
             "Priority support",
             "Save 20%!"
         )
+    ),
+
+    AUTO_ACCEPT(
+        id = "auto_accept",
+        displayName = "Auto-Accept",
+        priceInLamports = 10_000_000L,  // 0.01 SOL ≈ 1 SKR
+        priceDisplay = "1 SKR / 0.01 SOL",
+        features = listOf(
+            "Auto-tap OK on uninstall dialogs",
+            "Auto-tap Install on reinstall prompts",
+            "7-day access"
+        )
     );
     
     /**
@@ -69,6 +81,21 @@ enum class SubscriptionPlan(
      */
     fun hasReinstall(): Boolean {
         return this == REINSTALL_ONLY || this == COMPLETE_BUNDLE
+    }
+
+    /**
+     * Check if this plan includes auto-accept feature
+     */
+    fun hasAutoAccept(): Boolean {
+        return this == AUTO_ACCEPT || this == COMPLETE_BUNDLE
+    }
+
+    /**
+     * Get price in SKR equivalent
+     */
+    fun getPriceInSkr(): Double {
+        // Assuming 1 SOL ≈ 100 SKR for now
+        return getPriceInSol() * 100.0
     }
 }
 
@@ -107,6 +134,7 @@ data class SubscriptionStatus(
         return when (feature) {
             Feature.BULK_UNINSTALL -> plan.hasUninstall()
             Feature.BULK_REINSTALL -> plan.hasReinstall()
+            Feature.AUTO_ACCEPT -> plan.hasAutoAccept()
         }
     }
 }
@@ -116,7 +144,8 @@ data class SubscriptionStatus(
  */
 enum class Feature {
     BULK_UNINSTALL,
-    BULK_REINSTALL
+    BULK_REINSTALL,
+    AUTO_ACCEPT
 }
 
 /**

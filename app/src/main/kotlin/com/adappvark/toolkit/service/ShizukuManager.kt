@@ -2,23 +2,29 @@ package com.adappvark.toolkit.service
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.LocalSocket
+import android.net.LocalSocketAddress
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import rikka.shizuku.Shizuku
-import rikka.shizuku.ShizukuBinderWrapper
-import rikka.shizuku.SystemServiceHelper
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
+import java.io.PrintWriter
 
 private const val TAG = "ShizukuManager"
 
 /**
- * Manager for Shizuku integration and silent uninstall operations.
+ * Manager for silent uninstall operations.
  *
  * Strategies (tried in order):
- * 1. Shizuku binder — uses IPackageManager via Shizuku's transactRemote
+ * 1. ADappvark daemon — shell-privileged process started via one-time ADB command.
+ *    Runs as UID 2000 (shell), listens on abstract local socket.
+ *    Survives USB disconnect. User only needs to set up once per reboot.
  * 2. ADB server via reverse port forward — connects to computer's ADB server
- *    on localhost:5037 (requires `adb reverse tcp:5037 tcp:5037`)
- * 3. Direct pm command — tries Runtime.exec pm uninstall (works on some ROMs)
+ *    on localhost:5037 (requires `adb reverse tcp:5037 tcp:5037` + USB connected)
+ * 3. Shizuku binder — if user has Shizuku installed (not required)
+ * 4. Direct pm command — tries Runtime.exec pm uninstall (fails on stock Android)
  *
  * Falls back to ACTION_DELETE intents in the calling code if all fail.
  */
@@ -28,26 +34,140 @@ class ShizukuManager(private val context: Context) {
         private const val SHIZUKU_PERMISSION_REQUEST_CODE = 1001
         /** Port for ADB server protocol (via reverse port forward from computer) */
         private const val ADB_SERVER_PORT = 5037
+        /** Abstract local socket name for our privileged daemon */
+        const val DAEMON_SOCKET_NAME = "com.adappvark.toolkit.daemon"
+
+        /**
+         * Write the daemon startup script to app's external files dir.
+         * User runs: adb shell sh /sdcard/Android/data/com.adappvark.toolkit/files/start_daemon.sh
+         */
+        fun writeDaemonScript(context: Context): File? {
+            return try {
+                val dir = context.getExternalFilesDir(null) ?: return null
+                val script = File(dir, "start_daemon.sh")
+                script.writeText("""
+#!/system/bin/sh
+# ADappvark Toolkit — Privileged Daemon Starter
+# Run this ONCE after each reboot for silent uninstall without USB:
+#   adb shell sh ${script.absolutePath}
+#
+# After running, you can disconnect USB. The daemon stays running
+# until the device reboots.
+
+PKG="com.adappvark.toolkit"
+DAEMON_CLASS="com.adappvark.toolkit.daemon.UninstallDaemon"
+
+# Find APK path
+APK_PATH=${'$'}(pm path ${'$'}PKG 2>/dev/null | head -1 | sed 's/^package://')
+if [ -z "${'$'}APK_PATH" ]; then
+    echo "ERROR: ${'$'}PKG not installed"
+    exit 1
+fi
+
+# Kill any existing daemon
+pkill -f "nice-name=adappvark_daemon" 2>/dev/null
+sleep 1
+
+# Start daemon via app_process (runs as shell UID 2000)
+echo "Starting ADappvark daemon..."
+(CLASSPATH="${'$'}APK_PATH" /system/bin/app_process \
+    /system/bin \
+    --nice-name=adappvark_daemon \
+    ${'$'}DAEMON_CLASS) &
+
+DAEMON_PID=${'$'}!
+sleep 2
+
+# Verify it started
+if kill -0 ${'$'}DAEMON_PID 2>/dev/null; then
+    echo "ADappvark daemon running (PID ${'$'}DAEMON_PID)"
+    echo "You can now disconnect USB. Silent uninstall is active."
+    exit 0
+else
+    echo "ERROR: daemon failed to start"
+    exit 1
+fi
+""".trimIndent() + "\n")
+                script.setReadable(true, false)
+                Log.d(TAG, "Daemon script written to: ${script.absolutePath}")
+                script
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to write daemon script", e)
+                null
+            }
+        }
     }
 
+    // ---- Daemon socket methods (Method 1 — preferred) ----
+
     /**
-     * Check if Shizuku is installed and running
+     * Check if our privileged daemon is running by sending a ping.
      */
-    fun isShizukuAvailable(): Boolean {
+    fun isDaemonRunning(): Boolean {
         return try {
-            Shizuku.pingBinder()
+            val socket = LocalSocket()
+            socket.connect(LocalSocketAddress(
+                DAEMON_SOCKET_NAME,
+                LocalSocketAddress.Namespace.ABSTRACT
+            ))
+            val writer = PrintWriter(socket.outputStream, true)
+            val reader = BufferedReader(InputStreamReader(socket.inputStream))
+            writer.println("ping")
+            val response = reader.readLine()
+            socket.close()
+            val running = response == "pong"
+            Log.d(TAG, "Daemon ping: $response (running=$running)")
+            running
         } catch (e: Exception) {
+            Log.d(TAG, "Daemon not reachable: ${e.message}")
             false
         }
     }
 
     /**
-     * Check if we have Shizuku permission
+     * Uninstall via our privileged daemon's local socket.
      */
-    fun hasPermission(): Boolean {
+    private suspend fun uninstallViaDaemon(packageName: String): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            val socket = LocalSocket()
+            socket.connect(LocalSocketAddress(
+                DAEMON_SOCKET_NAME,
+                LocalSocketAddress.Namespace.ABSTRACT
+            ))
+            val writer = PrintWriter(socket.outputStream, true)
+            val reader = BufferedReader(InputStreamReader(socket.inputStream))
+
+            writer.println("uninstall $packageName")
+            val response = reader.readLine() ?: "no response"
+            socket.close()
+
+            Log.d(TAG, "Daemon uninstall $packageName: $response")
+
+            if (response.contains("Success", ignoreCase = true)) {
+                Result.success(true)
+            } else {
+                Result.failure(Exception("Daemon uninstall failed: $response"))
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Daemon uninstall failed for $packageName: ${e.message}")
+            Result.failure(e)
+        }
+    }
+
+    // ---- Shizuku methods (Method 3 — optional companion app) ----
+
+    fun isShizukuAvailable(): Boolean {
+        return try {
+            rikka.shizuku.Shizuku.pingBinder()
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    fun hasShizukuPermission(): Boolean {
         return if (isShizukuAvailable()) {
             try {
-                Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
+                rikka.shizuku.Shizuku.checkSelfPermission() == PackageManager.PERMISSION_GRANTED
             } catch (e: Exception) {
                 false
             }
@@ -56,41 +176,27 @@ class ShizukuManager(private val context: Context) {
         }
     }
 
-    /**
-     * Request Shizuku permission
-     */
-    fun requestPermission(onResult: (Boolean) -> Unit) {
-        if (hasPermission()) {
-            onResult(true)
-            return
-        }
-
-        val listener = object : Shizuku.OnRequestPermissionResultListener {
-            override fun onRequestPermissionResult(requestCode: Int, grantResult: Int) {
-                if (requestCode == SHIZUKU_PERMISSION_REQUEST_CODE) {
-                    Shizuku.removeRequestPermissionResultListener(this)
-                    onResult(grantResult == PackageManager.PERMISSION_GRANTED)
-                }
-            }
-        }
-
-        Shizuku.addRequestPermissionResultListener(listener)
-        Shizuku.requestPermission(SHIZUKU_PERMISSION_REQUEST_CODE)
-    }
+    // ---- Public API ----
 
     /**
      * Check if silent uninstall is available via any method
      */
     suspend fun canSilentUninstall(): Boolean = withContext(Dispatchers.IO) {
-        // Method 1: Shizuku
-        if (isShizukuAvailable() && hasPermission()) {
-            Log.d(TAG, "Silent uninstall available via Shizuku")
+        // Method 1: Our privileged daemon (best — works without USB)
+        if (isDaemonRunning()) {
+            Log.d(TAG, "Silent uninstall available via ADappvark daemon")
             return@withContext true
         }
 
-        // Method 2: ADB server via reverse port forward (port 5037)
+        // Method 2: ADB server via reverse port forward (requires USB)
         if (isAdbServerAvailable()) {
             Log.d(TAG, "Silent uninstall available via ADB server (reverse port forward)")
+            return@withContext true
+        }
+
+        // Method 3: Shizuku (optional companion app)
+        if (isShizukuAvailable() && hasShizukuPermission()) {
+            Log.d(TAG, "Silent uninstall available via Shizuku")
             return@withContext true
         }
 
@@ -99,29 +205,36 @@ class ShizukuManager(private val context: Context) {
     }
 
     /**
-     * Silently uninstall a package
-     * Tries Shizuku first, then ADB-over-localhost, then direct pm command
+     * Silently uninstall a package.
+     * Tries daemon first, then ADB server, then Shizuku, then direct pm.
      */
     suspend fun uninstallPackage(packageName: String): Result<Boolean> = withContext(Dispatchers.IO) {
-        // Validate package name to prevent shell injection
+        // Validate package name to prevent injection
         if (!packageName.matches(Regex("^[a-zA-Z][a-zA-Z0-9_.]*$"))) {
             return@withContext Result.failure(
                 IllegalArgumentException("Invalid package name: $packageName")
             )
         }
 
-        // Method 1: Shizuku binder
-        if (isShizukuAvailable() && hasPermission()) {
-            val result = uninstallViaShizuku(packageName)
+        // Method 1: ADappvark daemon (preferred — no USB needed)
+        if (isDaemonRunning()) {
+            val result = uninstallViaDaemon(packageName)
             if (result.isSuccess) return@withContext result
-            Log.w(TAG, "Shizuku uninstall failed for $packageName, trying ADB TCP")
+            Log.w(TAG, "Daemon uninstall failed for $packageName, trying ADB server")
         }
 
         // Method 2: ADB server via reverse port forward
         val adbResult = uninstallViaAdbServer(packageName)
         if (adbResult.isSuccess) return@withContext adbResult
 
-        // Method 3: Direct pm command (might work on some ROMs)
+        // Method 3: Shizuku binder
+        if (isShizukuAvailable() && hasShizukuPermission()) {
+            val result = uninstallViaShizuku(packageName)
+            if (result.isSuccess) return@withContext result
+            Log.w(TAG, "Shizuku uninstall failed for $packageName")
+        }
+
+        // Method 4: Direct pm command (unlikely to work on stock Android)
         val directResult = uninstallViaDirect(packageName)
         if (directResult.isSuccess) return@withContext directResult
 
@@ -157,21 +270,15 @@ class ShizukuManager(private val context: Context) {
      */
     private suspend fun uninstallViaShizuku(packageName: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            // Use ShizukuBinderWrapper to get IPackageManager with shell privileges
-            val binder = SystemServiceHelper.getSystemService("package")
-            if (binder == null) {
-                return@withContext Result.failure(Exception("Cannot get package service binder"))
-            }
-            val wrappedBinder = ShizukuBinderWrapper(binder)
+            val binder = rikka.shizuku.SystemServiceHelper.getSystemService("package")
+                ?: return@withContext Result.failure(Exception("Cannot get package service binder"))
+            val wrappedBinder = rikka.shizuku.ShizukuBinderWrapper(binder)
 
-            // Use the wrapped binder to call deletePackage via reflection
             val ipmClass = Class.forName("android.content.pm.IPackageManager\$Stub")
             val asInterface = ipmClass.getMethod("asInterface", android.os.IBinder::class.java)
             val ipm = asInterface.invoke(null, wrappedBinder)
 
-            // Try deletePackage (API varies by Android version)
             try {
-                // Android 14+: deletePackage(String packageName, int versionCode, IPackageDeleteObserver2 observer, int userId, String callerPackageName)
                 val deleteMethod = ipm.javaClass.getMethod(
                     "deletePackage",
                     String::class.java,
@@ -183,7 +290,6 @@ class ShizukuManager(private val context: Context) {
                 deleteMethod.invoke(ipm, packageName, -1, null, 0, context.packageName)
                 Log.d(TAG, "Shizuku binder deletePackage called for $packageName")
 
-                // Wait briefly and verify
                 kotlinx.coroutines.delay(500)
                 val stillInstalled = isPackageInstalled(packageName)
                 if (!stillInstalled) {
@@ -192,7 +298,7 @@ class ShizukuManager(private val context: Context) {
                     Result.failure(Exception("Package still installed after deletePackage"))
                 }
             } catch (e: NoSuchMethodException) {
-                Log.w(TAG, "deletePackage method not found, trying alternative signatures")
+                Log.w(TAG, "deletePackage method not found")
                 Result.failure(e)
             }
         } catch (e: Exception) {
@@ -203,35 +309,29 @@ class ShizukuManager(private val context: Context) {
 
     /**
      * Uninstall via ADB server protocol over reverse port forward.
-     *
-     * Requires `adb reverse tcp:5037 tcp:5037` to have been run beforehand.
-     * This forwards the device's localhost:5037 to the computer's ADB server.
-     * The ADB server speaks a text-based protocol: hex-length-prefixed messages,
-     * with OKAY/FAIL responses.
+     * Requires USB + `adb reverse tcp:5037 tcp:5037`.
      */
     private suspend fun uninstallViaAdbServer(packageName: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
             val socket = java.net.Socket()
-            socket.soTimeout = 10_000 // 10s read timeout
+            socket.soTimeout = 10_000
             try {
                 socket.connect(java.net.InetSocketAddress("127.0.0.1", ADB_SERVER_PORT), 3000)
             } catch (e: Exception) {
                 Log.w(TAG, "ADB server not reachable on port $ADB_SERVER_PORT: ${e.message}")
-                return@withContext Result.failure(Exception("ADB server not available on port $ADB_SERVER_PORT"))
+                return@withContext Result.failure(Exception("ADB server not available"))
             }
 
             val output = socket.use { sock ->
                 val os = sock.getOutputStream()
                 val inputStream = sock.getInputStream()
 
-                // ADB server protocol: 4-char hex length prefix + message body
                 fun sendAdbMessage(msg: String) {
                     val hexLen = String.format("%04x", msg.length)
                     os.write(hexLen.toByteArray(Charsets.US_ASCII))
                     os.write(msg.toByteArray(Charsets.US_ASCII))
                     os.flush()
                 }
-
                 fun readStatus(): String {
                     val buf = ByteArray(4)
                     var offset = 0
@@ -242,7 +342,6 @@ class ShizukuManager(private val context: Context) {
                     }
                     return String(buf, Charsets.US_ASCII)
                 }
-
                 fun readAll(): String {
                     val sb = StringBuilder()
                     val buf = ByteArray(4096)
@@ -254,26 +353,19 @@ class ShizukuManager(private val context: Context) {
                     return sb.toString()
                 }
 
-                // Step 1: Select transport (connects to any attached device)
                 sendAdbMessage("host:transport-any")
                 val transportStatus = readStatus()
                 if (transportStatus != "OKAY") {
-                    Log.w(TAG, "ADB transport-any failed: $transportStatus")
                     return@withContext Result.failure(Exception("ADB transport failed: $transportStatus"))
                 }
-                Log.d(TAG, "ADB transport-any: OKAY")
 
-                // Step 2: Send shell command to pm uninstall
                 val shellCmd = "shell:pm uninstall --user 0 $packageName"
                 sendAdbMessage(shellCmd)
                 val shellStatus = readStatus()
                 if (shellStatus != "OKAY") {
-                    Log.w(TAG, "ADB shell command failed: $shellStatus")
                     return@withContext Result.failure(Exception("ADB shell failed: $shellStatus"))
                 }
-                Log.d(TAG, "ADB shell command accepted: OKAY")
 
-                // Step 3: Read shell output (pm uninstall result)
                 readAll()
             }
 
@@ -292,8 +384,7 @@ class ShizukuManager(private val context: Context) {
     }
 
     /**
-     * Check if ADB server is reachable via reverse port forward on localhost:5037.
-     * Sends a simple "host:version" query to verify it's really the ADB server.
+     * Check if ADB server is reachable via reverse port forward.
      */
     private fun isAdbServerAvailable(): Boolean {
         return try {
@@ -304,14 +395,12 @@ class ShizukuManager(private val context: Context) {
             val os = socket.getOutputStream()
             val inputStream = socket.getInputStream()
 
-            // Send "host:version" — a lightweight query to verify ADB server
             val msg = "host:version"
             val hexLen = String.format("%04x", msg.length)
             os.write(hexLen.toByteArray(Charsets.US_ASCII))
             os.write(msg.toByteArray(Charsets.US_ASCII))
             os.flush()
 
-            // Read 4-byte status
             val statusBuf = ByteArray(4)
             var offset = 0
             while (offset < 4) {
@@ -323,16 +412,16 @@ class ShizukuManager(private val context: Context) {
             socket.close()
 
             val available = status == "OKAY"
-            Log.d(TAG, "ADB server check on port $ADB_SERVER_PORT: status=$status available=$available")
+            Log.d(TAG, "ADB server check: status=$status available=$available")
             available
         } catch (e: Exception) {
-            Log.d(TAG, "ADB server not available on port $ADB_SERVER_PORT: ${e.message}")
+            Log.d(TAG, "ADB server not available: ${e.message}")
             false
         }
     }
 
     /**
-     * Try direct pm uninstall via Runtime.exec (works on some ROMs or with elevated permissions)
+     * Try direct pm uninstall via Runtime.exec (works on some ROMs)
      */
     private suspend fun uninstallViaDirect(packageName: String): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
