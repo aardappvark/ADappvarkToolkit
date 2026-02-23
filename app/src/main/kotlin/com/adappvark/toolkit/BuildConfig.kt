@@ -20,4 +20,9 @@ object BuildConfig {
 
     // Build type
     const val BUILD_TYPE = "release"
+
+    // Helius RPC API key - set your real key here locally before building.
+    // Get/rotate your key at: https://dev.helius.xyz/dashboard
+    // NEVER commit the real key - keep this as an empty string in the repo.
+    const val HELIUS_API_KEY = ""
 }
