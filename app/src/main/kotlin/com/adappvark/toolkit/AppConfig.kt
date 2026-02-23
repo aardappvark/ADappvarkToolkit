@@ -13,7 +13,7 @@ object AppConfig {
 
         // Production: mainnet-beta via Helius
         const val CLUSTER = "mainnet-beta"
-        const val RPC_ENDPOINT = "https://mainnet.helius-rpc.com/?api-key=15319bf4-5b40-4958-ac8d-6313aa55eb92"
+        val RPC_ENDPOINT = "https://mainnet.helius-rpc.com/?api-key=${BuildConfig.HELIUS_API_KEY}"
 
         // For testing, use devnet:
         // const val CLUSTER = "devnet"
