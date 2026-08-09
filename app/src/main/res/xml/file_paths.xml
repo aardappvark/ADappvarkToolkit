@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Restrict FileProvider to only necessary subdirectories -->
-    <cache-path name="apk_downloads" path="apk_downloads/" />
-    <files-path name="exports" path="exports/" />
-</paths>
