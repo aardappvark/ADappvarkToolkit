@@ -3,156 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service - ADappvark Toolkit</title>
+    <title>Terms of Service / EULA — AardAppvark Toolkit</title>
+    <meta name="description" content="Terms of Service / End-User License Agreement (EULA) for AardAppvark Toolkit, available in 28 languages. The legally binding agreement that governs use of the application.">
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.7;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: #f8f9fa;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            color: white;
-        }
-        .header h1 { margin: 0 0 10px 0; font-size: 28px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --accent: #667eea; --accent-2: #764ba2; --bg: #f8f9fa; --card: #ffffff; --text: #333; --muted: #666; --border: #ddd; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; line-height: 1.7; color: var(--text); background: var(--bg); }
+        .lang-nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 12px 20px; font-size: 13px; }
+        .lang-nav-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+        .lang-nav .lang-label { font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
+        .lang-nav a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+        .lang-nav a:hover { text-decoration: underline; }
+        .wrap { max-width: 800px; margin: 0 auto; padding: 32px 20px 80px; }
+        article { background: var(--card); border-radius: 15px; padding: 32px; margin: 32px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        article[dir="rtl"] { text-align: right; }
+        .header { text-align: center; margin: -32px -32px 32px; padding: 30px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%); border-radius: 15px 15px 0 0; color: white; }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
         .header .meta { opacity: 0.9; font-size: 14px; }
-        .content {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        h2 {
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
+        h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 32px; margin-bottom: 16px; font-size: 20px; }
         h3 { color: #444; margin-top: 25px; }
-        ul, ol { padding-left: 25px; }
+        ul, ol { padding-left: 25px; margin: 12px 0; }
+        article[dir="rtl"] ul, article[dir="rtl"] ol { padding-left: 0; padding-right: 25px; }
         li { margin: 8px 0; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        th { background: #f5f5f5; }
-        strong { color: #333; }
-        a { color: #667eea; }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #667eea;
-            text-decoration: none;
-        }
+        p { margin: 12px 0; }
+        strong { color: var(--text); }
+        a { color: var(--accent); }
+        .warning-box { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; margin: 16px 0; border-radius: 0 10px 10px 0; }
+        .info-box { background: #e8f4fd; border-left: 4px solid var(--accent); padding: 16px 20px; margin: 16px 0; border-radius: 0 10px 10px 0; }
+        article[dir="rtl"] .warning-box, article[dir="rtl"] .info-box { border-left: none; border-right-width: 4px; border-right-style: solid; border-radius: 10px 0 0 10px; }
+        article[dir="rtl"] .warning-box { border-right-color: #ffc107; }
+        article[dir="rtl"] .info-box { border-right-color: var(--accent); }
+        .binding-notice { background: #fff8e1; border: 1px solid #f0c419; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 14px; color: #5d4e00; }
+        .back-link { display: inline-block; margin-bottom: 16px; color: var(--accent); text-decoration: none; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
-        .warning-box {
-            background: #fff3cd;
-            border-left: 4px solid #ffc107;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 10px 10px 0;
-        }
-        .info-box {
-            background: #e8f4fd;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 10px 10px 0;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-        }
+        .footer { text-align: center; margin-top: 48px; padding: 20px; color: var(--muted); font-size: 14px; }
+        .footer a { margin: 0 8px; }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← Back to Home</a>
 
-    <div class="header">
-        <h1>Terms of Service</h1>
-        <div class="meta">
-            Effective Date: February 4, 2026 | Last Updated: February 9, 2026 | Version 1.2.0
-        </div>
-    </div>
+<nav class="lang-nav" aria-label="Language selection"><div class="lang-nav-inner">
+    <span class="lang-label">Languages:</span>
+    <a href="#en">English</a> <a href="#ar" lang="ar">العربية</a> <a href="#cs" lang="cs">Čeština</a> <a href="#de" lang="de">Deutsch</a> <a href="#el" lang="el">Ελληνικά</a> <a href="#es" lang="es">Español</a> <a href="#fil" lang="fil">Filipino</a> <a href="#fr" lang="fr">Français</a> <a href="#hi" lang="hi">हिन्दी</a> <a href="#hu" lang="hu">Magyar</a> <a href="#id" lang="id">Bahasa Indonesia</a> <a href="#it" lang="it">Italiano</a> <a href="#ja" lang="ja">日本語</a> <a href="#ko" lang="ko">한국어</a> <a href="#nl" lang="nl">Nederlands</a> <a href="#pl" lang="pl">Polski</a> <a href="#pt-BR" lang="pt-BR">Português (BR)</a> <a href="#pt-PT" lang="pt-PT">Português (PT)</a> <a href="#ro" lang="ro">Română</a> <a href="#ru" lang="ru">Русский</a> <a href="#sv" lang="sv">Svenska</a> <a href="#th" lang="th">ไทย</a> <a href="#tr" lang="tr">Türkçe</a> <a href="#uk" lang="uk">Українська</a> <a href="#ur" lang="ur">اردو</a> <a href="#vi" lang="vi">Tiếng Việt</a> <a href="#zh-CN" lang="zh-CN">简体中文</a> <a href="#zh-TW" lang="zh-TW">繁體中文</a>
+</div></nav>
 
-    <div class="content">
-        <div class="warning-box">
-            <strong>IMPORTANT:</strong> By using ADappvark Toolkit, you agree to be bound by these Terms. If you do not agree, do not use the application.
-        </div>
+<div class="wrap">
+<a href="index.html" class="back-link">← Back to Home</a>
 
-        <h2>1. Acceptance of Terms</h2>
-        <p>By downloading, installing, accessing, or using ADappvark Toolkit ("App," "Service"), you agree to be legally bound by these Terms of Service, our Privacy Policy, and all applicable laws.</p>
-
-        <h3>1.1 Capacity to Contract</h3>
-        <p>By accepting these Terms, you represent that:</p>
-        <ul>
-            <li>You are at least 18 years of age</li>
-            <li>You have the legal capacity to enter into contracts</li>
-            <li>You are not in a sanctioned jurisdiction</li>
-            <li>You are not on any government sanctions list</li>
-        </ul>
-
-        <h2>2. Description of Service</h2>
+<!-- ============== ENGLISH (source / legally binding) ============== -->
+<article id="en" lang="en">
+    <div class="header"><h1>Terms of Service / End-User License Agreement (EULA)</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: August 8, 2026 | Version 1.3.0</p></div>
+    <div class="warning-box"><strong>IMPORTANT:</strong> By using AardAppvark Toolkit, you agree to be bound by these Terms. If you do not agree, do not use the application.</div>
+    <h2>1. Acceptance of Terms</h2>
+    <p>This Terms of Service / End-User License Agreement ("Terms," "Agreement," "EULA") is a binding legal contract between you ("User," "you") and MidMightBit Games (Australia) ("Licensor," "we," "us," "our") governing your use of AardAppvark Toolkit ("App," "Service," "Software"). By downloading, installing, accessing, or using the Software, you agree to be legally bound by these Terms, our Privacy Policy, and all applicable laws. If you do not agree, do not download, install, or use the Software.</p>
+    <h3>1.1 Capacity to Contract</h3>
+    <p>By accepting these Terms, you represent that:</p>
+    <ul><li>You are at least 18 years of age</li><li>You have the legal capacity to enter into contracts</li><li>You are not in a sanctioned jurisdiction</li><li>You are not on any government sanctions list</li></ul>
+    <h3>1.2 Licence Grant</h3>
+    <p>Subject to your compliance with these Terms, MidMightBit Games (Australia) grants you a limited, personal, non-exclusive, non-transferable, non-sublicensable, revocable licence to install and use the Software on a Solana Seeker device that you own or lawfully control, solely for your own personal, non-commercial purposes. This licence does not transfer any ownership of the Software to you and may be terminated as described in Section 10.</p>
+    <h3>1.3 Licence Restrictions</h3>
+    <p>Except as expressly permitted by these Terms or by applicable law that cannot be waived, you may not:</p>
+    <ul><li>Copy, redistribute, sublicense, sell, rent, lease, or lend the Software or any portion of it</li><li>Modify, adapt, translate, or create derivative works of the Software</li><li>Reverse-engineer, decompile, disassemble, or attempt to derive the source code of the Software</li><li>Remove, alter, or obscure any proprietary notices, branding, or trademarks in the Software</li><li>Use the Software to develop a competing product or service</li><li>Use the Software in any way that violates applicable laws or these Terms</li></ul>
+    <h3>1.4 Ownership and Reservation of Rights</h3>
+    <p>The Software is licensed, not sold. MidMightBit Games (Australia) and its licensors retain all right, title, and interest in and to the Software, including all copyrights, trademarks, trade secrets, and other intellectual property rights. All rights not expressly granted to you in these Terms are reserved.</p>
+    <h2>2. Description of Service</h2>
         <p>ADappvark Toolkit provides dApp lifecycle management for Solana Seeker devices:</p>
         <ul>
-            <li>Bulk app uninstallation via Shizuku integration</li>
-            <li>Bulk app reinstallation via Solana dApp Store</li>
-            <li>App management and organization</li>
-            <li>Payment processing via Solana blockchain</li>
+            <li>Bulk app uninstallation. Where a privileged path is available (an optional Shizuku install, or a shell daemon / ADB connection you set up yourself) removal is silent; otherwise the App opens Android's own uninstall dialog for each app and, if you have enabled the optional Accessibility Service described in section 6, confirms it for you.</li>
+            <li>Bulk app reinstallation via Solana dApp Store deep links, with the same optional Accessibility Service tapping <em>Install</em> on each listing.</li>
+            <li>App management and organization (favourites, uninstall history, catalogue browsing).</li>
+            <li>Payment processing via the Solana blockchain, using the Mobile Wallet Adapter. The App is non-custodial: it never holds your keys, your funds or your seed phrase, and every transfer is signed inside your own wallet.</li>
+            <li>An optional paid "Featured dApp" placement for developers (section 4.4).</li>
+        </ul>
+        <p>The App never uninstalls itself, Shizuku, or any Solana Mobile system package (the dApp Store, the system Wallet, Seed Vault, Rewards, or anything else under <code>com.solanamobile.</code>) &mdash; those are hard-blocked in code.</p>
+    <h2>3. Geographic Restrictions</h2>
+        <p>The Service is <strong>NOT AVAILABLE</strong> in the following <strong>58</strong> jurisdictions (ISO 3166-1 alpha-2 codes in brackets). All users in these countries are fully blocked due to international sanctions, FATF designations, or AML/CFT concerns. Where a country appears in full, the whole country is blocked &mdash; the App cannot distinguish sub-national regions, so Ukraine and Moldova are blocked in their entirety rather than only their occupied territories.</p>
+
+        <h3>Comprehensively Sanctioned &mdash; 5:</h3>
+        <ul>
+            <li>Cuba (CU), Iran (IR), North Korea (DPRK) (KP), Syria (SY), Russia (RU)</li>
         </ul>
 
-        <h2>3. Geographic Restrictions</h2>
-        <p>The Service is <strong>NOT AVAILABLE</strong> in the following jurisdictions. All users in these countries are fully blocked due to international sanctions, FATF designations, or AML/CFT concerns.</p>
-
-        <h3>Comprehensively Sanctioned:</h3>
+        <h3>Blocked (Significant Restrictions) &mdash; 5:</h3>
         <ul>
-            <li>Cuba, Iran, North Korea (DPRK), Syria, Russia</li>
+            <li>Belarus (BY), Venezuela (VE), Myanmar (Burma) (MM), Nicaragua (NI), Eritrea (ER)</li>
         </ul>
 
-        <h3>Blocked (Significant Restrictions):</h3>
+        <h3>Blocked (Targeted Sanctions) &mdash; 15:</h3>
         <ul>
-            <li>Belarus, Venezuela, Myanmar (Burma), Nicaragua, Eritrea</li>
+            <li>Ukraine (including occupied territories) (UA), Moldova (including Transnistria) (MD), Zimbabwe (ZW), Sudan (SD), South Sudan (SS), Central African Republic (CF), Democratic Republic of Congo (CD), Mali (ML), Guinea (GN), Burkina Faso (BF), Niger (NE), Haiti (HT), Bosnia and Herzegovina (BA), Serbia (RS), Kosovo (XK)</li>
         </ul>
 
-        <h3>Blocked (Targeted Sanctions):</h3>
+        <h3>Blocked (FATF / High-Risk AML/CFT) &mdash; 33:</h3>
         <ul>
-            <li>Ukraine (including occupied territories), Moldova, Zimbabwe, Sudan, South Sudan, Central African Republic, DR Congo, Mali, Guinea, Burkina Faso, Niger, Haiti, Bosnia and Herzegovina, Serbia, Kosovo</li>
-        </ul>
-
-        <h3>Blocked (FATF / High-Risk AML/CFT):</h3>
-        <ul>
-            <li>Afghanistan, Iraq, Lebanon, Libya, Somalia, Yemen, Pakistan, Jordan, Tanzania, Nigeria, Senegal, Kenya, Philippines, Vietnam, Cameroon, Togo, Trinidad and Tobago, Jamaica, Barbados, Panama, Croatia, Bulgaria, Albania, Montenegro, North Macedonia, Georgia, Armenia, Azerbaijan, Kazakhstan, Uzbekistan, Tajikistan, Turkmenistan, Kyrgyzstan</li>
+            <li>Afghanistan (AF), Iraq (IQ), Lebanon (LB), Libya (LY), Somalia (SO), Yemen (YE), Pakistan (PK), Jordan (JO), Tanzania (TZ), Nigeria (NG), Senegal (SN), Kenya (KE), Philippines (PH), Vietnam (VN), Cameroon (CM), Togo (TG), Trinidad and Tobago (TT), Jamaica (JM), Barbados (BB), Panama (PA), Croatia (HR), Bulgaria (BG), Albania (AL), Montenegro (ME), North Macedonia (MK), Georgia (GE), Armenia (AM), Azerbaijan (AZ), Kazakhstan (KZ), Uzbekistan (UZ), Tajikistan (TJ), Turkmenistan (TM), Kyrgyzstan (KG)</li>
         </ul>
 
         <p><em>This list is subject to change based on evolving international sanctions and FATF designations.</em></p>
 
         <h3>3.1 Location Verification</h3>
-        <p>The App verifies your location using GPS/network location, SIM card country, network carrier country, and device locale. Location permission is requested at app launch. Geo-restriction checks are performed at app launch and before each payment transaction. Your precise location is not stored.</p>
+        <p>The App determines your country from your SIM card country, your network carrier country and your device locale. <strong>The App does not request any Android location permission</strong>, so GPS is consulted only if you have separately granted the App location access for another reason. Checks run at app launch, every 30 minutes while the App is open, and again before each payment. If any method reports a blocked country, access is refused; if no country can be determined at all, payments are refused. Your precise location is never stored or transmitted &mdash; only the allowed/blocked outcome is kept, on your device.</p>
 
         <div class="warning-box">
             Using VPNs or location spoofing to circumvent these restrictions is prohibited and may violate applicable laws.
         </div>
-
-        <h2>4. Pricing and Payment</h2>
+    <h2>4. Pricing and Payment</h2>
 
         <h3>4.1 Free Tier</h3>
         <ul>
@@ -162,105 +117,708 @@
 
         <h3>4.2 Paid Operations</h3>
         <ul>
-            <li><strong>5+ apps</strong> per bulk operation: <strong>0.01 SOL</strong> (or SKR equivalent) per operation</li>
-            <li>Payment required for EACH bulk operation</li>
-            <li>No subscription - pay per use</li>
+            <li><strong>5 or more apps</strong> in one bulk uninstall or bulk reinstall: <strong>0.01 SOL</strong> or <strong>1 SKR</strong> per operation &mdash; you choose which token at the time of payment.</li>
+            <li><strong>Verified Seeker owners pay nothing.</strong> If the wallet you connect holds a Seeker Genesis Token (SGT), bulk operations of any size are free, with no payment prompt.</li>
+            <li>Payment is per operation, not a subscription: each new batch of 5 or more apps is charged again.</li>
+            <li>Prices are fixed amounts of SOL or SKR. They are not pegged to any fiat currency, so their value in your local currency will move with the market.</li>
         </ul>
 
         <h3>4.3 Payment Terms</h3>
         <ul>
-            <li>Payments are processed on the Solana blockchain</li>
-            <li>Transactions are final and non-refundable</li>
-            <li>You are responsible for sufficient wallet balance</li>
-            <li>Network fees (gas) are your responsibility</li>
+            <li>Payments are ordinary Solana transfers, signed in your own wallet and sent to our treasury address. We never take custody of your funds or keys.</li>
+            <li>Your transaction signature is kept on your device under Settings &rarr; Payments &amp; your data &rarr; Payment History, and is also public on the Solana blockchain. That signature is your receipt.</li>
+            <li>A paid bulk operation is consumed by the operation you paid for. Because nothing is retained afterwards, there is no purchase to "restore" on a new device or after reinstalling &mdash; a later batch of 5 or more apps is a new charge.</li>
+            <li>You are responsible for having sufficient balance, and for Solana network fees.</li>
+            <li>Nothing in these Terms excludes, restricts or modifies any consumer guarantee, right or remedy you may have under the Australian Consumer Law or other applicable consumer protection laws that cannot lawfully be excluded. Except as required by such laws, purchases are final and non-refundable.</li>
         </ul>
 
-        <h2>5. User Responsibilities</h2>
+        <h3>4.4 Featured dApp Placements (developers)</h3>
+        <ul>
+            <li>Developers may buy a placement in the Home screen's Featured dApp slot: <strong>1 week for 0.10 SOL or 10 SKR</strong>, or <strong>1 month for 0.30 SOL or 30 SKR</strong>.</li>
+            <li>Placements are reviewed and scheduled <strong>manually</strong> as an anti-abuse measure. Paying does not publish a listing immediately, and we may decline a submission &mdash; if we decline yours, contact us at the address in section 13 and we will refund the placement fee to the paying wallet.</li>
+            <li>You warrant that you have the right to promote the app you submit and that its listing content is accurate and lawful.</li>
+            <li>Apart from a declined submission as described above, placement fees are final. Nothing in these Terms excludes, restricts or modifies any consumer guarantee, right or remedy you may have under the Australian Consumer Law or other applicable consumer protection laws that cannot lawfully be excluded. Except as required by such laws, purchases are final and non-refundable.</li>
+        </ul>
+    <h2>5. User Responsibilities</h2>
         <p>You are solely responsible for:</p>
         <ul>
             <li>Securing your wallet and private keys</li>
             <li>Verifying apps before uninstalling</li>
-            <li>Understanding that uninstallation may result in data loss</li>
+            <li>Understanding that uninstalling an app deletes that app's data, and that this is irreversible &mdash; reinstalling it later restores the app, not its data</li>
             <li>Ensuring you have backup of important data</li>
             <li>Compliance with applicable laws</li>
         </ul>
-
-        <h2>6. Accessibility Service Disclosure</h2>
+    <h2>6. Accessibility Service Disclosure</h2>
         <div class="info-box">
-            <p>ADappvark uses Android Accessibility Services for the following purposes:</p>
+            <p>The App includes an optional Accessibility Service ("AardAppvark Auto-Confirm"). It is <strong>off by default</strong> &mdash; you must enable it yourself in Android Settings &rarr; Accessibility, and you can revoke it there at any time. Its only purpose is to save you from tapping the same confirmation button dozens of times during a batch:</p>
             <ul>
-                <li><strong>Auto-Install:</strong> Automatically clicking "Install" buttons in the dApp Store during bulk reinstall</li>
-                <li><strong>UI Automation:</strong> Detecting button states (Install/Open/Cancel)</li>
+                <li><strong>Auto-confirm uninstall:</strong> during a bulk uninstall, clicking the positive button ("OK" or "Uninstall") on Android's own system uninstall dialog. "Cancel" is never clicked.</li>
+                <li><strong>Auto-install:</strong> during a bulk reinstall, clicking the "Install" or "Update" button on a Solana dApp Store listing page. "Open" and "Cancel" are never clicked.</li>
+                <li><strong>UI reading:</strong> to find those buttons the service reads the on-screen element tree &mdash; but only in the system package installer and the Solana dApp Store, and only while the App is running a batch you started. It is disarmed again as soon as the batch ends, and it does nothing at all if you turn the "Auto-Accept" switch off in the App's Settings.</li>
             </ul>
-            <p>This service does NOT collect, transmit, or store any personal data. It operates entirely locally on your device.</p>
+            <p>This service does NOT collect, transmit, or store any data. It performs no action other than the two button presses above, and it operates entirely on your device.</p>
         </div>
 
-        <h2>7. Disclaimers</h2>
-        <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND.</p>
+        <h3>6.1 Permissions the App Declares</h3>
         <ul>
-            <li>We do not guarantee uninterrupted service</li>
-            <li>We are not responsible for third-party services (Shizuku, dApp Store, wallets)</li>
-            <li>We are not responsible for data loss from uninstallation</li>
-            <li>We are not responsible for blockchain network issues</li>
+            <li><strong>Query all packages</strong> &mdash; to list what is installed so you can choose what to uninstall or reinstall. The list never leaves your device (the Privacy Policy describes two narrow anonymous exceptions).</li>
+            <li><strong>Request delete packages</strong> &mdash; to ask Android to uninstall an app you selected. Android, not the App, performs the removal.</li>
+            <li><strong>Display over other apps</strong> &mdash; required on Android 14+ so a bulk reinstall can keep opening dApp Store pages while the App is in the background. Requested only when you start a bulk reinstall, and you may decline.</li>
+            <li><strong>Notifications, foreground service, wake lock</strong> &mdash; to show the batch progress notification with its Pause / Resume / Cancel actions, and to keep a long batch running.</li>
+            <li><strong>Internet, network state</strong> &mdash; the wallet, blockchain, catalogue and analytics calls listed in the Privacy Policy. The network-state permission is added by the Solana Mobile Wallet Adapter library.</li>
         </ul>
+        <p>The App requests no location, camera, microphone, contacts, photo or file permissions.</p>
+    <h2>7. Disclaimers</h2>
+    <p>THE SERVICE IS PROVIDED "AS IS" WITHOUT WARRANTIES OF ANY KIND.</p>
+    <ul><li>We do not guarantee uninterrupted service</li><li>We are not responsible for third-party services (Shizuku, dApp Store, wallets)</li><li>We are not responsible for data loss from uninstallation</li><li>We are not responsible for blockchain network issues</li></ul>
+    <h2>8. Limitation of Liability</h2>
+    <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE SHALL NOT BE LIABLE FOR:</p>
+    <ul><li>Indirect, incidental, or consequential damages</li><li>Loss of data, profits, or cryptocurrency</li><li>Service interruptions</li><li>Third-party actions</li></ul>
+    <p><strong>Maximum liability:</strong> The greater of $100 USD or the amount paid in the last 12 months.</p>
+    <h3>8.1 Consumer Law Protections</h3>
+    <p>Nothing in these Terms excludes, restricts, or modifies any consumer guarantee, right, or remedy conferred by the Australian Consumer Law (Schedule 2 of the Competition and Consumer Act 2010), the UK Consumer Rights Act 2015, the EU Consumer Rights Directive (2011/83/EU), or any other mandatory consumer protection law in your jurisdiction that cannot be excluded by contract.</p>
+    <h2>9. Indemnification</h2>
+    <p>You agree to indemnify and hold harmless MidMightBit Games (Australia) from any claims arising from:</p>
+    <ul><li>Your use of the Service</li><li>Violation of these Terms</li><li>Violation of applicable laws</li><li>Infringement of third-party rights</li></ul>
+    <h2>10. Termination</h2>
+    <p>We may terminate your access if you:</p>
+    <ul><li>Violate these Terms</li><li>Are in a sanctioned jurisdiction</li><li>Engage in fraudulent activity</li><li>Attempt to circumvent restrictions</li></ul>
+    <p>You may terminate by uninstalling the App.</p>
+    <h2>11. Dispute Resolution</h2>
+    <p>These Terms are governed by the laws of Australia. Any disputes shall be resolved through binding arbitration, except where prohibited by law. Class actions are waived to the extent permitted by applicable law in your jurisdiction.</p>
+    <h2>12. Modifications</h2>
+    <p>We may modify these Terms at any time. Material changes will be communicated via in-app notification. Continued use constitutes acceptance.</p>
+    <h2>13. Contact Information</h2>
+    <ul><li><strong>Support:</strong> aardappvark@proton.me</li><li><strong>Legal:</strong> aardappvark@proton.me</li><li><strong>Privacy:</strong> aardappvark@proton.me</li></ul>
+    <h2>14. Miscellaneous</h2>
+    <ul><li><strong>Entire Agreement:</strong> These Terms constitute the entire agreement</li><li><strong>Severability:</strong> Invalid provisions do not affect remaining Terms</li><li><strong>Waiver:</strong> Failure to enforce is not a waiver</li><li><strong>Assignment:</strong> You may not assign; we may assign with notice</li></ul>
+</article>
 
-        <h2>8. Limitation of Liability</h2>
-        <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE SHALL NOT BE LIABLE FOR:</p>
-        <ul>
-            <li>Indirect, incidental, or consequential damages</li>
-            <li>Loss of data, profits, or cryptocurrency</li>
-            <li>Service interruptions</li>
-            <li>Third-party actions</li>
-        </ul>
-        <p><strong>Maximum liability:</strong> The greater of $100 USD or the amount paid in the last 12 months.</p>
+<!-- ============== ARABIC (RTL) ============== -->
+<article id="ar" lang="ar" dir="rtl">
+    <div class="header"><h1>شروط الخدمة</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>إشعار:</strong> النسخة الإنجليزية أعلاه هي النص الملزم قانونيًا. هذا الملخص مقدم للراحة.</div>
+    <p>تلخص هذه الوثيقة شروط استخدام AardAppvark Toolkit. للنص الكامل، راجع <a href="#en">القسم الإنجليزي أعلاه</a>.</p>
+    <ol>
+        <li><strong>قبول الشروط</strong> — باستخدام التطبيق، توافق على هذه الشروط. يجب أن تكون 18+ ولديك القدرة القانونية على التعاقد.</li>
+        <li><strong>وصف الخدمة</strong> — إدارة دورة حياة dApp: إلغاء/إعادة تثبيت بالجملة، الدفع عبر بلوكتشين Solana.</li>
+        <li><strong>القيود الجغرافية</strong> — غير متاح في 58 ولاية قضائية بسبب العقوبات الدولية. التحقق من الموقع عند الإطلاق وقبل كل دفعة. حظر VPN.</li>
+        <li><strong>الأسعار والدفع</strong> — حتى 4 تطبيقات: مجاني. 5+ تطبيقات: 0.01 SOL لكل عملية. الدفعات نهائية وغير قابلة للاسترداد.</li>
+        <li><strong>مسؤوليات المستخدم</strong> — تأمين المحفظة، التحقق قبل إلغاء التثبيت، النسخ الاحتياطي، الامتثال للقوانين.</li>
+        <li><strong>الإفصاح عن خدمة إمكانية الوصول</strong> — تستخدم لتأكيد إلغاء التثبيت تلقائيًا والنقر على "تثبيت" في dApp Store. لا تجمع أي بيانات شخصية.</li>
+        <li><strong>إخلاء المسؤولية</strong> — الخدمة "كما هي". لا ضمانات. لسنا مسؤولين عن خدمات الأطراف الثالثة أو فقدان البيانات.</li>
+        <li><strong>تحديد المسؤولية</strong> — الحد الأقصى $100 USD أو ما دفع في 12 شهرًا. حماية قانون المستهلك محفوظة.</li>
+        <li><strong>التعويض</strong> — توافق على تعويض MidMightBit Games (Australia) من أي مطالبات ناشئة عن سوء الاستخدام.</li>
+        <li><strong>الإنهاء</strong> — يمكننا الإنهاء بسبب الانتهاكات. يمكنك الإنهاء بإلغاء تثبيت التطبيق.</li>
+        <li><strong>حل النزاعات</strong> — تخضع للقوانين الأسترالية. تحكيم ملزم باستثناء ما يحظره القانون.</li>
+        <li><strong>التعديلات</strong> — قد نعدل الشروط في أي وقت. الاستمرار في الاستخدام يشكل قبولًا.</li>
+        <li><strong>الاتصال</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>متفرقات</strong> — اتفاقية كاملة، فصل، عدم تنازل، تنازل.</li>
+    </ol>
+</article>
 
-        <h3>8.1 Consumer Law Protections</h3>
-        <p>Nothing in these Terms excludes, restricts, or modifies any consumer guarantee, right, or remedy conferred by the Australian Consumer Law (Schedule 2 of the Competition and Consumer Act 2010), the UK Consumer Rights Act 2015, the EU Consumer Rights Directive (2011/83/EU), or any other mandatory consumer protection law in your jurisdiction that cannot be excluded by contract.</p>
+<!-- ============== CZECH ============== -->
+<article id="cs" lang="cs">
+    <div class="header"><h1>Podmínky služby</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Upozornění:</strong> Anglická verze výše je právně závazným textem. Tento souhrn je poskytován pro pohodlí.</div>
+    <p>Tento dokument shrnuje podmínky používání AardAppvark Toolkit. Úplný text najdete v <a href="#en">anglické sekci výše</a>.</p>
+    <ol>
+        <li><strong>Přijetí podmínek</strong> — používáním aplikace souhlasíte s těmito podmínkami. Musíte být starší 18 let s právní způsobilostí.</li>
+        <li><strong>Popis služby</strong> — správa životního cyklu dApp: hromadné odinstalace/reinstalace, platby přes Solana blockchain.</li>
+        <li><strong>Geografická omezení</strong> — není k dispozici v 58 jurisdikcích kvůli mezinárodním sankcím. Ověření polohy při spuštění a před každou platbou. VPN zakázáno.</li>
+        <li><strong>Ceny a platby</strong> — až 4 aplikace: zdarma. 5+ aplikací: 0,01 SOL za operaci. Platby jsou konečné a nevratné.</li>
+        <li><strong>Povinnosti uživatele</strong> — zabezpečení peněženky, ověření před odinstalací, zálohy dat, dodržování zákonů.</li>
+        <li><strong>Zpřístupnění Accessibility služby</strong> — používá se pro automatické potvrzení odinstalace a klikání "Install" v dApp Store. Nesbírá žádné osobní údaje.</li>
+        <li><strong>Vyloučení odpovědnosti</strong> — služba "tak jak je". Žádné záruky. Nezodpovídáme za třetí strany ani ztrátu dat.</li>
+        <li><strong>Omezení odpovědnosti</strong> — maximum 100 USD nebo částka zaplacená za 12 měsíců. Spotřebitelská práva zachována.</li>
+        <li><strong>Odškodnění</strong> — souhlasíte s odškodněním MidMightBit Games (Australia) za nároky vyplývající ze zneužití.</li>
+        <li><strong>Ukončení</strong> — můžeme ukončit přístup za porušení. Můžete ukončit odinstalací.</li>
+        <li><strong>Řešení sporů</strong> — řídí se australským právem. Závazná arbitráž, kromě případů zákazaných zákonem.</li>
+        <li><strong>Úpravy</strong> — můžeme kdykoli upravit. Pokračování v používání znamená souhlas.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Různé</strong> — celá dohoda, oddělitelnost, vzdání se práva, postoupení.</li>
+    </ol>
+</article>
 
-        <h2>9. Indemnification</h2>
-        <p>You agree to indemnify and hold harmless ADappvark from any claims arising from:</p>
-        <ul>
-            <li>Your use of the Service</li>
-            <li>Violation of these Terms</li>
-            <li>Violation of applicable laws</li>
-            <li>Infringement of third-party rights</li>
-        </ul>
+<!-- ============== GERMAN ============== -->
+<article id="de" lang="de">
+    <div class="header"><h1>Nutzungsbedingungen</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Hinweis:</strong> Die englische Fassung oben ist der rechtsverbindliche Text. Diese Zusammenfassung dient nur zur Information.</div>
+    <p>Dieses Dokument fasst die Nutzungsbedingungen von AardAppvark Toolkit zusammen. Den vollständigen Text finden Sie im <a href="#en">englischen Abschnitt oben</a>.</p>
+    <ol>
+        <li><strong>Annahme der Bedingungen</strong> — durch Nutzung stimmen Sie diesen Bedingungen zu. Sie müssen mindestens 18 Jahre alt und geschäftsfähig sein.</li>
+        <li><strong>Beschreibung der Dienstleistung</strong> — dApp-Lebenszyklusverwaltung: Massendeinstallationen/Reinstallationen, Zahlungen über Solana-Blockchain.</li>
+        <li><strong>Geografische Einschränkungen</strong> — nicht verfügbar in 58 Jurisdiktionen aufgrund internationaler Sanktionen. Standortüberprüfung beim Start und vor jeder Zahlung. VPN verboten.</li>
+        <li><strong>Preise und Zahlung</strong> — bis 4 Apps: kostenlos. 5+ Apps: 0,01 SOL pro Vorgang. Zahlungen sind endgültig und nicht erstattbar.</li>
+        <li><strong>Nutzerpflichten</strong> — Wallet-Sicherheit, Überprüfung vor Deinstallation, Datensicherung, Gesetzeseinhaltung.</li>
+        <li><strong>Bedienungshilfen-Offenlegung</strong> — wird zum automatischen Bestätigen der Deinstallation und Klicken auf "Installieren" im dApp Store verwendet. Sammelt keine personenbezogenen Daten.</li>
+        <li><strong>Haftungsausschluss</strong> — Dienst "wie besehen". Keine Garantien. Nicht verantwortlich für Drittanbieter oder Datenverlust.</li>
+        <li><strong>Haftungsbeschränkung</strong> — maximal 100 USD oder in 12 Monaten gezahlter Betrag. Verbraucherrechte bleiben gewahrt.</li>
+        <li><strong>Schadloshaltung</strong> — Sie stimmen zu, MidMightBit Games (Australia) bei Ansprüchen aus Missbrauch schadlos zu halten.</li>
+        <li><strong>Kündigung</strong> — wir können bei Verstößen kündigen. Sie können durch Deinstallation kündigen.</li>
+        <li><strong>Streitbeilegung</strong> — unterliegt australischem Recht. Verbindliche Schiedsverfahren, außer wo gesetzlich verboten.</li>
+        <li><strong>Änderungen</strong> — wir können jederzeit ändern. Weiternutzung bedeutet Zustimmung.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Verschiedenes</strong> — vollständige Vereinbarung, Salvatorische Klausel, Verzicht, Abtretung.</li>
+    </ol>
+</article>
 
-        <h2>10. Termination</h2>
-        <p>We may terminate your access if you:</p>
-        <ul>
-            <li>Violate these Terms</li>
-            <li>Are in a sanctioned jurisdiction</li>
-            <li>Engage in fraudulent activity</li>
-            <li>Attempt to circumvent restrictions</li>
-        </ul>
-        <p>You may terminate by uninstalling the App.</p>
+<!-- ============== GREEK ============== -->
+<article id="el" lang="el">
+    <div class="header"><h1>Όροι Χρήσης</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Σημείωση:</strong> Η αγγλική έκδοση παραπάνω είναι το νομικά δεσμευτικό κείμενο. Αυτή η περίληψη παρέχεται για διευκόλυνση.</div>
+    <p>Αυτό το έγγραφο συνοψίζει τους όρους χρήσης του AardAppvark Toolkit. Για το πλήρες κείμενο, ανατρέξτε στην <a href="#en">αγγλική ενότητα παραπάνω</a>.</p>
+    <ol>
+        <li><strong>Αποδοχή των Όρων</strong> — με τη χρήση, αποδέχεστε αυτούς τους όρους. Πρέπει να είστε τουλάχιστον 18 ετών με νομική ικανότητα.</li>
+        <li><strong>Περιγραφή Υπηρεσίας</strong> — διαχείριση κύκλου ζωής dApp: μαζικές απεγκαταστάσεις/επανεγκαταστάσεις, πληρωμές μέσω Solana blockchain.</li>
+        <li><strong>Γεωγραφικοί Περιορισμοί</strong> — μη διαθέσιμο σε 58 δικαιοδοσίες λόγω διεθνών κυρώσεων. Επαλήθευση τοποθεσίας κατά την εκκίνηση και πριν από κάθε πληρωμή. VPN απαγορεύεται.</li>
+        <li><strong>Τιμολόγηση και Πληρωμή</strong> — έως 4 εφαρμογές: δωρεάν. 5+ εφαρμογές: 0,01 SOL ανά λειτουργία. Οι πληρωμές είναι τελικές και μη επιστρέψιμες.</li>
+        <li><strong>Υποχρεώσεις Χρήστη</strong> — ασφάλεια πορτοφολιού, επαλήθευση πριν την απεγκατάσταση, αντίγραφα ασφαλείας, συμμόρφωση με νόμους.</li>
+        <li><strong>Αποκάλυψη Υπηρεσίας Προσβασιμότητας</strong> — χρησιμοποιείται για αυτόματη επιβεβαίωση απεγκατάστασης και κλικ "Install" στο dApp Store. Δεν συλλέγει προσωπικά δεδομένα.</li>
+        <li><strong>Αποποίηση Ευθυνών</strong> — υπηρεσία "ως έχει". Καμία εγγύηση. Δεν ευθυνόμαστε για τρίτους ή απώλεια δεδομένων.</li>
+        <li><strong>Περιορισμός Ευθύνης</strong> — μέγιστο 100 USD ή ποσό που πληρώθηκε σε 12 μήνες. Καταναλωτικά δικαιώματα διατηρούνται.</li>
+        <li><strong>Αποζημίωση</strong> — συμφωνείτε να αποζημιώσετε την MidMightBit Games (Australia) για αξιώσεις από κακή χρήση.</li>
+        <li><strong>Καταγγελία</strong> — μπορούμε να καταγγείλουμε για παραβιάσεις. Μπορείτε να καταγγείλετε με απεγκατάσταση.</li>
+        <li><strong>Επίλυση Διαφορών</strong> — διέπεται από αυστραλιανό δίκαιο. Δεσμευτική διαιτησία, εκτός εάν απαγορεύεται από το νόμο.</li>
+        <li><strong>Τροποποιήσεις</strong> — μπορούμε να τροποποιήσουμε ανά πάσα στιγμή. Η συνεχιζόμενη χρήση συνιστά αποδοχή.</li>
+        <li><strong>Επικοινωνία</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Διάφορα</strong> — πλήρης συμφωνία, διαχωρισιμότητα, παραίτηση, εκχώρηση.</li>
+    </ol>
+</article>
 
-        <h2>11. Dispute Resolution</h2>
-        <p>These Terms are governed by the laws of Australia. Any disputes shall be resolved through binding arbitration, except where prohibited by law. Class actions are waived to the extent permitted by applicable law in your jurisdiction.</p>
+<!-- ============== SPANISH ============== -->
+<article id="es" lang="es">
+    <div class="header"><h1>Términos de Servicio</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Aviso:</strong> La versión en inglés de arriba es el texto legalmente vinculante. Este resumen se proporciona por conveniencia.</div>
+    <p>Este documento resume los términos de uso de AardAppvark Toolkit. Para el texto completo, consulte la <a href="#en">sección en inglés más arriba</a>.</p>
+    <ol>
+        <li><strong>Aceptación de Términos</strong> — al usar, acepta estos términos. Debe tener al menos 18 años con capacidad legal.</li>
+        <li><strong>Descripción del Servicio</strong> — gestión del ciclo de vida de dApps: desinstalación/reinstalación masiva, pagos vía blockchain Solana.</li>
+        <li><strong>Restricciones Geográficas</strong> — no disponible en 58 jurisdicciones debido a sanciones internacionales. Verificación de ubicación al inicio y antes de cada pago. VPN prohibida.</li>
+        <li><strong>Precios y Pago</strong> — hasta 4 apps: gratis. 5+ apps: 0,01 SOL por operación. Los pagos son finales y no reembolsables.</li>
+        <li><strong>Responsabilidades del Usuario</strong> — seguridad de la billetera, verificación antes de desinstalar, copias de seguridad, cumplimiento legal.</li>
+        <li><strong>Divulgación del Servicio de Accesibilidad</strong> — se usa para confirmar desinstalación automáticamente y hacer clic en "Install" en dApp Store. No recopila datos personales.</li>
+        <li><strong>Descargos de Responsabilidad</strong> — servicio "tal cual". Sin garantías. No responsables de terceros o pérdida de datos.</li>
+        <li><strong>Limitación de Responsabilidad</strong> — máximo 100 USD o el monto pagado en 12 meses. Derechos del consumidor preservados.</li>
+        <li><strong>Indemnización</strong> — usted acepta indemnizar a MidMightBit Games (Australia) por reclamos derivados del mal uso.</li>
+        <li><strong>Terminación</strong> — podemos terminar por violaciones. Puede terminar desinstalando.</li>
+        <li><strong>Resolución de Disputas</strong> — regido por las leyes de Australia. Arbitraje vinculante, excepto donde la ley lo prohíba.</li>
+        <li><strong>Modificaciones</strong> — podemos modificar en cualquier momento. El uso continuado constituye aceptación.</li>
+        <li><strong>Contacto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Misceláneos</strong> — acuerdo completo, divisibilidad, renuncia, cesión.</li>
+    </ol>
+</article>
 
-        <h2>12. Modifications</h2>
-        <p>We may modify these Terms at any time. Material changes will be communicated via in-app notification. Continued use constitutes acceptance.</p>
+<!-- ============== FILIPINO ============== -->
+<article id="fil" lang="fil">
+    <div class="header"><h1>Mga Tuntunin ng Serbisyo</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Paalala:</strong> Ang bersyong Ingles sa itaas ang legal na may bisa. Ang buod na ito ay para sa kaginhawahan.</div>
+    <p>Binubuod ng dokumentong ito ang mga tuntunin sa paggamit ng AardAppvark Toolkit. Para sa buong teksto, tingnan ang <a href="#en">seksyong Ingles sa itaas</a>.</p>
+    <ol>
+        <li><strong>Pagtanggap ng mga Tuntunin</strong> — sa paggamit, sumasang-ayon ka. Dapat ay 18+ at may legal na kapasidad.</li>
+        <li><strong>Paglalarawan ng Serbisyo</strong> — pamamahala ng dApp lifecycle: bulk uninstall/reinstall, pagbabayad sa Solana blockchain.</li>
+        <li><strong>Heograpikong Restriksyon</strong> — hindi available sa 58 hurisdiksyon dahil sa international sanctions. Lokasyon na-verify sa launch at bago ang bawat bayad. Bawal ang VPN.</li>
+        <li><strong>Pagpepresyo at Pagbabayad</strong> — hanggang 4 apps: libre. 5+ apps: 0.01 SOL bawat operasyon. Ang mga bayad ay pangwakas at hindi mababawi.</li>
+        <li><strong>Mga Responsibilidad ng User</strong> — seguridad ng wallet, pag-verify bago mag-uninstall, backup, pagsunod sa batas.</li>
+        <li><strong>Pagsisiwalat ng Accessibility Service</strong> — ginagamit para sa awtomatikong pagkumpirma ng uninstall at pag-click "Install" sa dApp Store. Hindi nangongolekta ng personal na data.</li>
+        <li><strong>Disclaimer</strong> — serbisyo "tulad ng mayroon". Walang garantiya. Hindi responsable sa third-party o pagkawala ng data.</li>
+        <li><strong>Limitasyon ng Pananagutan</strong> — maximum $100 USD o halagang binayaran sa 12 buwan. Karapatan ng consumer ay nakareserba.</li>
+        <li><strong>Indemnification</strong> — sumasang-ayon kang i-indemnify ang MidMightBit Games (Australia) sa mga claim mula sa maling paggamit.</li>
+        <li><strong>Pagwawakas</strong> — maaari naming wakasan para sa mga paglabag. Maaari kang magwakas sa pamamagitan ng pag-uninstall.</li>
+        <li><strong>Resolusyon ng Disputa</strong> — pinamamahalaan ng mga batas ng Australia. Binding arbitration, maliban kung ipinagbabawal ng batas.</li>
+        <li><strong>Mga Modifikasyon</strong> — maaari naming baguhin anumang oras. Ang patuloy na paggamit ay pagtanggap.</li>
+        <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Iba pang Mga Bagay</strong> — buong kasunduan, severability, pagwawalang-bahala, atas.</li>
+    </ol>
+</article>
 
-        <h2>13. Contact Information</h2>
-        <ul>
-            <li><strong>Support:</strong> aardappvark@proton.me</li>
-            <li><strong>Legal:</strong> aardappvark@proton.me</li>
-            <li><strong>Privacy:</strong> aardappvark@proton.me</li>
-        </ul>
+<!-- ============== FRENCH ============== -->
+<article id="fr" lang="fr">
+    <div class="header"><h1>Conditions d'Utilisation</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Avis :</strong> La version anglaise ci-dessus constitue le texte juridiquement contraignant. Ce résumé est fourni à titre indicatif.</div>
+    <p>Ce document résume les conditions d'utilisation de AardAppvark Toolkit. Pour le texte intégral, consultez la <a href="#en">section anglaise ci-dessus</a>.</p>
+    <ol>
+        <li><strong>Acceptation des Conditions</strong> — en utilisant, vous acceptez ces conditions. Vous devez avoir au moins 18 ans avec capacité juridique.</li>
+        <li><strong>Description du Service</strong> — gestion du cycle de vie des dApps : désinstallation/réinstallation en masse, paiements via la blockchain Solana.</li>
+        <li><strong>Restrictions Géographiques</strong> — non disponible dans 58 juridictions en raison de sanctions internationales. Vérification de la localisation au lancement et avant chaque paiement. VPN interdit.</li>
+        <li><strong>Tarifs et Paiement</strong> — jusqu'à 4 apps : gratuit. 5+ apps : 0,01 SOL par opération. Les paiements sont définitifs et non remboursables.</li>
+        <li><strong>Responsabilités de l'Utilisateur</strong> — sécurité du portefeuille, vérification avant désinstallation, sauvegarde, conformité aux lois.</li>
+        <li><strong>Divulgation du Service d'Accessibilité</strong> — utilisé pour la confirmation automatique de désinstallation et le clic sur "Install" dans le dApp Store. Ne collecte aucune donnée personnelle.</li>
+        <li><strong>Avis de Non-responsabilité</strong> — service « tel quel ». Aucune garantie. Pas responsable des tiers ou de la perte de données.</li>
+        <li><strong>Limitation de Responsabilité</strong> — maximum 100 USD ou montant payé en 12 mois. Droits des consommateurs préservés.</li>
+        <li><strong>Indemnisation</strong> — vous acceptez d'indemniser MidMightBit Games (Australia) pour les réclamations résultant d'un mauvais usage.</li>
+        <li><strong>Résiliation</strong> — nous pouvons résilier en cas de violations. Vous pouvez résilier en désinstallant.</li>
+        <li><strong>Résolution des Litiges</strong> — régi par les lois australiennes. Arbitrage contraignant, sauf interdiction légale.</li>
+        <li><strong>Modifications</strong> — nous pouvons modifier à tout moment. L'utilisation continue constitue une acceptation.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Divers</strong> — accord intégral, divisibilité, renonciation, cession.</li>
+    </ol>
+</article>
 
-        <h2>14. Miscellaneous</h2>
-        <ul>
-            <li><strong>Entire Agreement:</strong> These Terms constitute the entire agreement</li>
-            <li><strong>Severability:</strong> Invalid provisions do not affect remaining Terms</li>
-            <li><strong>Waiver:</strong> Failure to enforce is not a waiver</li>
-            <li><strong>Assignment:</strong> You may not assign; we may assign with notice</li>
-        </ul>
-    </div>
+<!-- ============== HINDI ============== -->
+<article id="hi" lang="hi">
+    <div class="header"><h1>सेवा की शर्तें</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>सूचना:</strong> ऊपर दिया गया अंग्रेज़ी संस्करण कानूनी रूप से बाध्यकारी पाठ है। यह सारांश सुविधा के लिए है।</div>
+    <p>यह दस्तावेज़ AardAppvark Toolkit के उपयोग की शर्तों का सारांश देता है। पूर्ण पाठ के लिए, <a href="#en">ऊपर अंग्रेज़ी अनुभाग</a> देखें।</p>
+    <ol>
+        <li><strong>शर्तों की स्वीकृति</strong> — उपयोग करके, आप इन शर्तों से सहमत हैं। आपको कम से कम 18 वर्ष का होना चाहिए और कानूनी क्षमता होनी चाहिए।</li>
+        <li><strong>सेवा का विवरण</strong> — dApp जीवनचक्र प्रबंधन: बल्क अनइंस्टॉल/रीइंस्टॉल, Solana ब्लॉकचेन के माध्यम से भुगतान।</li>
+        <li><strong>भौगोलिक प्रतिबंध</strong> — अंतरराष्ट्रीय प्रतिबंधों के कारण 58 क्षेत्राधिकारों में उपलब्ध नहीं। लॉन्च पर और प्रत्येक भुगतान से पहले स्थान सत्यापित। VPN प्रतिबंधित।</li>
+        <li><strong>मूल्य निर्धारण और भुगतान</strong> — 4 तक ऐप्स: मुफ्त। 5+ ऐप्स: 0.01 SOL प्रति ऑपरेशन। भुगतान अंतिम और गैर-वापसी योग्य।</li>
+        <li><strong>उपयोगकर्ता की जिम्मेदारियाँ</strong> — वॉलेट सुरक्षा, अनइंस्टॉल से पहले सत्यापन, बैकअप, कानून अनुपालन।</li>
+        <li><strong>एक्सेसिबिलिटी सेवा प्रकटीकरण</strong> — स्वचालित अनइंस्टॉल पुष्टि और dApp Store में "Install" क्लिक के लिए उपयोग। कोई व्यक्तिगत डेटा एकत्र नहीं करता।</li>
+        <li><strong>अस्वीकरण</strong> — सेवा "जैसा है"। कोई गारंटी नहीं। तृतीय पक्षों या डेटा हानि के लिए जिम्मेदार नहीं।</li>
+        <li><strong>देयता की सीमा</strong> — अधिकतम $100 USD या 12 महीनों में भुगतान की गई राशि। उपभोक्ता अधिकार सुरक्षित।</li>
+        <li><strong>क्षतिपूर्ति</strong> — आप दुरुपयोग से उत्पन्न दावों के लिए MidMightBit Games (Australia) को क्षतिपूर्ति देने के लिए सहमत हैं।</li>
+        <li><strong>समाप्ति</strong> — उल्लंघनों के लिए हम समाप्त कर सकते हैं। आप अनइंस्टॉल करके समाप्त कर सकते हैं।</li>
+        <li><strong>विवाद समाधान</strong> — ऑस्ट्रेलियाई कानूनों द्वारा शासित। बाध्यकारी मध्यस्थता, कानून द्वारा निषिद्ध को छोड़कर।</li>
+        <li><strong>संशोधन</strong> — हम किसी भी समय संशोधन कर सकते हैं। निरंतर उपयोग स्वीकृति का गठन करता है।</li>
+        <li><strong>संपर्क</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>विविध</strong> — पूर्ण समझौता, पृथक्करण, छूट, असाइनमेंट।</li>
+    </ol>
+</article>
 
-    <div class="footer">
-        <p>© 2026 ADappvark Toolkit. All rights reserved.</p>
-        <p><a href="privacy.html">Privacy Policy</a> | <a href="index.html">Home</a></p>
-    </div>
+<!-- ============== HUNGARIAN ============== -->
+<article id="hu" lang="hu">
+    <div class="header"><h1>Felhasználási Feltételek</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Megjegyzés:</strong> A fenti angol változat a jogilag kötelező érvényű szöveg. Ez az összefoglaló a kényelmet szolgálja.</div>
+    <p>Ez a dokumentum összefoglalja a AardAppvark Toolkit használati feltételeit. A teljes szöveg a <a href="#en">fenti angol szakaszban</a> található.</p>
+    <ol>
+        <li><strong>Feltételek elfogadása</strong> — a használattal elfogadja ezeket a feltételeket. Legalább 18 évesnek és jogképesnek kell lennie.</li>
+        <li><strong>Szolgáltatás leírása</strong> — dApp életciklus-kezelés: tömeges eltávolítás/újratelepítés, fizetés Solana blockchain-en keresztül.</li>
+        <li><strong>Földrajzi korlátozások</strong> — nem elérhető 58 joghatóságban nemzetközi szankciók miatt. Helymeghatározás indításkor és minden fizetés előtt. VPN tiltva.</li>
+        <li><strong>Árképzés és fizetés</strong> — max. 4 alkalmazás: ingyenes. 5+ alkalmazás: 0,01 SOL/művelet. A kifizetések véglegesek és nem visszatéríthetők.</li>
+        <li><strong>Felhasználói felelősségek</strong> — pénztárcabiztonság, ellenőrzés eltávolítás előtt, biztonsági mentés, jogszabályok betartása.</li>
+        <li><strong>Akadálymentesítési szolgáltatás közzététele</strong> — automatikus eltávolítási megerősítéshez és "Install" gombra kattintáshoz dApp Store-ban. Nem gyűjt személyes adatokat.</li>
+        <li><strong>Felelősség kizárása</strong> — szolgáltatás "ahogy van". Garancia nincs. Nem vagyunk felelősek harmadik felekért vagy adatvesztésért.</li>
+        <li><strong>Felelősség korlátozása</strong> — maximum 100 USD vagy 12 hónap alatt fizetett összeg. Fogyasztói jogok megőrzve.</li>
+        <li><strong>Kártalanítás</strong> — vállalja, hogy kártalanítja a MidMightBit Games (Australia)-t a visszaélésekből eredő követelésekért.</li>
+        <li><strong>Megszüntetés</strong> — megszakíthatjuk a hozzáférést jogsértés esetén. Eltávolítással szüntetheti meg.</li>
+        <li><strong>Vitarendezés</strong> — Ausztrália jogszabályai szerint. Kötelező választottbíróság, kivéve, ha a törvény tiltja.</li>
+        <li><strong>Módosítások</strong> — bármikor módosíthatjuk. A folytatólagos használat elfogadást jelent.</li>
+        <li><strong>Kapcsolat</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Egyebek</strong> — teljes megállapodás, részleges érvénytelenség, lemondás, engedményezés.</li>
+    </ol>
+</article>
+
+<!-- ============== INDONESIAN ============== -->
+<article id="id" lang="id">
+    <div class="header"><h1>Ketentuan Layanan</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Pemberitahuan:</strong> Versi bahasa Inggris di atas adalah teks yang mengikat secara hukum. Ringkasan ini hanya untuk kemudahan.</div>
+    <p>Dokumen ini meringkas ketentuan penggunaan AardAppvark Toolkit. Untuk teks lengkap, lihat <a href="#en">bagian bahasa Inggris di atas</a>.</p>
+    <ol>
+        <li><strong>Penerimaan Ketentuan</strong> — dengan menggunakan, Anda menyetujui ketentuan ini. Anda harus berusia minimal 18 tahun dengan kapasitas hukum.</li>
+        <li><strong>Deskripsi Layanan</strong> — manajemen siklus hidup dApp: uninstall/reinstall massal, pembayaran melalui Solana blockchain.</li>
+        <li><strong>Pembatasan Geografis</strong> — tidak tersedia di 58 yurisdiksi karena sanksi internasional. Verifikasi lokasi saat peluncuran dan sebelum setiap pembayaran. VPN dilarang.</li>
+        <li><strong>Harga dan Pembayaran</strong> — hingga 4 aplikasi: gratis. 5+ aplikasi: 0,01 SOL per operasi. Pembayaran final dan tidak dapat dikembalikan.</li>
+        <li><strong>Tanggung Jawab Pengguna</strong> — keamanan dompet, verifikasi sebelum uninstall, cadangan, kepatuhan hukum.</li>
+        <li><strong>Pengungkapan Layanan Aksesibilitas</strong> — digunakan untuk konfirmasi uninstall otomatis dan klik "Install" di dApp Store. Tidak mengumpulkan data pribadi.</li>
+        <li><strong>Penafian</strong> — layanan "apa adanya". Tidak ada jaminan. Tidak bertanggung jawab atas pihak ketiga atau kehilangan data.</li>
+        <li><strong>Pembatasan Tanggung Jawab</strong> — maksimum $100 USD atau jumlah yang dibayar dalam 12 bulan. Hak konsumen dipertahankan.</li>
+        <li><strong>Ganti Rugi</strong> — Anda setuju untuk mengganti rugi MidMightBit Games (Australia) atas klaim akibat penyalahgunaan.</li>
+        <li><strong>Pengakhiran</strong> — kami dapat mengakhiri karena pelanggaran. Anda dapat mengakhiri dengan uninstall.</li>
+        <li><strong>Penyelesaian Sengketa</strong> — diatur oleh hukum Australia. Arbitrase mengikat, kecuali dilarang oleh hukum.</li>
+        <li><strong>Modifikasi</strong> — kami dapat memodifikasi kapan saja. Penggunaan berkelanjutan merupakan penerimaan.</li>
+        <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Lain-lain</strong> — perjanjian utuh, keterpisahan, pengabaian, pengalihan.</li>
+    </ol>
+</article>
+
+<!-- ============== ITALIAN ============== -->
+<article id="it" lang="it">
+    <div class="header"><h1>Termini di Servizio</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Avviso:</strong> La versione in inglese sopra è il testo giuridicamente vincolante. Questo riassunto è fornito per comodità.</div>
+    <p>Questo documento riassume i termini di utilizzo di AardAppvark Toolkit. Per il testo completo, consulta la <a href="#en">sezione in inglese sopra</a>.</p>
+    <ol>
+        <li><strong>Accettazione dei Termini</strong> — utilizzando, accetti questi termini. Devi avere almeno 18 anni con capacità giuridica.</li>
+        <li><strong>Descrizione del Servizio</strong> — gestione del ciclo di vita delle dApp: disinstallazione/reinstallazione in blocco, pagamenti tramite blockchain Solana.</li>
+        <li><strong>Restrizioni Geografiche</strong> — non disponibile in 58 giurisdizioni a causa di sanzioni internazionali. Verifica della posizione all'avvio e prima di ogni pagamento. VPN vietate.</li>
+        <li><strong>Prezzi e Pagamenti</strong> — fino a 4 app: gratis. 5+ app: 0,01 SOL per operazione. I pagamenti sono definitivi e non rimborsabili.</li>
+        <li><strong>Responsabilità dell'Utente</strong> — sicurezza del portafoglio, verifica prima della disinstallazione, backup, conformità alle leggi.</li>
+        <li><strong>Divulgazione del Servizio di Accessibilità</strong> — usato per conferma automatica di disinstallazione e click "Install" nel dApp Store. Non raccoglie dati personali.</li>
+        <li><strong>Esclusione di Responsabilità</strong> — servizio "così com'è". Nessuna garanzia. Non responsabili per terze parti o perdita di dati.</li>
+        <li><strong>Limitazione di Responsabilità</strong> — massimo $100 USD o importo pagato in 12 mesi. Diritti dei consumatori preservati.</li>
+        <li><strong>Indennizzo</strong> — accetti di indennizzare MidMightBit Games (Australia) per reclami derivanti da uso improprio.</li>
+        <li><strong>Risoluzione</strong> — possiamo terminare per violazioni. Puoi terminare disinstallando.</li>
+        <li><strong>Risoluzione delle Controversie</strong> — disciplinato dalle leggi australiane. Arbitrato vincolante, eccetto dove vietato dalla legge.</li>
+        <li><strong>Modifiche</strong> — possiamo modificare in qualsiasi momento. L'uso continuato costituisce accettazione.</li>
+        <li><strong>Contatto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Varie</strong> — intero accordo, separabilità, rinuncia, cessione.</li>
+    </ol>
+</article>
+
+<!-- ============== JAPANESE ============== -->
+<article id="ja" lang="ja">
+    <div class="header"><h1>利用規約</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>お知らせ:</strong> 上記の英語版が法的に拘束力のある本文です。この要約は便宜上のものです。</div>
+    <p>本書はAardAppvark Toolkitの利用規約を要約したものです。完全な本文は<a href="#en">上記の英語セクション</a>をご参照ください。</p>
+    <ol>
+        <li><strong>規約の同意</strong> — ご利用により本規約に同意したものとみなされます。18歳以上で法的能力を有する方に限ります。</li>
+        <li><strong>サービス概要</strong> — dAppライフサイクル管理:一括アンインストール/再インストール、Solanaブロックチェーン経由の決済。</li>
+        <li><strong>地理的制限</strong> — 国際制裁により58の管轄区域で利用不可。起動時および各決済前に位置確認。VPN禁止。</li>
+        <li><strong>料金と支払い</strong> — 4アプリまで:無料。5アプリ以上:0.01 SOL/操作。決済は確定的で返金不可。</li>
+        <li><strong>ユーザーの責任</strong> — ウォレット保護、アンインストール前の確認、バックアップ、法令遵守。</li>
+        <li><strong>アクセシビリティサービスの開示</strong> — 自動アンインストール確認とdApp Storeでの「Install」クリックに使用。個人データは一切収集しません。</li>
+        <li><strong>免責事項</strong> — 「現状のまま」のサービス。保証なし。第三者やデータ損失について責任を負いません。</li>
+        <li><strong>責任制限</strong> — 最大100 USDまたは12ヶ月以内の支払額。消費者権利は保護されます。</li>
+        <li><strong>補償</strong> — 不正使用に起因する請求についてMidMightBit Games (Australia)を補償することに同意します。</li>
+        <li><strong>解除</strong> — 違反があれば解除可能。アンインストールにより解除できます。</li>
+        <li><strong>紛争解決</strong> — オーストラリア法に準拠。法的に禁じられない限り、拘束力のある仲裁。</li>
+        <li><strong>変更</strong> — 随時変更可能。継続使用は同意とみなされます。</li>
+        <li><strong>連絡先</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>その他</strong> — 完全合意、可分性、権利放棄、譲渡。</li>
+    </ol>
+</article>
+
+<!-- ============== KOREAN ============== -->
+<article id="ko" lang="ko">
+    <div class="header"><h1>서비스 이용약관</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>공지:</strong> 위의 영어 버전이 법적으로 구속력 있는 본문입니다. 이 요약은 편의를 위해 제공됩니다.</div>
+    <p>이 문서는 AardAppvark Toolkit 이용약관을 요약합니다. 전체 본문은 <a href="#en">위의 영어 섹션</a>을 참조하십시오.</p>
+    <ol>
+        <li><strong>약관 동의</strong> — 사용 시 본 약관에 동의하는 것으로 간주됩니다. 18세 이상이며 법적 능력이 있어야 합니다.</li>
+        <li><strong>서비스 설명</strong> — dApp 수명주기 관리: 일괄 제거/재설치, Solana 블록체인 결제.</li>
+        <li><strong>지리적 제한</strong> — 국제 제재로 58개 관할 구역에서 이용 불가. 시작 시 및 각 결제 전 위치 확인. VPN 금지.</li>
+        <li><strong>가격 및 결제</strong> — 4개 앱까지: 무료. 5개 이상: 작업당 0.01 SOL. 결제는 최종이며 환불 불가.</li>
+        <li><strong>사용자 책임</strong> — 지갑 보안, 제거 전 확인, 백업, 법률 준수.</li>
+        <li><strong>접근성 서비스 공개</strong> — 자동 제거 확인 및 dApp Store에서 "Install" 클릭에 사용. 개인 데이터를 수집하지 않습니다.</li>
+        <li><strong>면책</strong> — "있는 그대로" 서비스. 보증 없음. 제3자 또는 데이터 손실에 대해 책임지지 않습니다.</li>
+        <li><strong>책임 제한</strong> — 최대 $100 USD 또는 12개월 동안 지불한 금액. 소비자 권리 보존.</li>
+        <li><strong>면책</strong> — 오용으로 인한 청구에 대해 MidMightBit Games (Australia)에게 면책을 제공하는 데 동의합니다.</li>
+        <li><strong>종료</strong> — 위반 시 종료할 수 있습니다. 제거하여 종료할 수 있습니다.</li>
+        <li><strong>분쟁 해결</strong> — 호주 법률에 따릅니다. 법으로 금지되지 않는 한 구속력 있는 중재.</li>
+        <li><strong>수정</strong> — 언제든지 수정 가능. 계속 사용은 동의를 의미합니다.</li>
+        <li><strong>문의</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>기타</strong> — 전체 합의, 분리 가능성, 포기, 양도.</li>
+    </ol>
+</article>
+
+<!-- ============== DUTCH ============== -->
+<article id="nl" lang="nl">
+    <div class="header"><h1>Servicevoorwaarden</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Mededeling:</strong> De Engelse versie hierboven is de juridisch bindende tekst. Deze samenvatting wordt ter informatie verstrekt.</div>
+    <p>Dit document vat de gebruiksvoorwaarden van AardAppvark Toolkit samen. Voor de volledige tekst zie het <a href="#en">Engelse gedeelte hierboven</a>.</p>
+    <ol>
+        <li><strong>Aanvaarding van Voorwaarden</strong> — door gebruik gaat u akkoord met deze voorwaarden. U moet ten minste 18 zijn met juridische bekwaamheid.</li>
+        <li><strong>Beschrijving van de Dienst</strong> — dApp-levenscyclusbeheer: bulk-deïnstallatie/herinstallatie, betalingen via Solana blockchain.</li>
+        <li><strong>Geografische Beperkingen</strong> — niet beschikbaar in 58 rechtsgebieden vanwege internationale sancties. Locatieverificatie bij opstarten en voor elke betaling. VPN verboden.</li>
+        <li><strong>Prijzen en Betaling</strong> — tot 4 apps: gratis. 5+ apps: 0,01 SOL per bewerking. Betalingen zijn definitief en niet-restitueerbaar.</li>
+        <li><strong>Verantwoordelijkheden Gebruiker</strong> — portemonneebeveiliging, verificatie voor deïnstallatie, back-ups, naleving van wetten.</li>
+        <li><strong>Toegankelijkheidsdienst Openbaarmaking</strong> — gebruikt voor automatische deïnstallatiebevestiging en "Install" klikken in dApp Store. Verzamelt geen persoonlijke gegevens.</li>
+        <li><strong>Disclaimers</strong> — dienst "zoals deze is". Geen garanties. Niet verantwoordelijk voor derden of gegevensverlies.</li>
+        <li><strong>Beperking van Aansprakelijkheid</strong> — maximaal $100 USD of het in 12 maanden betaalde bedrag. Consumentenrechten behouden.</li>
+        <li><strong>Vrijwaring</strong> — u stemt ermee in MidMightBit Games (Australia) te vrijwaren voor claims voortvloeiend uit misbruik.</li>
+        <li><strong>Beëindiging</strong> — wij kunnen beëindigen bij overtredingen. U kunt beëindigen door te deïnstalleren.</li>
+        <li><strong>Geschillenbeslechting</strong> — onderworpen aan Australisch recht. Bindende arbitrage, behalve waar verboden door de wet.</li>
+        <li><strong>Wijzigingen</strong> — wij kunnen op elk moment wijzigen. Voortgezet gebruik vormt acceptatie.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Diversen</strong> — volledige overeenkomst, scheidbaarheid, afstand, overdracht.</li>
+    </ol>
+</article>
+
+<!-- ============== POLISH ============== -->
+<article id="pl" lang="pl">
+    <div class="header"><h1>Warunki Świadczenia Usług</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Uwaga:</strong> Wersja angielska powyżej stanowi prawnie wiążący tekst. To podsumowanie jest udostępniane dla wygody.</div>
+    <p>Ten dokument podsumowuje warunki korzystania z AardAppvark Toolkit. Pełny tekst znajduje się w <a href="#en">sekcji angielskiej powyżej</a>.</p>
+    <ol>
+        <li><strong>Akceptacja Warunków</strong> — korzystając, akceptujesz te warunki. Musisz mieć co najmniej 18 lat ze zdolnością prawną.</li>
+        <li><strong>Opis Usługi</strong> — zarządzanie cyklem życia dApp: masowa dezinstalacja/reinstalacja, płatności przez blockchain Solana.</li>
+        <li><strong>Ograniczenia Geograficzne</strong> — niedostępne w 58 jurysdykcjach z powodu międzynarodowych sankcji. Weryfikacja lokalizacji przy uruchomieniu i przed każdą płatnością. VPN zabronione.</li>
+        <li><strong>Ceny i Płatność</strong> — do 4 aplikacji: bezpłatnie. 5+ aplikacji: 0,01 SOL za operację. Płatności są ostateczne i bezzwrotne.</li>
+        <li><strong>Obowiązki Użytkownika</strong> — bezpieczeństwo portfela, weryfikacja przed dezinstalacją, kopia zapasowa, zgodność z prawem.</li>
+        <li><strong>Ujawnienie Usługi Dostępności</strong> — używana do automatycznego potwierdzania dezinstalacji i klikania "Install" w dApp Store. Nie zbiera danych osobowych.</li>
+        <li><strong>Wyłączenia odpowiedzialności</strong> — usługa „taka jaka jest". Brak gwarancji. Nie odpowiadamy za strony trzecie lub utratę danych.</li>
+        <li><strong>Ograniczenie odpowiedzialności</strong> — maksimum 100 USD lub kwota zapłacona w 12 miesiącach. Prawa konsumentów zachowane.</li>
+        <li><strong>Odszkodowanie</strong> — zgadzasz się zwolnić MidMightBit Games (Australia) z roszczeń wynikających z niewłaściwego użycia.</li>
+        <li><strong>Zakończenie</strong> — możemy zakończyć z powodu naruszeń. Możesz zakończyć przez odinstalowanie.</li>
+        <li><strong>Rozstrzyganie sporów</strong> — podlega prawu australijskiemu. Wiążący arbitraż, z wyjątkiem przypadków zabronionych prawem.</li>
+        <li><strong>Modyfikacje</strong> — możemy modyfikować w dowolnym momencie. Dalsze korzystanie stanowi akceptację.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Różne</strong> — całość umowy, podzielność, zrzeczenie, cesja.</li>
+    </ol>
+</article>
+
+<!-- ============== PORTUGUESE (BRAZIL) ============== -->
+<article id="pt-BR" lang="pt-BR">
+    <div class="header"><h1>Termos de Serviço</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Aviso:</strong> A versão em inglês acima é o texto juridicamente vinculativo. Este resumo é fornecido por conveniência.</div>
+    <p>Este documento resume os termos de uso de AardAppvark Toolkit. Para o texto completo, consulte a <a href="#en">seção em inglês acima</a>.</p>
+    <ol>
+        <li><strong>Aceitação dos Termos</strong> — ao usar, você concorda com estes termos. Você deve ter pelo menos 18 anos com capacidade legal.</li>
+        <li><strong>Descrição do Serviço</strong> — gerenciamento de ciclo de vida de dApps: desinstalação/reinstalação em massa, pagamentos via blockchain Solana.</li>
+        <li><strong>Restrições Geográficas</strong> — não disponível em 58 jurisdições devido a sanções internacionais. Verificação de localização na inicialização e antes de cada pagamento. VPN proibida.</li>
+        <li><strong>Preços e Pagamento</strong> — até 4 apps: grátis. 5+ apps: 0,01 SOL por operação. Pagamentos são finais e não reembolsáveis.</li>
+        <li><strong>Responsabilidades do Usuário</strong> — segurança da carteira, verificação antes de desinstalar, backup, conformidade legal.</li>
+        <li><strong>Divulgação do Serviço de Acessibilidade</strong> — usado para confirmação automática de desinstalação e clique em "Install" no dApp Store. Não coleta dados pessoais.</li>
+        <li><strong>Isenções de Responsabilidade</strong> — serviço "como está". Sem garantias. Não responsáveis por terceiros ou perda de dados.</li>
+        <li><strong>Limitação de Responsabilidade</strong> — máximo de US$ 100 ou valor pago em 12 meses. Direitos do consumidor preservados.</li>
+        <li><strong>Indenização</strong> — você concorda em indenizar MidMightBit Games (Australia) por reivindicações decorrentes de uso indevido.</li>
+        <li><strong>Rescisão</strong> — podemos rescindir por violações. Você pode rescindir desinstalando.</li>
+        <li><strong>Resolução de Disputas</strong> — regido pelas leis da Austrália. Arbitragem vinculativa, exceto onde proibido por lei.</li>
+        <li><strong>Modificações</strong> — podemos modificar a qualquer momento. O uso continuado constitui aceitação.</li>
+        <li><strong>Contato</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Diversos</strong> — acordo completo, divisibilidade, renúncia, cessão.</li>
+    </ol>
+</article>
+
+<!-- ============== PORTUGUESE (PORTUGAL) ============== -->
+<article id="pt-PT" lang="pt-PT">
+    <div class="header"><h1>Termos de Serviço</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Aviso:</strong> A versão em inglês acima é o texto juridicamente vinculativo. Este resumo é fornecido por conveniência.</div>
+    <p>Este documento resume os termos de utilização de AardAppvark Toolkit. Para o texto completo, consulte a <a href="#en">secção em inglês acima</a>.</p>
+    <ol>
+        <li><strong>Aceitação dos Termos</strong> — ao utilizar, concorda com estes termos. Deve ter pelo menos 18 anos com capacidade legal.</li>
+        <li><strong>Descrição do Serviço</strong> — gestão do ciclo de vida de dApps: desinstalação/reinstalação em massa, pagamentos via blockchain Solana.</li>
+        <li><strong>Restrições Geográficas</strong> — não disponível em 58 jurisdições devido a sanções internacionais. Verificação de localização no arranque e antes de cada pagamento. VPN proibida.</li>
+        <li><strong>Preços e Pagamento</strong> — até 4 aplicações: grátis. 5+ aplicações: 0,01 SOL por operação. Pagamentos finais e não reembolsáveis.</li>
+        <li><strong>Responsabilidades do Utilizador</strong> — segurança da carteira, verificação antes de desinstalar, backup, conformidade legal.</li>
+        <li><strong>Divulgação do Serviço de Acessibilidade</strong> — usado para confirmação automática de desinstalação e clique "Install" no dApp Store. Não recolhe dados pessoais.</li>
+        <li><strong>Isenções de Responsabilidade</strong> — serviço "tal como está". Sem garantias. Não responsáveis por terceiros ou perda de dados.</li>
+        <li><strong>Limitação de Responsabilidade</strong> — máximo de 100 USD ou valor pago em 12 meses. Direitos do consumidor preservados.</li>
+        <li><strong>Indemnização</strong> — concorda em indemnizar MidMightBit Games (Australia) por reclamações decorrentes de uso indevido.</li>
+        <li><strong>Rescisão</strong> — podemos rescindir por violações. Pode rescindir desinstalando.</li>
+        <li><strong>Resolução de Litígios</strong> — regido pelas leis da Austrália. Arbitragem vinculativa, exceto onde proibido por lei.</li>
+        <li><strong>Modificações</strong> — podemos modificar a qualquer momento. A utilização continuada constitui aceitação.</li>
+        <li><strong>Contacto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Diversos</strong> — acordo integral, divisibilidade, renúncia, cessão.</li>
+    </ol>
+</article>
+
+<!-- ============== ROMANIAN ============== -->
+<article id="ro" lang="ro">
+    <div class="header"><h1>Termeni și Condiții</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Notă:</strong> Versiunea în limba engleză de mai sus este textul cu valoare juridică. Acest rezumat este furnizat pentru comoditate.</div>
+    <p>Acest document rezumă termenii de utilizare ai AardAppvark Toolkit. Pentru textul complet, consultați <a href="#en">secțiunea în limba engleză de mai sus</a>.</p>
+    <ol>
+        <li><strong>Acceptarea Termenilor</strong> — prin utilizare, acceptați acești termeni. Trebuie să aveți cel puțin 18 ani cu capacitate juridică.</li>
+        <li><strong>Descrierea Serviciului</strong> — gestionarea ciclului de viață al dApp: dezinstalare/reinstalare în masă, plăți prin blockchain Solana.</li>
+        <li><strong>Restricții Geografice</strong> — indisponibil în 58 de jurisdicții din cauza sancțiunilor internaționale. Verificare locație la lansare și înainte de fiecare plată. VPN interzis.</li>
+        <li><strong>Prețuri și Plată</strong> — până la 4 aplicații: gratuit. 5+ aplicații: 0,01 SOL per operațiune. Plățile sunt finale și nerambursabile.</li>
+        <li><strong>Responsabilitățile Utilizatorului</strong> — securitatea portofelului, verificare înainte de dezinstalare, backup, conformitate legală.</li>
+        <li><strong>Dezvăluirea Serviciului de Accesibilitate</strong> — folosit pentru confirmarea automată a dezinstalării și clic pe „Install" în dApp Store. Nu colectează date personale.</li>
+        <li><strong>Renunțări</strong> — serviciu „așa cum este". Fără garanții. Nu responsabili pentru terți sau pierderea datelor.</li>
+        <li><strong>Limitarea Răspunderii</strong> — maximum 100 USD sau suma plătită în 12 luni. Drepturile consumatorilor sunt păstrate.</li>
+        <li><strong>Despăgubire</strong> — sunteți de acord să despăgubiți MidMightBit Games (Australia) pentru pretențiile care decurg din utilizarea greșită.</li>
+        <li><strong>Reziliere</strong> — putem rezilia pentru încălcări. Puteți rezilia prin dezinstalare.</li>
+        <li><strong>Soluționarea Litigiilor</strong> — reglementat de legile Australiei. Arbitraj obligatoriu, cu excepția cazului în care este interzis de lege.</li>
+        <li><strong>Modificări</strong> — putem modifica în orice moment. Utilizarea continuă constituie acceptare.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Diverse</strong> — acord integral, separabilitate, renunțare, cesiune.</li>
+    </ol>
+</article>
+
+<!-- ============== RUSSIAN ============== -->
+<article id="ru" lang="ru">
+    <div class="header"><h1>Условия Использования</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Уведомление:</strong> Английская версия выше является юридически обязательным текстом. Это резюме предоставлено для удобства.</div>
+    <p>Этот документ резюмирует условия использования AardAppvark Toolkit. Полный текст содержится в <a href="#en">английском разделе выше</a>.</p>
+    <ol>
+        <li><strong>Принятие Условий</strong> — используя, вы принимаете эти условия. Вам должно быть не менее 18 лет с правоспособностью.</li>
+        <li><strong>Описание Сервиса</strong> — управление жизненным циклом dApp: массовое удаление/переустановка, оплата через Solana blockchain.</li>
+        <li><strong>Географические Ограничения</strong> — недоступно в 58 юрисдикциях из-за международных санкций. Проверка местоположения при запуске и перед каждой оплатой. VPN запрещен.</li>
+        <li><strong>Цены и Оплата</strong> — до 4 приложений: бесплатно. 5+ приложений: 0,01 SOL за операцию. Платежи окончательны и не возвращаются.</li>
+        <li><strong>Обязанности Пользователя</strong> — безопасность кошелька, проверка перед удалением, резервное копирование, соблюдение законов.</li>
+        <li><strong>Раскрытие Службы Доступности</strong> — используется для автоматического подтверждения удаления и нажатия «Install» в dApp Store. Личные данные не собирает.</li>
+        <li><strong>Отказы от ответственности</strong> — сервис «как есть». Никаких гарантий. Не несем ответственности за третьи стороны или потерю данных.</li>
+        <li><strong>Ограничение ответственности</strong> — максимум 100 USD или сумма, уплаченная за 12 месяцев. Права потребителей сохранены.</li>
+        <li><strong>Возмещение</strong> — соглашаетесь возместить MidMightBit Games (Australia) за претензии, возникающие из злоупотребления.</li>
+        <li><strong>Прекращение</strong> — можем прекратить за нарушения. Можете прекратить удалением.</li>
+        <li><strong>Разрешение споров</strong> — регулируется австралийским правом. Обязательный арбитраж, кроме случаев, запрещенных законом.</li>
+        <li><strong>Изменения</strong> — можем изменить в любое время. Продолжение использования означает согласие.</li>
+        <li><strong>Контакты</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Разное</strong> — полное соглашение, делимость, отказ, передача.</li>
+    </ol>
+</article>
+
+<!-- ============== SWEDISH ============== -->
+<article id="sv" lang="sv">
+    <div class="header"><h1>Användarvillkor</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Obs:</strong> Den engelska versionen ovan är den juridiskt bindande texten. Denna sammanfattning tillhandahålls för enkelhetens skull.</div>
+    <p>Detta dokument sammanfattar användarvillkoren för AardAppvark Toolkit. För hela texten, se <a href="#en">det engelska avsnittet ovan</a>.</p>
+    <ol>
+        <li><strong>Godkännande av villkoren</strong> — genom att använda godkänner du dessa villkor. Du måste vara minst 18 år med juridisk handlingsförmåga.</li>
+        <li><strong>Beskrivning av tjänsten</strong> — dApp-livscykelhantering: massavinstallation/återinstallation, betalningar via Solana blockchain.</li>
+        <li><strong>Geografiska begränsningar</strong> — inte tillgängligt i 58 jurisdiktioner på grund av internationella sanktioner. Platsverifiering vid start och före varje betalning. VPN förbjudet.</li>
+        <li><strong>Priser och betalning</strong> — upp till 4 appar: gratis. 5+ appar: 0,01 SOL per åtgärd. Betalningar är slutgiltiga och kan inte återbetalas.</li>
+        <li><strong>Användarens ansvar</strong> — plånbokssäkerhet, verifiering före avinstallation, säkerhetskopiering, efterlevnad av lagar.</li>
+        <li><strong>Tillgänglighetstjänst Avslöjande</strong> — används för automatisk avinstallationsbekräftelse och "Install"-klick i dApp Store. Samlar inte in personuppgifter.</li>
+        <li><strong>Friskrivningar</strong> — tjänst "i befintligt skick". Inga garantier. Ej ansvariga för tredje parter eller dataförlust.</li>
+        <li><strong>Ansvarsbegränsning</strong> — maximalt 100 USD eller belopp betalat under 12 månader. Konsumenträttigheter bevaras.</li>
+        <li><strong>Skadeersättning</strong> — du samtycker till att ersätta MidMightBit Games (Australia) för anspråk som uppstår på grund av missbruk.</li>
+        <li><strong>Uppsägning</strong> — vi kan säga upp för överträdelser. Du kan säga upp genom att avinstallera.</li>
+        <li><strong>Tvistlösning</strong> — regleras av australiensisk lag. Bindande skiljedom, utom där det är förbjudet enligt lag.</li>
+        <li><strong>Ändringar</strong> — vi kan ändra när som helst. Fortsatt användning utgör godkännande.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Övrigt</strong> — hela avtalet, separabilitet, avstående, överlåtelse.</li>
+    </ol>
+</article>
+
+<!-- ============== THAI ============== -->
+<article id="th" lang="th">
+    <div class="header"><h1>ข้อกำหนดการให้บริการ</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>หมายเหตุ:</strong> เวอร์ชันภาษาอังกฤษด้านบนเป็นข้อความที่มีผลผูกพันทางกฎหมาย สรุปนี้จัดทำขึ้นเพื่อความสะดวก</div>
+    <p>เอกสารนี้สรุปข้อกำหนดการใช้งาน AardAppvark Toolkit สำหรับข้อความฉบับเต็ม โปรดดู<a href="#en">ส่วนภาษาอังกฤษด้านบน</a></p>
+    <ol>
+        <li><strong>การยอมรับข้อกำหนด</strong> — โดยการใช้งาน คุณยอมรับข้อกำหนดเหล่านี้ คุณต้องมีอายุอย่างน้อย 18 ปี และมีความสามารถทางกฎหมาย</li>
+        <li><strong>คำอธิบายบริการ</strong> — การจัดการวงจรชีวิต dApp: ถอนการติดตั้ง/ติดตั้งใหม่จำนวนมาก ชำระเงินผ่านบล็อกเชน Solana</li>
+        <li><strong>ข้อจำกัดทางภูมิศาสตร์</strong> — ไม่พร้อมใช้งานใน 58 เขตอำนาจเนื่องจากการคว่ำบาตรระหว่างประเทศ ตรวจสอบตำแหน่งเมื่อเปิดและก่อนการชำระเงินแต่ละครั้ง ห้าม VPN</li>
+        <li><strong>ราคาและการชำระเงิน</strong> — สูงสุด 4 แอป: ฟรี 5+ แอป: 0.01 SOL ต่อการดำเนินการ การชำระเงินเป็นที่สิ้นสุดและไม่สามารถขอคืนได้</li>
+        <li><strong>ความรับผิดชอบของผู้ใช้</strong> — ความปลอดภัยของกระเป๋า การตรวจสอบก่อนถอนการติดตั้ง การสำรองข้อมูล การปฏิบัติตามกฎหมาย</li>
+        <li><strong>การเปิดเผยบริการการเข้าถึง</strong> — ใช้สำหรับยืนยันการถอนการติดตั้งอัตโนมัติและคลิก "Install" ใน dApp Store ไม่เก็บข้อมูลส่วนบุคคล</li>
+        <li><strong>การปฏิเสธความรับผิด</strong> — บริการ "ตามสภาพ" ไม่มีการรับประกัน ไม่รับผิดชอบต่อบุคคลที่สามหรือการสูญหายของข้อมูล</li>
+        <li><strong>ข้อจำกัดความรับผิด</strong> — สูงสุด $100 USD หรือจำนวนเงินที่จ่ายใน 12 เดือน สิทธิผู้บริโภคได้รับการรักษา</li>
+        <li><strong>การชดใช้ค่าเสียหาย</strong> — คุณตกลงชดใช้ MidMightBit Games (Australia) สำหรับข้อเรียกร้องที่เกิดจากการใช้ในทางที่ผิด</li>
+        <li><strong>การยุติ</strong> — เราอาจยุติเนื่องจากการละเมิด คุณสามารถยุติได้โดยถอนการติดตั้ง</li>
+        <li><strong>การระงับข้อพิพาท</strong> — อยู่ภายใต้กฎหมายของออสเตรเลีย อนุญาโตตุลาการที่มีผลผูกพัน ยกเว้นที่กฎหมายห้าม</li>
+        <li><strong>การแก้ไข</strong> — เราอาจแก้ไขได้ตลอดเวลา การใช้งานต่อเนื่องถือเป็นการยอมรับ</li>
+        <li><strong>ติดต่อ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>เบ็ดเตล็ด</strong> — ข้อตกลงทั้งหมด การแยกส่วน การสละสิทธิ์ การมอบหมาย</li>
+    </ol>
+</article>
+
+<!-- ============== TURKISH ============== -->
+<article id="tr" lang="tr">
+    <div class="header"><h1>Hizmet Şartları</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Bildirim:</strong> Yukarıdaki İngilizce sürüm yasal olarak bağlayıcı metindir. Bu özet kolaylık sağlamak için sunulmuştur.</div>
+    <p>Bu belge, AardAppvark Toolkit kullanım şartlarını özetler. Tam metin için <a href="#en">yukarıdaki İngilizce bölüme</a> bakın.</p>
+    <ol>
+        <li><strong>Şartların Kabulü</strong> — kullanarak, bu şartları kabul edersiniz. En az 18 yaşında ve hukuki ehliyete sahip olmalısınız.</li>
+        <li><strong>Hizmet Tanımı</strong> — dApp yaşam döngüsü yönetimi: toplu kaldırma/yeniden kurma, Solana blockchain üzerinden ödemeler.</li>
+        <li><strong>Coğrafi Kısıtlamalar</strong> — uluslararası yaptırımlar nedeniyle 58 yargı alanında mevcut değil. Başlatma sırasında ve her ödeme öncesi konum doğrulama. VPN yasak.</li>
+        <li><strong>Fiyatlandırma ve Ödeme</strong> — 4 uygulamaya kadar: ücretsiz. 5+ uygulama: işlem başına 0,01 SOL. Ödemeler kesindir ve iade edilmez.</li>
+        <li><strong>Kullanıcı Sorumlulukları</strong> — cüzdan güvenliği, kaldırmadan önce doğrulama, yedekleme, yasal uyumluluk.</li>
+        <li><strong>Erişilebilirlik Hizmeti Açıklaması</strong> — otomatik kaldırma onayı ve dApp Store'da "Install" tıklama için kullanılır. Kişisel veri toplamaz.</li>
+        <li><strong>Sorumluluk Reddi</strong> — hizmet "olduğu gibi". Garanti yok. Üçüncü taraflardan veya veri kaybından sorumlu değiliz.</li>
+        <li><strong>Sorumluluk Sınırlaması</strong> — maksimum 100 USD veya 12 ayda ödenen tutar. Tüketici hakları korunur.</li>
+        <li><strong>Tazminat</strong> — kötüye kullanımdan kaynaklanan taleplere karşı MidMightBit Games (Australia)'i tazmin etmeyi kabul edersiniz.</li>
+        <li><strong>Fesih</strong> — ihlaller için feshedebiliriz. Kaldırarak feshedebilirsiniz.</li>
+        <li><strong>Uyuşmazlık Çözümü</strong> — Avustralya yasalarına tabidir. Bağlayıcı tahkim, yasanın yasakladığı durumlar hariç.</li>
+        <li><strong>Değişiklikler</strong> — istediğimiz zaman değiştirebiliriz. Devam eden kullanım kabul anlamına gelir.</li>
+        <li><strong>İletişim</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Çeşitli</strong> — bütün anlaşma, bölünebilirlik, feragat, devir.</li>
+    </ol>
+</article>
+
+<!-- ============== UKRAINIAN ============== -->
+<article id="uk" lang="uk">
+    <div class="header"><h1>Умови надання послуг</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Повідомлення:</strong> Англійська версія вище є юридично обов'язковим текстом. Це резюме надається для зручності.</div>
+    <p>Цей документ підсумовує умови використання AardAppvark Toolkit. Повний текст міститься в <a href="#en">англійському розділі вище</a>.</p>
+    <ol>
+        <li><strong>Прийняття умов</strong> — використовуючи, ви приймаєте ці умови. Вам має бути щонайменше 18 років з правоздатністю.</li>
+        <li><strong>Опис послуги</strong> — керування життєвим циклом dApp: масове видалення/перевстановлення, платежі через Solana blockchain.</li>
+        <li><strong>Географічні обмеження</strong> — недоступно у 58 юрисдикціях через міжнародні санкції. Перевірка місцезнаходження при запуску та перед кожним платежем. VPN заборонено.</li>
+        <li><strong>Ціни та оплата</strong> — до 4 додатків: безкоштовно. 5+ додатків: 0,01 SOL за операцію. Платежі остаточні та не повертаються.</li>
+        <li><strong>Обов'язки користувача</strong> — безпека гаманця, перевірка перед видаленням, резервне копіювання, дотримання законів.</li>
+        <li><strong>Розкриття служби доступності</strong> — використовується для автоматичного підтвердження видалення та натискання "Install" у dApp Store. Не збирає особисті дані.</li>
+        <li><strong>Відмови від відповідальності</strong> — послуга «як є». Без гарантій. Не відповідаємо за треті сторони або втрату даних.</li>
+        <li><strong>Обмеження відповідальності</strong> — максимум 100 USD або сума, сплачена за 12 місяців. Права споживачів збережені.</li>
+        <li><strong>Відшкодування збитків</strong> — погоджуєтеся відшкодувати MidMightBit Games (Australia) за претензії, що виникають із зловживання.</li>
+        <li><strong>Припинення</strong> — можемо припинити за порушення. Ви можете припинити шляхом видалення.</li>
+        <li><strong>Вирішення спорів</strong> — регулюється законами Австралії. Обов'язковий арбітраж, за винятком випадків, заборонених законом.</li>
+        <li><strong>Зміни</strong> — можемо змінити в будь-який час. Подальше використання означає згоду.</li>
+        <li><strong>Контакти</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Різне</strong> — повна угода, подільність, відмова, передача.</li>
+    </ol>
+</article>
+
+<!-- ============== URDU (RTL) ============== -->
+<article id="ur" lang="ur" dir="rtl">
+    <div class="header"><h1>سروس کی شرائط</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>نوٹس:</strong> اوپر کی انگریزی نسخہ قانونی طور پر پابند کرنے والا متن ہے۔ یہ خلاصہ سہولت کے لئے ہے۔</div>
+    <p>یہ دستاویز AardAppvark Toolkit کی استعمال کی شرائط کا خلاصہ کرتی ہے۔ مکمل متن کے لئے، <a href="#en">اوپر کا انگریزی سیکشن</a> دیکھیں۔</p>
+    <ol>
+        <li><strong>شرائط کی قبولیت</strong> — استعمال کرنے سے، آپ ان شرائط سے اتفاق کرتے ہیں۔ آپ کی عمر کم از کم 18 سال اور قانونی صلاحیت ہونی چاہیے۔</li>
+        <li><strong>سروس کی تفصیل</strong> — dApp لائف سائیکل مینجمنٹ: بلک اَن انسٹال/ری انسٹال، Solana بلاک چین کے ذریعے ادائیگی۔</li>
+        <li><strong>جغرافیائی پابندیاں</strong> — بین الاقوامی پابندیوں کی وجہ سے 58 دائرہ اختیارات میں دستیاب نہیں۔ لانچ پر اور ہر ادائیگی سے پہلے مقام کی تصدیق۔ VPN ممنوع۔</li>
+        <li><strong>قیمتیں اور ادائیگی</strong> — 4 ایپس تک: مفت۔ 5+ ایپس: فی آپریشن 0.01 SOL۔ ادائیگیاں حتمی اور ناقابل واپسی۔</li>
+        <li><strong>صارف کی ذمہ داریاں</strong> — والیٹ کی سیکیورٹی، اَن انسٹال سے پہلے تصدیق، بیک اپ، قانون کی تعمیل۔</li>
+        <li><strong>ایکسیسبیلیٹی سروس کا انکشاف</strong> — خودکار اَن انسٹال تصدیق اور dApp Store میں "Install" پر کلک کرنے کے لئے استعمال۔ کوئی ذاتی ڈیٹا جمع نہیں کرتی۔</li>
+        <li><strong>دستبرداری</strong> — سروس "جیسی ہے"۔ کوئی ضمانت نہیں۔ تیسرے فریق یا ڈیٹا کے نقصان کے لئے ذمہ دار نہیں۔</li>
+        <li><strong>ذمہ داری کی حد</strong> — زیادہ سے زیادہ $100 USD یا 12 مہینوں میں ادا کردہ رقم۔ صارف کے حقوق محفوظ۔</li>
+        <li><strong>تلافی</strong> — آپ ناجائز استعمال سے پیدا ہونے والے دعووں کے لئے MidMightBit Games (Australia) کو تلافی کرنے سے اتفاق کرتے ہیں۔</li>
+        <li><strong>اختتام</strong> — خلاف ورزیوں کے لئے ہم اختتام کر سکتے ہیں۔ آپ اَن انسٹال کرکے اختتام کر سکتے ہیں۔</li>
+        <li><strong>تنازعات کا حل</strong> — آسٹریلیائی قوانین کے تحت۔ پابند ثالثی، سوائے قانون کے ذریعے ممنوع۔</li>
+        <li><strong>تبدیلیاں</strong> — کسی بھی وقت ترمیم کر سکتے ہیں۔ مسلسل استعمال قبولیت کا مظاہر کرتا ہے۔</li>
+        <li><strong>رابطہ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>متفرق</strong> — مکمل معاہدہ، علیحدگی، دستبرداری، تفویض۔</li>
+    </ol>
+</article>
+
+<!-- ============== VIETNAMESE ============== -->
+<article id="vi" lang="vi">
+    <div class="header"><h1>Điều khoản Dịch vụ</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Thông báo:</strong> Phiên bản tiếng Anh ở trên là văn bản có giá trị pháp lý ràng buộc. Bản tóm tắt này được cung cấp để thuận tiện.</div>
+    <p>Tài liệu này tóm tắt điều khoản sử dụng AardAppvark Toolkit. Để biết văn bản đầy đủ, hãy xem <a href="#en">phần tiếng Anh ở trên</a>.</p>
+    <ol>
+        <li><strong>Chấp nhận Điều khoản</strong> — bằng cách sử dụng, bạn đồng ý với các điều khoản này. Bạn phải ít nhất 18 tuổi và có năng lực pháp lý.</li>
+        <li><strong>Mô tả Dịch vụ</strong> — quản lý vòng đời dApp: gỡ cài đặt/cài đặt lại hàng loạt, thanh toán qua blockchain Solana.</li>
+        <li><strong>Hạn chế Địa lý</strong> — không có sẵn ở 58 khu vực pháp lý do các biện pháp trừng phạt quốc tế. Xác minh vị trí khi khởi chạy và trước mỗi lần thanh toán. Cấm VPN.</li>
+        <li><strong>Giá cả và Thanh toán</strong> — tối đa 4 ứng dụng: miễn phí. 5+ ứng dụng: 0,01 SOL mỗi thao tác. Thanh toán là cuối cùng và không hoàn lại.</li>
+        <li><strong>Trách nhiệm của Người dùng</strong> — bảo mật ví, xác minh trước khi gỡ cài đặt, sao lưu, tuân thủ pháp luật.</li>
+        <li><strong>Tiết lộ Dịch vụ Trợ năng</strong> — sử dụng để xác nhận gỡ cài đặt tự động và nhấp "Install" trong dApp Store. Không thu thập dữ liệu cá nhân.</li>
+        <li><strong>Tuyên bố Miễn trừ</strong> — dịch vụ "nguyên trạng". Không có bảo hành. Không chịu trách nhiệm về bên thứ ba hoặc mất dữ liệu.</li>
+        <li><strong>Giới hạn Trách nhiệm</strong> — tối đa 100 USD hoặc số tiền đã trả trong 12 tháng. Quyền của người tiêu dùng được bảo lưu.</li>
+        <li><strong>Bồi thường</strong> — bạn đồng ý bồi thường MidMightBit Games (Australia) cho các yêu cầu phát sinh từ việc lạm dụng.</li>
+        <li><strong>Chấm dứt</strong> — chúng tôi có thể chấm dứt vì vi phạm. Bạn có thể chấm dứt bằng cách gỡ cài đặt.</li>
+        <li><strong>Giải quyết Tranh chấp</strong> — chịu sự điều chỉnh của luật pháp Úc. Trọng tài ràng buộc, ngoại trừ những trường hợp bị pháp luật cấm.</li>
+        <li><strong>Sửa đổi</strong> — chúng tôi có thể sửa đổi bất kỳ lúc nào. Việc tiếp tục sử dụng cấu thành sự chấp nhận.</li>
+        <li><strong>Liên hệ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>Khác</strong> — toàn bộ thỏa thuận, khả năng phân tách, từ bỏ, chuyển nhượng.</li>
+    </ol>
+</article>
+
+<!-- ============== CHINESE SIMPLIFIED ============== -->
+<article id="zh-CN" lang="zh-CN">
+    <div class="header"><h1>服务条款</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>声明:</strong> 上方英文版本为具有法律约束力的文本。本摘要仅为便利提供。</div>
+    <p>本文档总结了 AardAppvark Toolkit 的使用条款。完整文本请参阅<a href="#en">上方英文部分</a>。</p>
+    <ol>
+        <li><strong>接受条款</strong> — 使用即表示您同意这些条款。您必须年满 18 岁且具有法律行为能力。</li>
+        <li><strong>服务说明</strong> — dApp 生命周期管理:批量卸载/重新安装、通过 Solana 区块链支付。</li>
+        <li><strong>地理限制</strong> — 由于国际制裁,在 58 个司法管辖区不可用。启动时和每次支付前进行位置验证。禁止 VPN。</li>
+        <li><strong>定价和支付</strong> — 最多 4 个应用:免费。5+ 个应用:每次操作 0.01 SOL。支付为最终结果且不可退款。</li>
+        <li><strong>用户责任</strong> — 钱包安全、卸载前验证、备份、遵守法律。</li>
+        <li><strong>无障碍服务披露</strong> — 用于自动卸载确认和 dApp Store 中点击 "Install"。不收集个人数据。</li>
+        <li><strong>免责声明</strong> — 服务按"原样"提供。无任何保证。不对第三方或数据丢失负责。</li>
+        <li><strong>责任限制</strong> — 最高 100 美元或 12 个月内支付的金额。消费者权利得到保护。</li>
+        <li><strong>赔偿</strong> — 您同意就因滥用引起的索赔向 MidMightBit Games (Australia) 提供赔偿。</li>
+        <li><strong>终止</strong> — 我们可因违规终止。您可通过卸载终止。</li>
+        <li><strong>争议解决</strong> — 受澳大利亚法律管辖。约束性仲裁,法律禁止的情况除外。</li>
+        <li><strong>修改</strong> — 我们可随时修改。继续使用即表示接受。</li>
+        <li><strong>联系方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>其他</strong> — 完整协议、可分割性、弃权、转让。</li>
+    </ol>
+</article>
+
+<!-- ============== CHINESE TRADITIONAL ============== -->
+<article id="zh-TW" lang="zh-TW">
+    <div class="header"><h1>服務條款</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>聲明:</strong> 上方英文版本為具有法律約束力的文本。本摘要僅為便利提供。</div>
+    <p>本文件總結了 AardAppvark Toolkit 的使用條款。完整文本請參閱<a href="#en">上方英文部分</a>。</p>
+    <ol>
+        <li><strong>接受條款</strong> — 使用即表示您同意這些條款。您必須年滿 18 歲且具有法律行為能力。</li>
+        <li><strong>服務說明</strong> — dApp 生命週期管理:批次解除安裝/重新安裝、透過 Solana 區塊鏈付款。</li>
+        <li><strong>地理限制</strong> — 由於國際制裁,在 58 個司法管轄區不可用。啟動時和每次付款前進行位置驗證。禁止 VPN。</li>
+        <li><strong>定價和付款</strong> — 最多 4 個應用程式:免費。5+ 個應用程式:每次操作 0.01 SOL。付款為最終結果且不可退款。</li>
+        <li><strong>使用者責任</strong> — 錢包安全、解除安裝前驗證、備份、遵守法律。</li>
+        <li><strong>無障礙服務披露</strong> — 用於自動解除安裝確認和 dApp Store 中點擊「Install」。不收集個人資料。</li>
+        <li><strong>免責聲明</strong> — 服務按「原樣」提供。無任何保證。不對第三方或資料丟失負責。</li>
+        <li><strong>責任限制</strong> — 最高 100 美元或 12 個月內支付的金額。消費者權利得到保護。</li>
+        <li><strong>賠償</strong> — 您同意就因濫用引起的索賠向 MidMightBit Games (Australia) 提供賠償。</li>
+        <li><strong>終止</strong> — 我們可因違規終止。您可透過解除安裝終止。</li>
+        <li><strong>爭議解決</strong> — 受澳洲法律管轄。約束性仲裁,法律禁止的情況除外。</li>
+        <li><strong>修改</strong> — 我們可隨時修改。繼續使用即表示接受。</li>
+        <li><strong>聯絡方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+        <li><strong>其他</strong> — 完整協議、可分割性、棄權、轉讓。</li>
+    </ol>
+</article>
+
+<div class="footer">
+    <p>&copy; 2026 AardAppvark Toolkit. All rights reserved.</p>
+    <p><a href="privacy.html">Privacy Policy</a> | <a href="copyright.html">Copyright</a> | <a href="index.html">Home</a></p>
+</div>
+</div>
 </body>
 </html>

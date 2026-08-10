@@ -3,191 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy - ADappvark Toolkit</title>
+    <title>Privacy Policy — AardAppvark Toolkit</title>
+    <meta name="description" content="Privacy policy for AardAppvark Toolkit, available in 28 languages.">
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            line-height: 1.7;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: #f8f9fa;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            color: white;
-        }
-        .header h1 { margin: 0 0 10px 0; font-size: 28px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        :root { --accent: #667eea; --accent-2: #764ba2; --bg: #f8f9fa; --card: #ffffff; --text: #333; --muted: #666; --border: #ddd; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif; line-height: 1.7; color: var(--text); background: var(--bg); }
+        .lang-nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); padding: 12px 20px; font-size: 13px; }
+        .lang-nav-inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+        .lang-nav .lang-label { font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
+        .lang-nav a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+        .lang-nav a:hover { text-decoration: underline; }
+        .wrap { max-width: 800px; margin: 0 auto; padding: 32px 20px 80px; }
+        article { background: var(--card); border-radius: 15px; padding: 32px; margin: 32px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        article[dir="rtl"] { text-align: right; }
+        .header { text-align: center; margin: -32px -32px 32px; padding: 30px; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%); border-radius: 15px 15px 0 0; color: white; }
+        .header h1 { font-size: 28px; margin-bottom: 8px; }
         .header .meta { opacity: 0.9; font-size: 14px; }
-        .content {
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        h2 {
-            color: #667eea;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-            margin-top: 40px;
-        }
+        h2 { color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-top: 32px; margin-bottom: 16px; font-size: 20px; }
+        h2:first-of-type { margin-top: 0; }
         h3 { color: #444; margin-top: 25px; }
-        ul, ol { padding-left: 25px; }
+        ul, ol { padding-left: 25px; margin: 12px 0; }
+        article[dir="rtl"] ul, article[dir="rtl"] ol { padding-left: 0; padding-right: 25px; }
         li { margin: 8px 0; }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
+        p { margin: 12px 0; }
+        strong { color: var(--text); }
+        a { color: var(--accent); }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 14px; }
+        th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
         th { background: #f5f5f5; }
-        strong { color: #333; }
-        a { color: #667eea; }
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: #667eea;
-            text-decoration: none;
-        }
+        .summary-box { background: #e8f4fd; border-left: 4px solid var(--accent); padding: 16px 20px; margin: 16px 0; border-radius: 0 10px 10px 0; }
+        article[dir="rtl"] .summary-box { border-left: none; border-right: 4px solid var(--accent); border-radius: 10px 0 0 10px; }
+        .binding-notice { background: #fff8e1; border: 1px solid #f0c419; border-radius: 8px; padding: 12px 16px; margin: 16px 0; font-size: 14px; color: #5d4e00; }
+        .back-link { display: inline-block; margin-bottom: 16px; color: var(--accent); text-decoration: none; font-size: 14px; }
         .back-link:hover { text-decoration: underline; }
-        .summary-box {
-            background: #e8f4fd;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 30px 0;
-            border-radius: 0 10px 10px 0;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-        }
+        .footer { text-align: center; margin-top: 48px; padding: 20px; color: var(--muted); font-size: 14px; }
+        .footer a { margin: 0 8px; }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link">← Back to Home</a>
 
-    <div class="header">
-        <h1>Privacy Policy</h1>
-        <div class="meta">
-            Effective Date: February 4, 2026 | Last Updated: February 9, 2026 | Version 1.2.0
-        </div>
+<nav class="lang-nav" aria-label="Language selection"><div class="lang-nav-inner">
+    <span class="lang-label">Languages:</span>
+    <a href="#en">English</a> <a href="#ar" lang="ar">العربية</a> <a href="#cs" lang="cs">Čeština</a> <a href="#de" lang="de">Deutsch</a> <a href="#el" lang="el">Ελληνικά</a> <a href="#es" lang="es">Español</a> <a href="#fil" lang="fil">Filipino</a> <a href="#fr" lang="fr">Français</a> <a href="#hi" lang="hi">हिन्दी</a> <a href="#hu" lang="hu">Magyar</a> <a href="#id" lang="id">Bahasa Indonesia</a> <a href="#it" lang="it">Italiano</a> <a href="#ja" lang="ja">日本語</a> <a href="#ko" lang="ko">한국어</a> <a href="#nl" lang="nl">Nederlands</a> <a href="#pl" lang="pl">Polski</a> <a href="#bn" lang="bn">বাংলা</a> <a href="#pt-BR" lang="pt-BR">Português (BR)</a> <a href="#ro" lang="ro">Română</a> <a href="#ru" lang="ru">Русский</a> <a href="#sv" lang="sv">Svenska</a> <a href="#th" lang="th">ไทย</a> <a href="#tr" lang="tr">Türkçe</a> <a href="#uk" lang="uk">Українська</a> <a href="#ur" lang="ur">اردو</a> <a href="#vi" lang="vi">Tiếng Việt</a> <a href="#zh-CN" lang="zh-CN">简体中文</a> <a href="#zh-TW" lang="zh-TW">繁體中文</a>
+</div></nav>
+
+<div class="wrap">
+<a href="index.html" class="back-link">← Back to Home</a>
+
+<!-- ============== ENGLISH (source / legally binding) ============== -->
+<article id="en" lang="en">
+    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: August 8, 2026 | Version 1.3.0</p></div>
+    <h2>1. Introduction</h2>
+    <p>AardAppvark Toolkit ("we," "our," "us," or the "Company") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application ("App") and related services.</p>
+    <h3>Our Core Privacy Principles</h3>
+    <ol>
+        <li><strong>Data Minimization:</strong> We collect only the absolute minimum data necessary to provide our Services.</li>
+        <li><strong>Local-First:</strong> We store data locally on your device whenever possible.</li>
+        <li><strong>Transparency:</strong> We are clear about what we collect and why.</li>
+        <li><strong>No Profiling:</strong> We use no advertising SDKs, no cross-app trackers and no profiling. The only telemetry is anonymous aggregate event counts (see section 2.2) that cannot be tied to you or your device.</li>
+        <li><strong>User Control:</strong> You maintain control over your data at all times.</li>
+    </ol>
+    <h2>2. Information We Collect</h2>
+    <h3>2.1 Information You Provide Directly</h3>
+    <ul>
+        <li><strong>Wallet Address:</strong> Your Solana wallet public address when you connect your wallet. Used for payment verification and transaction processing.</li>
+        <li><strong>Consent Records:</strong> Timestamp of your acceptance of Terms of Service, stored locally for legal compliance.</li>
+    </ul>
+    <h3>2.2 Information Collected Automatically</h3>
+    <ul>
+        <li><strong>Location Data (for Sanctions Compliance):</strong> Approximate country determined from your SIM card country, network carrier country or device locale. The App does <strong>not</strong> request any Android location permission, so GPS is only ever used if you have already granted location access to the App for some other reason. Used solely to verify you are not in a blocked jurisdiction. Checked at app launch, every 30 minutes while the App is open, and before each payment transaction. <strong>Not stored after verification</strong> &mdash; only the result (allowed/blocked) is retained.</li>
+        <li><strong>Device and Package Information:</strong> The App reads the list of applications installed on your device to show you what can be uninstalled or reinstalled. That list stays on your device &mdash; we never upload it. Two narrow exceptions, both anonymous: (a) if you tap <em>Install</em> on a Featured dApp card, the anonymous event <code>showcase_tap:&lt;that dApp's package name&gt;</code> is sent so the sponsor can be told how their placement performed, and a matching <code>showcase_install</code> event if that dApp appears installed within 7 days; (b) when the App looks up a dApp's icon it asks the Solana dApp Store catalogue about that package. Neither carries any identifier for you or your device.</li>
+        <li><strong>Anonymous Aggregate Analytics:</strong> The App sends an event type only (for example <code>app_open</code>, <code>wallet_connected</code>, <code>bulk_uninstall</code>, <code>payment_sol</code>, <code>geo_blocked</code>) to our analytics endpoint at <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code>. That endpoint derives an approximate country and city from the network IP address of the request and stores <strong>only</strong> daily counts per country/city/event. The IP address itself is never stored, and no user ID, device ID, wallet address or advertising identifier is ever sent. We treat this as anonymous statistical data (GDPR Recital 26). Aggregate totals are published at the same host under <code>/public-stats</code>.</li>
+        <li><strong>Uninstall History (on your device, in a folder you own):</strong> So your reinstall list survives the App itself being uninstalled, the App writes a copy of your uninstall history to <code>Documents/AardAppvark/uninstall_history.json</code> in your device's own Documents folder. It is not uploaded anywhere. You can delete it at any time from Settings &rarr; More &rarr; "Delete A Backup File", or with any file manager.</li>
+        <li><strong>App Usage Information (Local Only):</strong> Credit balance, payment receipts (transaction signatures) and preferences. Stored locally.</li>
+    </ul>
+    
+    </ul>
+    <h3>2.3 Information We DO NOT Collect</h3>
+    <ul>
+        <li>No Personal Identifiers (name, email or phone) &mdash; except the contact email you type yourself if you buy a Featured dApp placement (see section 9)</li>
+        <li>No Device Identifiers (IMEI, Android ID, advertising ID)</li>
+        <li>No Private Keys or seed phrases (payments are signed inside your wallet, never by us)</li>
+        <li>No Crash Reports</li>
+        <li>No Advertising SDKs, cross-app trackers or behavioural profiling</li>
+        <li>No Photos, Contacts, or Media Access</li>
+        <li>No account: there is nothing to sign up for and no server-side profile</li>
+    </ul>
+    <h2>3. How We Use Your Information</h2>
+    <table>
+        <tr><th>Data Type</th><th>Purpose</th><th>Legal Basis</th></tr>
+        <tr><td>Wallet Address</td><td>Verify payment transactions</td><td>Contract performance</td></tr>
+        <tr><td>Location Data</td><td>Sanctions compliance</td><td>Legal obligation</td></tr>
+        <tr><td>Package Information</td><td>Display installed apps</td><td>Contract performance</td></tr>
+        <tr><td>Credits / payment receipts</td><td>Grant access to paid bulk operations</td><td>Contract performance</td></tr>
+        <tr><td>Anonymous event counts</td><td>Aggregate usage statistics</td><td>Legitimate interests (no personal data processed)</td></tr>
+    </table>
+    <h2>4. Information Sharing</h2>
+    <p><strong>We do not sell, rent, or monetize your Personal Data.</strong></p>
+    <p>Limited disclosure occurs only for:</p>
+    <ul>
+        <li>Blockchain transactions (public by nature)</li>
+        <li>Legal requirements (court orders, etc.)</li>
+        <li>Business transfers (with notification)</li>
+    </ul>
+    <h2>5. Third-Party Services and Network Endpoints</h2>
+        <p>These are every host the App contacts, and what each one receives:</p>
+        <ul>
+            <li><strong>Solana RPC providers</strong> &mdash; <code>mainnet.helius-rpc.com</code> (Helius, primary) and, as fallbacks, <code>api.mainnet-beta.solana.com</code> (Solana Labs) and <code>solana-rpc.publicnode.com</code> (Allnodes). To verify Seeker Genesis Token status, submit payments and read token data, the App sends your wallet's <em>public</em> address to these providers. They receive your IP address and that public address. Private keys never leave your wallet.</li>
+            <li><strong>TRM Labs sanctions screening</strong> &mdash; <code>api.trmlabs.com</code>. Before a payment, your wallet's public address is screened against sanctions lists using TRM Labs' free public screening API. TRM Labs receives that public address and your IP address. If the call fails, the App falls back to an offline list bundled in the App.</li>
+            <li><strong>Our analytics endpoint</strong> &mdash; <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code> (Cloudflare Workers, run by us). Receives an event type and, at the network level, your IP address, from which an approximate country/city is derived and then discarded. Only aggregate counts are stored. See section 2.2.</li>
+            <li><strong>Featured dApp feed</strong> &mdash; <code>sponsr.provenby.dev</code> and <code>sponsr-kappa.vercel.app</code> (Vercel, run by us). Serves the Featured dApp card's copy and images, and receives Featured-placement applications you choose to submit (section 10).</li>
+            <li><strong>Solana dApp Store catalogue</strong> &mdash; <code>dappstore.solanamobile.com</code> (Solana Mobile). Queried for dApp names and icons. Receives the package name being looked up and your IP address.</li>
+            <li><strong>IPFS / Arweave gateways</strong> &mdash; <code>ipfs.io</code>, <code>arweave.net</code>. Used only to fetch dApp icon images referenced by on-chain metadata.</li>
+            <li><strong>Solana Mobile Wallet Adapter</strong> &mdash; on-device communication with your wallet app. No network service of ours is involved.</li>
+            <li><strong>Solana blockchain</strong> &mdash; payments are public on-chain transactions by design.</li>
+            <li><strong>Shizuku</strong> (optional, if you have it installed) &mdash; local, on-device privileged operations. No network use.</li>
+        </ul>
+        <p>We do not sell or share any of the above with data brokers, advertising networks or analytics vendors.</p>
+    <h2>6. Data Storage and Security</h2>
+        <ul>
+            <li>All of your App data is stored on your device &mdash; in the App's private storage, plus the uninstall-history file in your own Documents folder described in section 2.2.</li>
+            <li>Protected by Android's application sandboxing.</li>
+            <li><strong>We operate no server that stores personal data.</strong> Our only backend is the analytics endpoint in section 5, which holds aggregate counts by country/city/day and nothing that identifies you.</li>
+        </ul>
+        <h3>6.1 Android Backup &mdash; what survives uninstalling</h3>
+        <p>If Android Backup is enabled on your device, the App's settings and progress data are included in your device's encrypted Google backup, survive uninstalling the App, and may be restored when you reinstall. This is deliberate for one thing in particular: credits you have paid for are recorded only on your device, so excluding them from backup would mean losing them on reinstall. Caches that can be re-derived (Seeker Genesis Token status, dApp icons, the Featured feed) are excluded from backup. No wallet keys or seed material are stored by the App at all, so there is nothing of that kind in any backup. You can exclude the App from backup in Android Settings, or delete the backup from your Google account.</p>
+        <p>The uninstall-history file in <code>Documents/AardAppvark/</code> is also, by design, not removed when you uninstall the App &mdash; that is what lets you restore your reinstall list afterwards. Delete it yourself if you do not want it kept.</p>
+    <h2>7. Geographic Restrictions</h2>
+        <p>The App is not available in 58 blocked jurisdictions including countries subject to comprehensive sanctions (Cuba, Iran, North Korea, Syria, Russia), significant restrictions (Belarus, Venezuela, Myanmar, Nicaragua, Eritrea), targeted sanctions, and FATF/AML high-risk designations. The complete list, with ISO country codes, is in our <a href="terms.html">Terms of Service</a>.</p>
+        <p>Your country is determined from your SIM card, network carrier and device locale (and GPS only if you have separately granted the App location access) at app launch, every 30 minutes while the App is open, and before each payment. If a blocked jurisdiction is detected the App is not usable. Payments are refused if your country cannot be determined at all.</p>
+    <h2>8. Your Rights</h2>
+        <ul>
+            <li><strong>Access and portability:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Export My Data</em> writes everything the App holds about you (consent record, wallet link, Seeker status, credits, payment receipts, uninstall history) to a JSON file you choose.</li>
+            <li><strong>Erasure:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Delete My Data</em> erases all of it from the device. Note that this does not and cannot reverse an on-chain payment, and does not delete the uninstall-history file in your Documents folder (use Settings &rarr; More &rarr; "Delete A Backup File" for that) or any Google backup you have taken.</li>
+            <li><strong>Analytics:</strong> the aggregate counts described in section 2.2 contain no personal data, so there is nothing to access, correct or erase &mdash; and consequently no opt-out toggle is offered. If you would rather send nothing at all, deny the App network access in Android Settings or uninstall it.</li>
+            <li><strong>Complaints:</strong> contact us at the address below, or your local data protection authority.</li>
+        </ul>
+        <p>We honour GDPR and CCPA/CPRA rights to the extent they apply to the very limited data described above. We do not sell personal information as defined by the CCPA, and we do not process personal data of children.</p>
+
+        <h2>9. Sponsored "Featured dApp" Placements</h2>
+        <p>The Home screen can show a Featured dApp card. Some placements are our own apps (marked as ours) and some are paid placements bought by other developers through Settings &rarr; Get Featured.</p>
+        <p>If <em>you</em> buy a placement, the App sends the details you type into that form &mdash; app name, package name, tagline, website and <strong>your contact email</strong> &mdash; together with your payment's transaction signature to <code>sponsr.provenby.dev</code>, and keeps a copy on your device as your receipt. We use that email only to contact you about your placement. Placements are reviewed and scheduled manually, so paying does not publish a listing instantly.</p>
+        <p>If you merely <em>see</em> or tap a Featured card, the only data sent is the anonymous event described in section 2.2. There is no advertising identifier, no cross-app tracking and no ad network involved.</p>
+    <h2>10. Contact Information</h2>
+    <ul>
+        <li><strong>Privacy:</strong> aardappvark@proton.me</li>
+        <li><strong>Support:</strong> aardappvark@proton.me</li>
+        <li><strong>Legal:</strong> aardappvark@proton.me</li>
+        <li><strong>DPO (GDPR):</strong> aardappvark@proton.me</li>
+    </ul>
+    <div class="summary-box">
+        <h3>Summary (Plain Language)</h3>
+        <p>We collect very little data &mdash; mainly your public wallet address for payments and your approximate country to check you're not in a sanctioned one. The list of apps on your phone stays on your phone. We do send anonymous counts ("someone opened the app", "someone paid") with no ID attached, so we can see whether anyone is using this. No ad networks, no profiles, no data sales. To delete everything, use Delete My Data in Settings &mdash; and note that if Android Backup is on, a copy of the App's settings may sit in your Google backup until you remove it there.</p>
     </div>
+</article>
 
-    <div class="content">
-        <h2>1. Introduction</h2>
-        <p>ADappvark Toolkit ("we," "our," "us," or the "Company") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application ("App") and related services.</p>
+<!-- ============== ARABIC (RTL) ============== -->
+<article id="ar" lang="ar" dir="rtl">
+    <div class="header"><h1>سياسة الخصوصية</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>إشعار:</strong> النسخة الإنجليزية أعلاه هي النص الملزم قانونيًا. هذا الملخص مقدم للراحة.</div>
+    <p>تلخص هذه الوثيقة كيفية تعامل AardAppvark Toolkit مع بياناتك. للنص الكامل، راجع <a href="#en">القسم الإنجليزي أعلاه</a>.</p>
+    <ol>
+        <li><strong>المقدمة</strong> — نلتزم بحماية خصوصيتك. مبادئنا الأساسية: تقليل البيانات، المعالجة المحلية أولاً، الشفافية، عدم التتبع، تحكم المستخدم.</li>
+        <li><strong>المعلومات التي نجمعها</strong> — عنوان محفظة Solana للدفع، الموقع التقريبي للامتثال للعقوبات، قائمة التطبيقات (محلية فقط).</li>
+        <li><strong>ما لا نجمعه</strong> — لا معرفات شخصية، لا معرفات أجهزة، لا مفاتيح خاصة، لا تحليلات، لا متتبعات إعلانية.</li>
+        <li><strong>كيف نستخدم البيانات</strong> — التحقق من الدفع، الامتثال للعقوبات، عرض التطبيقات المثبتة، منح ميزات الاشتراك.</li>
+        <li><strong>المشاركة</strong> — لا نبيع بياناتك. الإفصاح المحدود فقط للمعاملات على البلوكتشين والمتطلبات القانونية.</li>
+        <li><strong>الخدمات الخارجية</strong> — Solana Blockchain، Mobile Wallet Adapter، Shizuku، Solana dApp Store.</li>
+        <li><strong>التخزين والأمان</strong> — جميع البيانات مخزنة محليًا على جهازك. لا نشغل خوادم تخزن بياناتك.</li>
+        <li><strong>القيود الجغرافية</strong> — التطبيق غير متوفر في 58 ولاية قضائية محظورة. يتم التحقق من الموقع عند التشغيل وقبل كل عملية دفع.</li>
+        <li><strong>حقوقك</strong> — وصول عبر إعدادات التطبيق، الحذف بإلغاء التثبيت، الانسحاب بإيقاف الاستخدام. حقوق GDPR و CCPA مدعومة بالكامل.</li>
+        <li><strong>الاتصال</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>ملخص بسيط:</strong> نجمع بيانات قليلة جدًا — عنوان محفظتك للدفع وموقعك التقريبي للتحقق من العقوبات. كل شيء آخر يبقى على هاتفك. لا نتتبعك، لا نعرض إعلانات، ولا نبيع بياناتك أبدًا.</div>
+</article>
 
-        <h3>Our Core Privacy Principles</h3>
-        <ol>
-            <li><strong>Data Minimization:</strong> We collect only the absolute minimum data necessary to provide our Services.</li>
-            <li><strong>Local-First:</strong> We store data locally on your device whenever possible.</li>
-            <li><strong>Transparency:</strong> We are clear about what we collect and why.</li>
-            <li><strong>No Tracking:</strong> We do not use analytics, advertising trackers, or profiling.</li>
-            <li><strong>User Control:</strong> You maintain control over your data at all times.</li>
-        </ol>
+<!-- ============== CZECH ============== -->
+<article id="cs" lang="cs">
+    <div class="header"><h1>Zásady ochrany osobních údajů</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Upozornění:</strong> Anglická verze výše je právně závazným textem. Tento souhrn je poskytován pro pohodlí.</div>
+    <p>Tento dokument shrnuje, jak AardAppvark Toolkit nakládá s vašimi údaji. Úplný text najdete v <a href="#en">anglické sekci výše</a>.</p>
+    <ol>
+        <li><strong>Úvod</strong> — zavazujeme se chránit vaše soukromí. Naše principy: minimalizace dat, lokální zpracování, transparentnost, žádné sledování, kontrola uživatele.</li>
+        <li><strong>Informace, které shromažďujeme</strong> — adresa Solana peněženky pro platby, přibližná poloha pro kontrolu sankcí, seznam aplikací (pouze lokálně).</li>
+        <li><strong>Co neshromažďujeme</strong> — žádné osobní identifikátory, identifikátory zařízení, soukromé klíče, analytika ani reklamní sledovače.</li>
+        <li><strong>Jak data používáme</strong> — ověření platby, dodržování sankcí, zobrazení nainstalovaných aplikací, udělení funkcí předplatného.</li>
+        <li><strong>Sdílení</strong> — nikdy neprodáváme vaše data. Omezené sdělování pouze pro blockchain transakce a právní požadavky.</li>
+        <li><strong>Služby třetích stran</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Ukládání a zabezpečení</strong> — všechna data jsou uložena lokálně. Neprovozujeme servery uchovávající vaše data.</li>
+        <li><strong>Geografická omezení</strong> — aplikace není dostupná v 58 zablokovaných jurisdikcích. Poloha je ověřena při spuštění a před každou platbou.</li>
+        <li><strong>Vaše práva</strong> — přístup přes Nastavení aplikace, smazání odinstalací, odhlášení ukončením používání. Práva GDPR a CCPA plně podporována.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Jednoduše:</strong> Shromažďujeme velmi málo dat — hlavně vaši veřejnou adresu peněženky pro platby a přibližnou polohu pro kontrolu sankcí. Vše ostatní zůstává ve vašem telefonu. Nesledujeme vás, nezobrazujeme reklamy a nikdy neprodáváme vaše data.</div>
+</article>
 
-        <h2>2. Information We Collect</h2>
+<!-- ============== GERMAN ============== -->
+<article id="de" lang="de">
+    <div class="header"><h1>Datenschutzerklärung</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Hinweis:</strong> Die englische Fassung oben ist der rechtsverbindliche Text. Diese Zusammenfassung dient nur zur Information.</div>
+    <p>Dieses Dokument fasst zusammen, wie AardAppvark Toolkit mit Ihren Daten umgeht. Den vollständigen Text finden Sie im <a href="#en">englischen Abschnitt oben</a>.</p>
+    <ol>
+        <li><strong>Einführung</strong> — Wir verpflichten uns zum Schutz Ihrer Privatsphäre. Unsere Grundsätze: Datenminimierung, lokale Verarbeitung, Transparenz, kein Tracking, Nutzerkontrolle.</li>
+        <li><strong>Erhobene Informationen</strong> — Solana-Wallet-Adresse für Zahlungen, ungefährer Standort zur Sanktionsprüfung, Liste installierter Apps (nur lokal).</li>
+        <li><strong>Was wir nicht erheben</strong> — keine persönlichen Identifikatoren, Gerätekennungen, privaten Schlüssel, Analysen oder Werbe-Tracker.</li>
+        <li><strong>Datennutzung</strong> — Zahlungsverifikation, Sanktionseinhaltung, Anzeige installierter Apps, Gewährung von Abonnementfunktionen.</li>
+        <li><strong>Weitergabe</strong> — Wir verkaufen Ihre Daten niemals. Eingeschränkte Offenlegung nur für Blockchain-Transaktionen und rechtliche Anforderungen.</li>
+        <li><strong>Drittanbieterdienste</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Speicherung und Sicherheit</strong> — Alle Daten werden lokal gespeichert. Wir betreiben keine Server, die Ihre Daten speichern.</li>
+        <li><strong>Geografische Einschränkungen</strong> — Die App ist in 58 blockierten Jurisdiktionen nicht verfügbar. Standort wird beim Start und vor jeder Zahlung verifiziert.</li>
+        <li><strong>Ihre Rechte</strong> — Zugriff über App-Einstellungen, Löschen durch Deinstallation, Opt-Out durch Nichtnutzung. DSGVO/CCPA-Rechte vollständig unterstützt.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Einfach gesagt:</strong> Wir erheben sehr wenig Daten — hauptsächlich Ihre öffentliche Wallet-Adresse für Zahlungen und Ihren ungefähren Standort zur Sanktionsprüfung. Alles andere bleibt auf Ihrem Telefon. Wir tracken Sie nicht, zeigen keine Werbung und verkaufen Ihre Daten nie.</div>
+</article>
 
-        <h3>2.1 Information You Provide Directly</h3>
-        <ul>
-            <li><strong>Wallet Address:</strong> Your Solana wallet public address when you connect your wallet. Used for payment verification and transaction processing.</li>
-            <li><strong>Consent Records:</strong> Timestamp of your acceptance of Terms of Service, stored locally for legal compliance.</li>
-        </ul>
+<!-- ============== GREEK ============== -->
+<article id="el" lang="el">
+    <div class="header"><h1>Πολιτική Απορρήτου</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Σημείωση:</strong> Η αγγλική έκδοση παραπάνω είναι το νομικά δεσμευτικό κείμενο. Αυτή η περίληψη παρέχεται για διευκόλυνση.</div>
+    <p>Αυτό το έγγραφο συνοψίζει πώς το AardAppvark Toolkit χειρίζεται τα δεδομένα σας. Για το πλήρες κείμενο, ανατρέξτε στην <a href="#en">αγγλική ενότητα παραπάνω</a>.</p>
+    <ol>
+        <li><strong>Εισαγωγή</strong> — Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Αρχές: ελαχιστοποίηση δεδομένων, τοπική επεξεργασία, διαφάνεια, χωρίς παρακολούθηση, έλεγχος χρήστη.</li>
+        <li><strong>Πληροφορίες που Συλλέγουμε</strong> — διεύθυνση πορτοφολιού Solana για πληρωμές, κατά προσέγγιση τοποθεσία για συμμόρφωση με κυρώσεις, λίστα εγκατεστημένων εφαρμογών (μόνο τοπικά).</li>
+        <li><strong>Τι ΔΕΝ Συλλέγουμε</strong> — χωρίς προσωπικά αναγνωριστικά, αναγνωριστικά συσκευής, ιδιωτικά κλειδιά, αναλυτικά στοιχεία ή trackers διαφημίσεων.</li>
+        <li><strong>Πώς Χρησιμοποιούμε</strong> — επαλήθευση πληρωμών, συμμόρφωση με κυρώσεις, εμφάνιση εφαρμογών, παροχή χαρακτηριστικών συνδρομής.</li>
+        <li><strong>Κοινή χρήση</strong> — Δεν πωλούμε τα δεδομένα σας. Περιορισμένη αποκάλυψη μόνο για συναλλαγές blockchain και νομικές απαιτήσεις.</li>
+        <li><strong>Υπηρεσίες Τρίτων</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Αποθήκευση και Ασφάλεια</strong> — Όλα τα δεδομένα αποθηκεύονται τοπικά. Δεν λειτουργούμε διακομιστές που αποθηκεύουν τα δεδομένα σας.</li>
+        <li><strong>Γεωγραφικοί Περιορισμοί</strong> — Η εφαρμογή δεν είναι διαθέσιμη σε 58 αποκλεισμένες δικαιοδοσίες. Η τοποθεσία επαληθεύεται κατά την εκκίνηση και πριν από κάθε πληρωμή.</li>
+        <li><strong>Τα Δικαιώματά σας</strong> — πρόσβαση μέσω Ρυθμίσεων, διαγραφή με απεγκατάσταση, αποχώρηση με διακοπή χρήσης. GDPR/CCPA πλήρως υποστηριζόμενα.</li>
+        <li><strong>Επικοινωνία</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Σε απλά λόγια:</strong> Συλλέγουμε ελάχιστα δεδομένα — κυρίως τη δημόσια διεύθυνση πορτοφολιού σας για πληρωμές και την κατά προσέγγιση τοποθεσία σας για έλεγχο κυρώσεων. Όλα τα άλλα μένουν στο τηλέφωνό σας. Δεν σας παρακολουθούμε, δεν εμφανίζουμε διαφημίσεις και δεν πουλάμε ποτέ τα δεδομένα σας.</div>
+</article>
 
-        <h3>2.2 Information Collected Automatically</h3>
-        <ul>
-            <li><strong>Location Data (for Sanctions Compliance):</strong> Approximate geographic location determined via GPS/network location (if permitted), SIM card country, network carrier country, or device locale. Used solely to verify you are not in a blocked jurisdiction. Location is checked at app launch and before each payment transaction. <strong>Not stored after verification</strong> - only the result (allowed/blocked) is retained.</li>
-            <li><strong>Device and Package Information (Local Only):</strong> List of installed applications. This data never leaves your device.</li>
-            <li><strong>App Usage Information (Local Only):</strong> Subscription status and preferences. Stored locally, not transmitted externally.</li>
-        </ul>
+<!-- ============== SPANISH ============== -->
+<article id="es" lang="es">
+    <div class="header"><h1>Política de Privacidad</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Aviso:</strong> La versión en inglés de arriba es el texto legalmente vinculante. Este resumen se proporciona por conveniencia.</div>
+    <p>Este documento resume cómo AardAppvark Toolkit maneja sus datos. Para el texto completo, consulte la <a href="#en">sección en inglés más arriba</a>.</p>
+    <ol>
+        <li><strong>Introducción</strong> — Nos comprometemos a proteger su privacidad. Principios: minimización de datos, procesamiento local, transparencia, sin rastreo, control del usuario.</li>
+        <li><strong>Información que Recopilamos</strong> — dirección de billetera Solana para pagos, ubicación aproximada para cumplimiento de sanciones, lista de aplicaciones (solo local).</li>
+        <li><strong>Lo que NO Recopilamos</strong> — sin identificadores personales, identificadores de dispositivo, claves privadas, analítica o rastreadores publicitarios.</li>
+        <li><strong>Cómo Usamos los Datos</strong> — verificación de pago, cumplimiento de sanciones, mostrar aplicaciones, otorgar funciones de suscripción.</li>
+        <li><strong>Compartir</strong> — Nunca vendemos sus datos. Divulgación limitada solo para transacciones blockchain y requisitos legales.</li>
+        <li><strong>Servicios de Terceros</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Almacenamiento y Seguridad</strong> — Todos los datos se almacenan localmente. No operamos servidores que almacenen sus datos.</li>
+        <li><strong>Restricciones Geográficas</strong> — La aplicación no está disponible en 58 jurisdicciones bloqueadas. La ubicación se verifica al inicio y antes de cada pago.</li>
+        <li><strong>Sus Derechos</strong> — acceso vía Configuración, eliminación al desinstalar, exclusión al dejar de usar. RGPD/CCPA completamente respaldados.</li>
+        <li><strong>Contacto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>En pocas palabras:</strong> Recopilamos muy pocos datos — principalmente su dirección pública de billetera para pagos y su ubicación aproximada para verificar sanciones. Todo lo demás se queda en su teléfono. No le rastreamos, no mostramos anuncios y nunca vendemos sus datos.</div>
+</article>
 
-        <h3>2.3 Information We DO NOT Collect</h3>
-        <ul>
-            <li>No Personal Identifiers (name, email, phone)</li>
-            <li>No Device Identifiers (IMEI, Android ID)</li>
-            <li>No Private Keys</li>
-            <li>No Analytics or Crash Reports</li>
-            <li>No Advertising Trackers</li>
-            <li>No Photos, Contacts, or Media Access</li>
-        </ul>
+<!-- ============== FILIPINO ============== -->
+<article id="fil" lang="fil">
+    <div class="header"><h1>Patakaran sa Privacy</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Paalala:</strong> Ang bersyong Ingles sa itaas ang legal na may bisa. Ang buod na ito ay para sa kaginhawahan.</div>
+    <p>Binubuod ng dokumentong ito kung paano hinahawakan ng AardAppvark Toolkit ang iyong data. Para sa buong teksto, tingnan ang <a href="#en">seksyong Ingles sa itaas</a>.</p>
+    <ol>
+        <li><strong>Panimula</strong> — Nakatuon kami sa pagprotekta ng iyong privacy. Mga prinsipyo: data minimization, lokal-una, transparency, walang tracking, kontrol ng user.</li>
+        <li><strong>Impormasyong Kinokolekta</strong> — Solana wallet address para sa pagbabayad, tinatayang lokasyon para sa pagsunod sa parusa, listahan ng apps (lokal lamang).</li>
+        <li><strong>Hindi Namin Kinokolekta</strong> — walang personal identifier, device ID, private keys, analytics o advertising trackers.</li>
+        <li><strong>Paano Gamit ang Data</strong> — pag-verify ng bayad, pagsunod sa parusa, pagpapakita ng apps, pagbibigay ng subscription features.</li>
+        <li><strong>Pagbabahagi</strong> — Hindi namin ibinebenta ang iyong data. Limitadong disclosure lamang para sa blockchain transactions at legal na pangangailangan.</li>
+        <li><strong>Mga Third-Party Services</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Storage at Seguridad</strong> — Lahat ng data ay nakaimbak nang lokal. Hindi kami nagpapatakbo ng mga server na nag-iimbak ng iyong data.</li>
+        <li><strong>Mga Restriksyon sa Heograpiya</strong> — Hindi available ang app sa 58 na hinarangang hurisdiksyon. Bina-verify ang lokasyon sa paglulunsad at bago ang bawat bayad.</li>
+        <li><strong>Iyong mga Karapatan</strong> — pag-access sa Settings, pag-alis sa pamamagitan ng pag-uninstall, pag-opt-out. GDPR/CCPA buong sinusuportahan.</li>
+        <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Sa simpleng salita:</strong> Kakaunti lang ang kinokolekta naming data — pangunahin ang iyong public wallet address para sa bayad at iyong tinatayang lokasyon para sa pag-check ng parusa. Lahat ng iba ay nananatili sa iyong telepono. Hindi ka namin tina-track, walang ads, at kailanman hindi ibinebenta ang iyong data.</div>
+</article>
 
-        <h2>3. How We Use Your Information</h2>
-        <table>
-            <tr><th>Data Type</th><th>Purpose</th><th>Legal Basis</th></tr>
-            <tr><td>Wallet Address</td><td>Verify payment transactions</td><td>Contract performance</td></tr>
-            <tr><td>Location Data</td><td>Sanctions compliance</td><td>Legal obligation</td></tr>
-            <tr><td>Package Information</td><td>Display installed apps</td><td>Contract performance</td></tr>
-            <tr><td>Subscription Status</td><td>Grant access to features</td><td>Contract performance</td></tr>
-        </table>
+<!-- ============== FRENCH ============== -->
+<article id="fr" lang="fr">
+    <div class="header"><h1>Politique de Confidentialité</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Avis :</strong> La version anglaise ci-dessus constitue le texte juridiquement contraignant. Ce résumé est fourni à titre indicatif.</div>
+    <p>Ce document résume la manière dont AardAppvark Toolkit traite vos données. Pour le texte intégral, consultez la <a href="#en">section anglaise ci-dessus</a>.</p>
+    <ol>
+        <li><strong>Introduction</strong> — Nous nous engageons à protéger votre vie privée. Principes : minimisation des données, traitement local, transparence, pas de suivi, contrôle utilisateur.</li>
+        <li><strong>Informations collectées</strong> — adresse du portefeuille Solana pour les paiements, localisation approximative pour la conformité aux sanctions, liste des applications (local uniquement).</li>
+        <li><strong>Ce que nous ne collectons PAS</strong> — pas d'identifiants personnels, d'identifiants d'appareil, de clés privées, d'analyse ou de traceurs publicitaires.</li>
+        <li><strong>Utilisation des données</strong> — vérification des paiements, conformité aux sanctions, affichage des applications installées, octroi des fonctionnalités d'abonnement.</li>
+        <li><strong>Partage</strong> — Nous ne vendons jamais vos données. Divulgation limitée uniquement pour les transactions blockchain et exigences légales.</li>
+        <li><strong>Services tiers</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Stockage et Sécurité</strong> — Toutes les données sont stockées localement. Nous n'exploitons pas de serveurs qui stockent vos données.</li>
+        <li><strong>Restrictions Géographiques</strong> — L'application n'est pas disponible dans 58 juridictions bloquées. La localisation est vérifiée au lancement et avant chaque paiement.</li>
+        <li><strong>Vos Droits</strong> — accès via les Paramètres, suppression par désinstallation, désinscription en cessant l'utilisation. RGPD/CCPA entièrement pris en charge.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>En clair :</strong> Nous collectons très peu de données — principalement votre adresse de portefeuille publique pour les paiements et votre localisation approximative pour vérifier les sanctions. Tout le reste reste sur votre téléphone. Nous ne vous suivons pas, ne montrons pas de publicité et ne vendons jamais vos données.</div>
+</article>
 
-        <h2>4. Information Sharing</h2>
-        <p><strong>We do not sell, rent, or monetize your Personal Data.</strong></p>
-        <p>Limited disclosure occurs only for:</p>
-        <ul>
-            <li>Blockchain transactions (public by nature)</li>
-            <li>Legal requirements (court orders, etc.)</li>
-            <li>Business transfers (with notification)</li>
-        </ul>
+<!-- ============== HINDI ============== -->
+<article id="hi" lang="hi">
+    <div class="header"><h1>गोपनीयता नीति</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>सूचना:</strong> ऊपर दिया गया अंग्रेज़ी संस्करण कानूनी रूप से बाध्यकारी पाठ है। यह सारांश केवल सुविधा के लिए है।</div>
+    <p>यह दस्तावेज़ संक्षेप में बताता है कि AardAppvark Toolkit आपके डेटा को कैसे संभालता है। पूर्ण पाठ के लिए, <a href="#en">ऊपर अंग्रेज़ी अनुभाग</a> देखें।</p>
+    <ol>
+        <li><strong>परिचय</strong> — हम आपकी गोपनीयता की रक्षा के लिए प्रतिबद्ध हैं। सिद्धांत: डेटा न्यूनतमकरण, स्थानीय-प्रथम, पारदर्शिता, कोई ट्रैकिंग नहीं, उपयोगकर्ता नियंत्रण।</li>
+        <li><strong>एकत्रित जानकारी</strong> — भुगतान के लिए Solana वॉलेट पता, प्रतिबंधों के अनुपालन के लिए अनुमानित स्थान, स्थापित ऐप्स की सूची (केवल स्थानीय)।</li>
+        <li><strong>जो हम एकत्र नहीं करते</strong> — कोई व्यक्तिगत पहचानकर्ता, डिवाइस आईडी, निजी कुंजी, एनालिटिक्स या विज्ञापन ट्रैकर्स नहीं।</li>
+        <li><strong>उपयोग</strong> — भुगतान सत्यापन, प्रतिबंध अनुपालन, ऐप्स प्रदर्शन, सदस्यता सुविधाएं।</li>
+        <li><strong>साझा करना</strong> — हम आपका डेटा कभी नहीं बेचते। सीमित खुलासा केवल ब्लॉकचेन लेनदेन और कानूनी आवश्यकताओं के लिए।</li>
+        <li><strong>तृतीय-पक्ष सेवाएँ</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store।</li>
+        <li><strong>संग्रहण और सुरक्षा</strong> — सभी डेटा स्थानीय रूप से संग्रहीत हैं। हम आपके डेटा को संग्रहीत करने वाले सर्वर नहीं चलाते।</li>
+        <li><strong>भौगोलिक प्रतिबंध</strong> — ऐप 58 अवरुद्ध न्यायालयों में उपलब्ध नहीं है। स्थान को लॉन्च और प्रत्येक भुगतान से पहले सत्यापित किया जाता है।</li>
+        <li><strong>आपके अधिकार</strong> — सेटिंग्स के माध्यम से पहुंच, अनइंस्टॉल द्वारा हटाना, उपयोग बंद करके ऑप्ट-आउट। GDPR/CCPA पूरी तरह से समर्थित।</li>
+        <li><strong>संपर्क</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>सरल शब्दों में:</strong> हम बहुत कम डेटा एकत्र करते हैं — मुख्य रूप से भुगतान के लिए आपका सार्वजनिक वॉलेट पता और प्रतिबंध जांच के लिए आपका अनुमानित स्थान। बाकी सब कुछ आपके फोन पर ही रहता है। हम आपको ट्रैक नहीं करते, विज्ञापन नहीं दिखाते, और आपका डेटा कभी नहीं बेचते।</div>
+</article>
 
-        <h2>5. Third-Party Services</h2>
-        <ul>
-            <li><strong>Solana Blockchain:</strong> Payment processing (public transactions)</li>
-            <li><strong>Solana Mobile Wallet Adapter:</strong> Secure wallet communication</li>
-            <li><strong>Shizuku:</strong> System operations (local only)</li>
-            <li><strong>Solana dApp Store:</strong> App reinstallation</li>
-        </ul>
+<!-- ============== HUNGARIAN ============== -->
+<article id="hu" lang="hu">
+    <div class="header"><h1>Adatvédelmi szabályzat</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Megjegyzés:</strong> A fenti angol változat a jogilag kötelező érvényű szöveg. Ez az összefoglaló a kényelmet szolgálja.</div>
+    <p>Ez a dokumentum összefoglalja, hogyan kezeli a(z) AardAppvark Toolkit az adatait. A teljes szöveg a <a href="#en">fenti angol szakaszban</a> található.</p>
+    <ol>
+        <li><strong>Bevezetés</strong> — Elkötelezettek vagyunk az adatvédelem mellett. Alapelvek: adatminimalizálás, helyi feldolgozás, átláthatóság, nincs nyomkövetés, felhasználói kontroll.</li>
+        <li><strong>Gyűjtött információk</strong> — Solana pénztárcacím fizetésekhez, hozzávetőleges hely a szankciómegfeleléshez, telepített alkalmazások listája (csak helyileg).</li>
+        <li><strong>Amit NEM gyűjtünk</strong> — semmilyen személyes azonosító, eszközazonosító, privát kulcs, analitika vagy reklámkövető.</li>
+        <li><strong>Adatfelhasználás</strong> — fizetés ellenőrzése, szankciómegfelelés, alkalmazások megjelenítése, előfizetési funkciók.</li>
+        <li><strong>Megosztás</strong> — Soha nem adjuk el adatait. Korlátozott közzététel csak blockchain tranzakciókhoz és jogi követelményekhez.</li>
+        <li><strong>Harmadik fél szolgáltatásai</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Tárolás és biztonság</strong> — Minden adat helyileg tárolódik. Nem üzemeltetünk az Ön adatait tároló szervereket.</li>
+        <li><strong>Földrajzi korlátozások</strong> — Az alkalmazás 58 letiltott joghatóságban nem érhető el. Hely indításkor és minden fizetés előtt ellenőrizve.</li>
+        <li><strong>Jogai</strong> — hozzáférés a Beállításokon keresztül, törlés az eltávolítással, leiratkozás a használat befejezésével. GDPR/CCPA teljes mértékben támogatott.</li>
+        <li><strong>Kapcsolat</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Egyszerűen:</strong> Nagyon kevés adatot gyűjtünk — főleg a nyilvános pénztárcacímét fizetésekhez és hozzávetőleges helyét a szankciók ellenőrzéséhez. Minden más a telefonján marad. Nem követjük Önt, nem mutatunk hirdetéseket, és soha nem adjuk el adatait.</div>
+</article>
 
-        <h2>6. Data Storage and Security</h2>
-        <ul>
-            <li>All App data is stored locally on your device</li>
-            <li>Protected by Android's application sandboxing</li>
-            <li>Deleted when you uninstall the App</li>
-            <li><strong>We do not operate servers that store your data</strong></li>
-        </ul>
+<!-- ============== INDONESIAN ============== -->
+<article id="id" lang="id">
+    <div class="header"><h1>Kebijakan Privasi</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Pemberitahuan:</strong> Versi bahasa Inggris di atas adalah teks yang mengikat secara hukum. Ringkasan ini hanya untuk kemudahan.</div>
+    <p>Dokumen ini meringkas bagaimana AardAppvark Toolkit menangani data Anda. Untuk teks lengkap, lihat <a href="#en">bagian bahasa Inggris di atas</a>.</p>
+    <ol>
+        <li><strong>Pendahuluan</strong> — Kami berkomitmen melindungi privasi Anda. Prinsip: minimalisasi data, pemrosesan lokal, transparansi, tanpa pelacakan, kontrol pengguna.</li>
+        <li><strong>Informasi yang Dikumpulkan</strong> — alamat dompet Solana untuk pembayaran, lokasi perkiraan untuk kepatuhan sanksi, daftar aplikasi (hanya lokal).</li>
+        <li><strong>Yang TIDAK Kami Kumpulkan</strong> — tidak ada pengenal pribadi, ID perangkat, kunci pribadi, analitik atau pelacak iklan.</li>
+        <li><strong>Penggunaan</strong> — verifikasi pembayaran, kepatuhan sanksi, menampilkan aplikasi, fitur langganan.</li>
+        <li><strong>Berbagi</strong> — Kami tidak pernah menjual data Anda. Pengungkapan terbatas hanya untuk transaksi blockchain dan kebutuhan hukum.</li>
+        <li><strong>Layanan Pihak Ketiga</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Penyimpanan dan Keamanan</strong> — Semua data disimpan lokal. Kami tidak mengoperasikan server yang menyimpan data Anda.</li>
+        <li><strong>Pembatasan Geografis</strong> — Aplikasi tidak tersedia di 58 yurisdiksi yang diblokir. Lokasi diverifikasi saat peluncuran dan sebelum setiap pembayaran.</li>
+        <li><strong>Hak Anda</strong> — akses melalui Pengaturan, penghapusan dengan uninstall, opt-out dengan berhenti menggunakan. GDPR/CCPA didukung penuh.</li>
+        <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Sederhananya:</strong> Kami mengumpulkan sangat sedikit data — terutama alamat dompet publik Anda untuk pembayaran dan lokasi perkiraan Anda untuk pemeriksaan sanksi. Semua lainnya tetap di ponsel Anda. Kami tidak melacak Anda, tidak menampilkan iklan, dan tidak pernah menjual data Anda.</div>
+</article>
 
-        <h2>7. Geographic Restrictions</h2>
-        <p>The App is not available in 54 blocked jurisdictions including countries subject to comprehensive sanctions (Cuba, Iran, North Korea, Syria, Russia), significant restrictions (Belarus, Venezuela, Myanmar, Nicaragua, Eritrea), targeted sanctions, and FATF/AML high-risk designations. The complete list is provided in our <a href="terms.html">Terms of Service</a>.</p>
-        <p>Location is verified using multiple methods (GPS, SIM, network carrier, locale) at app launch and before each payment. If your location cannot be verified, access to the App will be restricted.</p>
+<!-- ============== ITALIAN ============== -->
+<article id="it" lang="it">
+    <div class="header"><h1>Informativa sulla Privacy</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Avviso:</strong> La versione in inglese sopra è il testo giuridicamente vincolante. Questo riassunto è fornito per comodità.</div>
+    <p>Questo documento riassume come AardAppvark Toolkit gestisce i tuoi dati. Per il testo completo, consulta la <a href="#en">sezione in inglese sopra</a>.</p>
+    <ol>
+        <li><strong>Introduzione</strong> — Ci impegniamo a proteggere la tua privacy. Principi: minimizzazione dei dati, elaborazione locale, trasparenza, nessun tracciamento, controllo utente.</li>
+        <li><strong>Informazioni Raccolte</strong> — indirizzo del portafoglio Solana per i pagamenti, posizione approssimativa per la conformità alle sanzioni, elenco delle app (solo locale).</li>
+        <li><strong>Cosa NON Raccogliamo</strong> — nessun identificatore personale, ID dispositivo, chiavi private, analisi o tracker pubblicitari.</li>
+        <li><strong>Utilizzo</strong> — verifica del pagamento, conformità alle sanzioni, visualizzazione app, funzionalità di abbonamento.</li>
+        <li><strong>Condivisione</strong> — Non vendiamo mai i tuoi dati. Divulgazione limitata solo per transazioni blockchain e requisiti legali.</li>
+        <li><strong>Servizi di Terze Parti</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Archiviazione e Sicurezza</strong> — Tutti i dati sono archiviati localmente. Non gestiamo server che memorizzano i tuoi dati.</li>
+        <li><strong>Restrizioni Geografiche</strong> — L'app non è disponibile in 58 giurisdizioni bloccate. La posizione è verificata all'avvio e prima di ogni pagamento.</li>
+        <li><strong>I Tuoi Diritti</strong> — accesso tramite Impostazioni, eliminazione con disinstallazione, rinuncia con interruzione dell'uso. GDPR/CCPA pienamente supportati.</li>
+        <li><strong>Contatto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>In breve:</strong> Raccogliamo pochissimi dati — principalmente il tuo indirizzo del portafoglio pubblico per i pagamenti e la tua posizione approssimativa per il controllo delle sanzioni. Tutto il resto rimane sul tuo telefono. Non ti tracciamo, non mostriamo pubblicità e non vendiamo mai i tuoi dati.</div>
+</article>
 
-        <h2>8. Your Rights</h2>
-        <ul>
-            <li><strong>Access:</strong> View all data via App Settings</li>
-            <li><strong>Deletion:</strong> Uninstall to delete all local data</li>
-            <li><strong>Opt-Out:</strong> Stop using the App</li>
-        </ul>
-        <p>GDPR, CCPA, and other regional rights are fully supported.</p>
+<!-- ============== JAPANESE ============== -->
+<article id="ja" lang="ja">
+    <div class="header"><h1>プライバシーポリシー</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>お知らせ:</strong> 上記の英語版が法的に拘束力のある本文です。この要約は便宜上のものです。</div>
+    <p>本書はAardAppvark Toolkitがあなたのデータをどのように扱うかを要約したものです。完全な本文は<a href="#en">上記の英語セクション</a>をご参照ください。</p>
+    <ol>
+        <li><strong>はじめに</strong> — プライバシー保護に努めます。原則:データ最小化、ローカル処理優先、透明性、追跡なし、ユーザー管理。</li>
+        <li><strong>収集する情報</strong> — 支払い用のSolanaウォレットアドレス、制裁遵守のための概算位置、インストール済みアプリのリスト(ローカルのみ)。</li>
+        <li><strong>収集しない情報</strong> — 個人識別子、デバイスID、秘密鍵、分析、広告トラッカーは一切なし。</li>
+        <li><strong>使用方法</strong> — 支払い検証、制裁遵守、アプリ表示、サブスクリプション機能の付与。</li>
+        <li><strong>共有</strong> — データを販売することは決してありません。ブロックチェーン取引と法的要件のみ限定的開示。</li>
+        <li><strong>第三者サービス</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
+        <li><strong>保存とセキュリティ</strong> — すべてのデータはローカルに保存されます。あなたのデータを保存するサーバーは運用していません。</li>
+        <li><strong>地理的制限</strong> — アプリは58の制限管轄区域では利用不可。位置は起動時と各支払い前に確認されます。</li>
+        <li><strong>あなたの権利</strong> — 設定からアクセス、アンインストールで削除、使用停止でオプトアウト。GDPR/CCPA完全サポート。</li>
+        <li><strong>連絡先</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>簡単に言うと:</strong> 収集するデータは非常に少なく、主に支払い用のあなたの公開ウォレットアドレスと制裁チェック用の概算位置です。それ以外はすべてあなたの端末に留まります。追跡せず、広告を表示せず、データを販売することは決してありません。</div>
+</article>
 
-        <h2>9. Contact Information</h2>
-        <ul>
-            <li><strong>Privacy:</strong> aardappvark@proton.me</li>
-            <li><strong>Support:</strong> aardappvark@proton.me</li>
-            <li><strong>Legal:</strong> aardappvark@proton.me</li>
-            <li><strong>DPO (GDPR):</strong> aardappvark@proton.me</li>
-        </ul>
+<!-- ============== KOREAN ============== -->
+<article id="ko" lang="ko">
+    <div class="header"><h1>개인정보 처리방침</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>공지:</strong> 위의 영어 버전이 법적으로 구속력 있는 본문입니다. 이 요약은 편의를 위해 제공됩니다.</div>
+    <p>이 문서는 AardAppvark Toolkit이 귀하의 데이터를 어떻게 처리하는지 요약합니다. 전체 본문은 <a href="#en">위의 영어 섹션</a>을 참조하십시오.</p>
+    <ol>
+        <li><strong>소개</strong> — 개인정보 보호에 최선을 다합니다. 원칙: 데이터 최소화, 로컬 우선, 투명성, 추적 없음, 사용자 통제.</li>
+        <li><strong>수집하는 정보</strong> — 결제용 Solana 지갑 주소, 제재 준수를 위한 대략적 위치, 설치된 앱 목록(로컬 전용).</li>
+        <li><strong>수집하지 않는 정보</strong> — 개인 식별자, 기기 ID, 개인 키, 분석, 광고 추적기 일체 없음.</li>
+        <li><strong>사용 방법</strong> — 결제 확인, 제재 준수, 앱 표시, 구독 기능 제공.</li>
+        <li><strong>공유</strong> — 귀하의 데이터를 절대 판매하지 않습니다. 블록체인 거래 및 법적 요구사항에만 제한적 공개.</li>
+        <li><strong>제3자 서비스</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>저장 및 보안</strong> — 모든 데이터는 로컬에 저장됩니다. 귀하의 데이터를 저장하는 서버를 운영하지 않습니다.</li>
+        <li><strong>지리적 제한</strong> — 앱은 58개 차단된 관할 구역에서 사용할 수 없습니다. 위치는 실행 시 및 각 결제 전 확인됩니다.</li>
+        <li><strong>귀하의 권리</strong> — 설정을 통한 액세스, 제거를 통한 삭제, 사용 중단을 통한 옵트아웃. GDPR/CCPA 완전 지원.</li>
+        <li><strong>문의</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>간단히 말하면:</strong> 매우 적은 데이터만 수집합니다 — 주로 결제용 공개 지갑 주소와 제재 확인용 대략적 위치입니다. 그 외 모든 것은 귀하의 휴대폰에 남아 있습니다. 추적하지 않고, 광고를 표시하지 않으며, 절대 데이터를 판매하지 않습니다.</div>
+</article>
 
-        <div class="summary-box">
-            <h3>Summary (Plain Language)</h3>
-            <p>We collect very little data - mainly your public wallet address for payments and your approximate location to check you're not in a sanctioned country. Everything else stays on your phone. We don't track you, we don't show ads, and we never sell your data. If you want to delete everything, just uninstall the App.</p>
-        </div>
-    </div>
+<!-- ============== DUTCH ============== -->
+<article id="nl" lang="nl">
+    <div class="header"><h1>Privacybeleid</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Mededeling:</strong> De Engelse versie hierboven is de juridisch bindende tekst. Deze samenvatting wordt ter informatie verstrekt.</div>
+    <p>Dit document vat samen hoe AardAppvark Toolkit omgaat met uw gegevens. Voor de volledige tekst zie het <a href="#en">Engelse gedeelte hierboven</a>.</p>
+    <ol>
+        <li><strong>Introductie</strong> — Wij zetten ons in voor uw privacy. Principes: dataminimalisatie, lokale verwerking, transparantie, geen tracking, gebruikerscontrole.</li>
+        <li><strong>Verzamelde informatie</strong> — Solana-portemonnee-adres voor betalingen, geschatte locatie voor sanctienaleving, lijst geïnstalleerde apps (alleen lokaal).</li>
+        <li><strong>Wat we NIET verzamelen</strong> — geen persoonlijke identificatoren, apparaat-ID's, privésleutels, analyses of advertentietrackers.</li>
+        <li><strong>Gebruik</strong> — betalingsverificatie, sanctienaleving, apps tonen, abonnementsfuncties verlenen.</li>
+        <li><strong>Delen</strong> — Wij verkopen uw gegevens nooit. Beperkte openbaarmaking alleen voor blockchaintransacties en juridische vereisten.</li>
+        <li><strong>Diensten van derden</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Opslag en Beveiliging</strong> — Alle gegevens worden lokaal opgeslagen. We exploiteren geen servers die uw gegevens opslaan.</li>
+        <li><strong>Geografische Beperkingen</strong> — De app is niet beschikbaar in 58 geblokkeerde rechtsgebieden. Locatie wordt gecontroleerd bij opstarten en voor elke betaling.</li>
+        <li><strong>Uw Rechten</strong> — toegang via Instellingen, verwijdering door deïnstalleren, opt-out door gebruik te stoppen. AVG/CCPA volledig ondersteund.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Kort gezegd:</strong> We verzamelen heel weinig gegevens — voornamelijk uw openbare portemonnee-adres voor betalingen en uw geschatte locatie voor sanctiecontrole. Al het andere blijft op uw telefoon. We volgen u niet, tonen geen advertenties en verkopen uw gegevens nooit.</div>
+</article>
 
-    <div class="footer">
-        <p>© 2026 ADappvark Toolkit. All rights reserved.</p>
-        <p><a href="terms.html">Terms of Service</a> | <a href="index.html">Home</a></p>
-    </div>
+<!-- ============== POLISH ============== -->
+<article id="pl" lang="pl">
+    <div class="header"><h1>Polityka prywatności</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Uwaga:</strong> Wersja angielska powyżej stanowi prawnie wiążący tekst. To podsumowanie jest udostępniane dla wygody.</div>
+    <p>Ten dokument podsumowuje sposób, w jaki AardAppvark Toolkit obsługuje Twoje dane. Pełny tekst znajduje się w <a href="#en">sekcji angielskiej powyżej</a>.</p>
+    <ol>
+        <li><strong>Wprowadzenie</strong> — Zobowiązujemy się chronić Twoją prywatność. Zasady: minimalizacja danych, przetwarzanie lokalne, przejrzystość, brak śledzenia, kontrola użytkownika.</li>
+        <li><strong>Zbierane informacje</strong> — adres portfela Solana do płatności, przybliżona lokalizacja dla zgodności z sankcjami, lista zainstalowanych aplikacji (tylko lokalnie).</li>
+        <li><strong>Czego NIE zbieramy</strong> — żadnych identyfikatorów osobistych, identyfikatorów urządzenia, kluczy prywatnych, analityki ani trackerów reklamowych.</li>
+        <li><strong>Wykorzystanie</strong> — weryfikacja płatności, zgodność z sankcjami, wyświetlanie aplikacji, funkcje subskrypcji.</li>
+        <li><strong>Udostępnianie</strong> — Nigdy nie sprzedajemy Twoich danych. Ograniczone ujawnianie tylko dla transakcji blockchain i wymagań prawnych.</li>
+        <li><strong>Usługi stron trzecich</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Przechowywanie i bezpieczeństwo</strong> — Wszystkie dane są przechowywane lokalnie. Nie prowadzimy serwerów przechowujących Twoje dane.</li>
+        <li><strong>Ograniczenia geograficzne</strong> — Aplikacja nie jest dostępna w 58 zablokowanych jurysdykcjach. Lokalizacja jest weryfikowana przy uruchomieniu i przed każdą płatnością.</li>
+        <li><strong>Twoje prawa</strong> — dostęp przez Ustawienia, usuwanie przez odinstalowanie, rezygnacja przez zaprzestanie używania. RODO/CCPA w pełni obsługiwane.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Krótko mówiąc:</strong> Zbieramy bardzo niewiele danych — głównie Twój publiczny adres portfela do płatności i przybliżoną lokalizację do sprawdzenia sankcji. Wszystko inne pozostaje na Twoim telefonie. Nie śledzimy Cię, nie pokazujemy reklam i nigdy nie sprzedajemy Twoich danych.</div>
+</article>
+
+<!-- ============== PORTUGUESE (BRAZIL) ============== -->
+<article id="pt-BR" lang="pt-BR">
+    <div class="header"><h1>Política de Privacidade</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Aviso:</strong> A versão em inglês acima é o texto juridicamente vinculativo. Este resumo é fornecido por conveniência.</div>
+    <p>Este documento resume como AardAppvark Toolkit lida com seus dados. Para o texto completo, consulte a <a href="#en">seção em inglês acima</a>.</p>
+    <ol>
+        <li><strong>Introdução</strong> — Comprometemo-nos a proteger sua privacidade. Princípios: minimização de dados, processamento local, transparência, sem rastreamento, controle do usuário.</li>
+        <li><strong>Informações Coletadas</strong> — endereço da carteira Solana para pagamentos, localização aproximada para conformidade com sanções, lista de aplicativos (apenas local).</li>
+        <li><strong>O Que NÃO Coletamos</strong> — sem identificadores pessoais, IDs de dispositivo, chaves privadas, análises ou rastreadores de anúncios.</li>
+        <li><strong>Como Usamos</strong> — verificação de pagamento, conformidade com sanções, exibição de apps, recursos de assinatura.</li>
+        <li><strong>Compartilhamento</strong> — Nunca vendemos seus dados. Divulgação limitada apenas para transações blockchain e requisitos legais.</li>
+        <li><strong>Serviços de Terceiros</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Armazenamento e Segurança</strong> — Todos os dados são armazenados localmente. Não operamos servidores que armazenam seus dados.</li>
+        <li><strong>Restrições Geográficas</strong> — O app não está disponível em 58 jurisdições bloqueadas. A localização é verificada na inicialização e antes de cada pagamento.</li>
+        <li><strong>Seus Direitos</strong> — acesso via Configurações, exclusão por desinstalação, opt-out interrompendo o uso. LGPD/GDPR/CCPA totalmente suportados.</li>
+        <li><strong>Contato</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Em resumo:</strong> Coletamos muito poucos dados — principalmente seu endereço de carteira público para pagamentos e sua localização aproximada para verificar sanções. Tudo o mais permanece em seu telefone. Não te rastreamos, não mostramos anúncios e nunca vendemos seus dados.</div>
+</article>
+
+<!-- ============== BENGALI ============== -->
+<article id="bn" lang="bn">
+    <div class="header"><h1>গোপনীয়তা নীতি</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>নোট:</strong> উপরের ইংরেজি সংস্করণটি আইনগতভাবে বাধ্যতামূলক পাঠ্য। এই সারাংশটি কেবলমাত্র সুবিধার্থে প্রদান করা হয়েছে।</div>
+    <p>এই নথিটি AardAppvark Toolkit আপনার ডেটা কীভাবে পরিচালনা করে তা সারাংশ করে। সম্পূর্ণ পাঠ্যের জন্য, <a href="#en">উপরের ইংরেজি বিভাগটি</a> দেখুন।</p>
+    <ol>
+        <li><strong>ভূমিকা</strong> — আমরা আপনার গোপনীয়তা রক্ষায় প্রতিশ্রুতিবদ্ধ। নীতিমালা: ডেটা ন্যূনতমকরণ, স্থানীয় প্রক্রিয়াকরণ, স্বচ্ছতা, কোনো ট্র্যাকিং নেই, ব্যবহারকারীর নিয়ন্ত্রণ।</li>
+        <li><strong>সংগৃহীত তথ্য</strong> — পেমেন্টের জন্য Solana ওয়ালেট ঠিকানা, নিষেধাজ্ঞা সম্মতির জন্য আনুমানিক অবস্থান, অ্যাপ তালিকা (কেবলমাত্র স্থানীয়)।</li>
+        <li><strong>আমরা যা সংগ্রহ করি না</strong> — কোনো ব্যক্তিগত শনাক্তকারী, ডিভাইস আইডি, প্রাইভেট কী, অ্যানালিটিক্স বা বিজ্ঞাপন ট্র্যাকার নেই।</li>
+        <li><strong>আমরা কীভাবে ব্যবহার করি</strong> — পেমেন্ট যাচাইকরণ, নিষেধাজ্ঞা সম্মতি, অ্যাপ প্রদর্শন, সাবস্ক্রিপশন বৈশিষ্ট্য।</li>
+        <li><strong>শেয়ারিং</strong> — আমরা কখনই আপনার ডেটা বিক্রি করি না। সীমিত প্রকাশ কেবল ব্লকচেইন লেনদেন এবং আইনি প্রয়োজনীয়তার জন্য।</li>
+        <li><strong>তৃতীয়-পক্ষের পরিষেবা</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store।</li>
+        <li><strong>সংরক্ষণ এবং নিরাপত্তা</strong> — সমস্ত ডেটা স্থানীয়ভাবে সংরক্ষিত হয়। আমরা আপনার ডেটা সংরক্ষণকারী কোনো সার্ভার পরিচালনা করি না।</li>
+        <li><strong>ভৌগোলিক সীমাবদ্ধতা</strong> — অ্যাপটি ৫৪টি অবরুদ্ধ এখতিয়ারে উপলব্ধ নয়। স্টার্টআপে এবং প্রতিটি পেমেন্টের পূর্বে অবস্থান যাচাই করা হয়।</li>
+        <li><strong>আপনার অধিকার</strong> — সেটিংসের মাধ্যমে অ্যাক্সেস, আনইনস্টল করে মুছে ফেলা, ব্যবহার বন্ধ করে অপ্ট-আউট। GDPR/CCPA সম্পূর্ণরূপে সমর্থিত।</li>
+        <li><strong>যোগাযোগ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>সংক্ষেপে:</strong> আমরা খুব কম ডেটা সংগ্রহ করি — মূলত পেমেন্টের জন্য আপনার পাবলিক ওয়ালেট ঠিকানা এবং নিষেধাজ্ঞা যাচাইয়ের জন্য আপনার আনুমানিক অবস্থান। বাকি সবকিছু আপনার ফোনেই থাকে। আমরা আপনাকে ট্র্যাক করি না, বিজ্ঞাপন দেখাই না এবং কখনো আপনার ডেটা বিক্রি করি না।</div>
+</article>
+
+<!-- ============== ROMANIAN ============== -->
+<article id="ro" lang="ro">
+    <div class="header"><h1>Politica de Confidențialitate</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Notă:</strong> Versiunea în limba engleză de mai sus este textul cu valoare juridică. Acest rezumat este furnizat pentru comoditate.</div>
+    <p>Acest document rezumă modul în care AardAppvark Toolkit gestionează datele dumneavoastră. Pentru textul complet, consultați <a href="#en">secțiunea în limba engleză de mai sus</a>.</p>
+    <ol>
+        <li><strong>Introducere</strong> — Ne angajăm să vă protejăm confidențialitatea. Principii: minimizarea datelor, procesare locală, transparență, fără urmărire, control al utilizatorului.</li>
+        <li><strong>Informații Colectate</strong> — adresa portofelului Solana pentru plăți, locația aproximativă pentru respectarea sancțiunilor, lista aplicațiilor (doar local).</li>
+        <li><strong>Ce NU Colectăm</strong> — niciun identificator personal, ID-uri de dispozitiv, chei private, analiză sau trackere publicitare.</li>
+        <li><strong>Utilizare</strong> — verificarea plății, respectarea sancțiunilor, afișarea aplicațiilor, funcționalități de abonament.</li>
+        <li><strong>Partajare</strong> — Nu vă vindem niciodată datele. Divulgare limitată numai pentru tranzacții blockchain și cerințe legale.</li>
+        <li><strong>Servicii ale Terților</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Stocare și Securitate</strong> — Toate datele sunt stocate local. Nu operăm servere care vă stochează datele.</li>
+        <li><strong>Restricții Geografice</strong> — Aplicația nu este disponibilă în 58 de jurisdicții blocate. Locația este verificată la lansare și înainte de fiecare plată.</li>
+        <li><strong>Drepturile Dvs.</strong> — acces prin Setări, ștergere prin dezinstalare, renunțare prin oprirea utilizării. GDPR/CCPA pe deplin susținute.</li>
+        <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Pe scurt:</strong> Colectăm foarte puține date — în principal adresa portofelului dvs. public pentru plăți și locația aproximativă pentru verificarea sancțiunilor. Toate celelalte rămân pe telefonul dvs. Nu vă urmărim, nu afișăm reclame și nu vă vindem niciodată datele.</div>
+</article>
+
+<!-- ============== RUSSIAN ============== -->
+<article id="ru" lang="ru">
+    <div class="header"><h1>Политика конфиденциальности</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Уведомление:</strong> Английская версия выше является юридически обязательным текстом. Это резюме предоставлено для удобства.</div>
+    <p>Этот документ резюмирует, как AardAppvark Toolkit обрабатывает ваши данные. Полный текст содержится в <a href="#en">английском разделе выше</a>.</p>
+    <ol>
+        <li><strong>Введение</strong> — Мы стремимся защищать вашу конфиденциальность. Принципы: минимизация данных, локальная обработка, прозрачность, отсутствие отслеживания, контроль пользователя.</li>
+        <li><strong>Собираемая информация</strong> — адрес кошелька Solana для платежей, приблизительное местоположение для соблюдения санкций, список установленных приложений (только локально).</li>
+        <li><strong>Что мы НЕ собираем</strong> — никаких личных идентификаторов, идентификаторов устройств, приватных ключей, аналитики или рекламных трекеров.</li>
+        <li><strong>Использование</strong> — проверка платежей, соблюдение санкций, отображение приложений, функции подписки.</li>
+        <li><strong>Передача</strong> — Мы никогда не продаём ваши данные. Ограниченное раскрытие только для блокчейн-транзакций и юридических требований.</li>
+        <li><strong>Сторонние сервисы</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Хранение и безопасность</strong> — Все данные хранятся локально. Мы не управляем серверами, хранящими ваши данные.</li>
+        <li><strong>Географические ограничения</strong> — Приложение недоступно в 58 заблокированных юрисдикциях. Местоположение проверяется при запуске и перед каждой оплатой.</li>
+        <li><strong>Ваши права</strong> — доступ через Настройки, удаление путём деинсталляции, отказ путём прекращения использования. GDPR/CCPA полностью поддерживаются.</li>
+        <li><strong>Контакты</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Кратко:</strong> Мы собираем очень мало данных — в основном ваш публичный адрес кошелька для платежей и приблизительное местоположение для проверки санкций. Всё остальное остаётся на вашем телефоне. Мы не отслеживаем вас, не показываем рекламу и никогда не продаём ваши данные.</div>
+</article>
+
+<!-- ============== SWEDISH ============== -->
+<article id="sv" lang="sv">
+    <div class="header"><h1>Integritetspolicy</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Obs:</strong> Den engelska versionen ovan är den juridiskt bindande texten. Denna sammanfattning tillhandahålls för enkelhetens skull.</div>
+    <p>Detta dokument sammanfattar hur AardAppvark Toolkit hanterar dina data. För hela texten, se <a href="#en">det engelska avsnittet ovan</a>.</p>
+    <ol>
+        <li><strong>Introduktion</strong> — Vi är engagerade i att skydda din integritet. Principer: dataminimering, lokal bearbetning, transparens, ingen spårning, användarkontroll.</li>
+        <li><strong>Insamlad information</strong> — Solana-plånboksadress för betalningar, ungefärlig plats för sanktionsefterlevnad, lista över installerade appar (endast lokalt).</li>
+        <li><strong>Vad vi INTE samlar in</strong> — inga personliga identifierare, enhets-ID, privata nycklar, analys eller annonsspårare.</li>
+        <li><strong>Hur vi använder</strong> — betalningsverifiering, sanktionsefterlevnad, visa appar, prenumerationsfunktioner.</li>
+        <li><strong>Delning</strong> — Vi säljer aldrig dina data. Begränsad utlämning endast för blockchain-transaktioner och rättsliga krav.</li>
+        <li><strong>Tredjepartstjänster</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Lagring och säkerhet</strong> — All data lagras lokalt. Vi driver inga servrar som lagrar dina data.</li>
+        <li><strong>Geografiska begränsningar</strong> — Appen är inte tillgänglig i 58 blockerade jurisdiktioner. Plats verifieras vid start och före varje betalning.</li>
+        <li><strong>Dina rättigheter</strong> — åtkomst via Inställningar, borttagning genom avinstallation, avregistrering genom att sluta använda. GDPR/CCPA fullt stödda.</li>
+        <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Kort sagt:</strong> Vi samlar in väldigt lite data — främst din offentliga plånboksadress för betalningar och din ungefärliga plats för sanktionskontroll. Allt annat stannar på din telefon. Vi spårar dig inte, visar inga annonser och säljer aldrig dina data.</div>
+</article>
+
+<!-- ============== THAI ============== -->
+<article id="th" lang="th">
+    <div class="header"><h1>นโยบายความเป็นส่วนตัว</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>หมายเหตุ:</strong> เวอร์ชันภาษาอังกฤษด้านบนเป็นข้อความที่มีผลผูกพันทางกฎหมาย สรุปนี้จัดทำขึ้นเพื่อความสะดวก</div>
+    <p>เอกสารนี้สรุปวิธีที่ AardAppvark Toolkit จัดการข้อมูลของคุณ สำหรับข้อความฉบับเต็ม โปรดดู<a href="#en">ส่วนภาษาอังกฤษด้านบน</a></p>
+    <ol>
+        <li><strong>บทนำ</strong> — เรามุ่งมั่นที่จะปกป้องความเป็นส่วนตัวของคุณ หลักการ: ลดการเก็บข้อมูล ประมวลผลในเครื่องก่อน ความโปร่งใส ไม่ติดตาม ผู้ใช้ควบคุม</li>
+        <li><strong>ข้อมูลที่เราเก็บ</strong> — ที่อยู่กระเป๋าเงิน Solana สำหรับการชำระเงิน ตำแหน่งโดยประมาณสำหรับการปฏิบัติตามมาตรการคว่ำบาตร รายการแอป (เฉพาะในเครื่อง)</li>
+        <li><strong>สิ่งที่เราไม่เก็บ</strong> — ไม่มีตัวระบุบุคคล รหัสอุปกรณ์ คีย์ส่วนตัว การวิเคราะห์ หรือตัวติดตามโฆษณา</li>
+        <li><strong>วิธีการใช้</strong> — ตรวจสอบการชำระเงิน การปฏิบัติตามมาตรการคว่ำบาตร แสดงแอป คุณสมบัติการสมัครสมาชิก</li>
+        <li><strong>การแบ่งปัน</strong> — เราไม่ขายข้อมูลของคุณ การเปิดเผยจำกัดเฉพาะธุรกรรมบล็อกเชนและข้อกำหนดทางกฎหมาย</li>
+        <li><strong>บริการบุคคลที่สาม</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store</li>
+        <li><strong>การจัดเก็บและความปลอดภัย</strong> — ข้อมูลทั้งหมดจัดเก็บไว้ในเครื่อง เราไม่ดำเนินการเซิร์ฟเวอร์ที่จัดเก็บข้อมูลของคุณ</li>
+        <li><strong>ข้อจำกัดทางภูมิศาสตร์</strong> — แอปไม่พร้อมใช้งานใน 58 เขตอำนาจที่ถูกบล็อก ตำแหน่งจะถูกตรวจสอบเมื่อเปิดและก่อนการชำระเงินแต่ละครั้ง</li>
+        <li><strong>สิทธิของคุณ</strong> — เข้าถึงผ่านการตั้งค่า ลบโดยการถอนการติดตั้ง ออกจากระบบโดยหยุดใช้ GDPR/CCPA รองรับเต็มที่</li>
+        <li><strong>ติดต่อ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>โดยสรุป:</strong> เราเก็บข้อมูลน้อยมาก — ส่วนใหญ่คือที่อยู่กระเป๋าเงินสาธารณะของคุณสำหรับการชำระเงินและตำแหน่งโดยประมาณสำหรับการตรวจสอบมาตรการคว่ำบาตร ทุกอย่างอื่นยังคงอยู่ในโทรศัพท์ของคุณ เราไม่ติดตามคุณ ไม่แสดงโฆษณา และไม่ขายข้อมูลของคุณ</div>
+</article>
+
+<!-- ============== TURKISH ============== -->
+<article id="tr" lang="tr">
+    <div class="header"><h1>Gizlilik Politikası</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Bildirim:</strong> Yukarıdaki İngilizce sürüm yasal olarak bağlayıcı metindir. Bu özet kolaylık sağlamak için sunulmuştur.</div>
+    <p>Bu belge, AardAppvark Toolkit uygulamasının verilerinizi nasıl işlediğini özetler. Tam metin için <a href="#en">yukarıdaki İngilizce bölüme</a> bakın.</p>
+    <ol>
+        <li><strong>Giriş</strong> — Gizliliğinizi korumayı taahhüt ediyoruz. İlkeler: veri minimizasyonu, yerel işleme, şeffaflık, takip yok, kullanıcı kontrolü.</li>
+        <li><strong>Topladığımız Bilgiler</strong> — ödemeler için Solana cüzdan adresi, yaptırım uyumluluğu için yaklaşık konum, yüklü uygulamalar listesi (yalnızca yerel).</li>
+        <li><strong>Toplamadığımız Bilgiler</strong> — kişisel tanımlayıcılar, cihaz kimlikleri, özel anahtarlar, analitik veya reklam izleyicileri yoktur.</li>
+        <li><strong>Kullanım</strong> — ödeme doğrulama, yaptırım uyumluluğu, uygulamaları görüntüleme, abonelik özellikleri.</li>
+        <li><strong>Paylaşım</strong> — Verilerinizi asla satmayız. Sınırlı açıklama yalnızca blockchain işlemleri ve yasal gereksinimler için.</li>
+        <li><strong>Üçüncü Taraf Hizmetleri</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Depolama ve Güvenlik</strong> — Tüm veriler yerel olarak depolanır. Verilerinizi depolayan sunucular işletmiyoruz.</li>
+        <li><strong>Coğrafi Kısıtlamalar</strong> — Uygulama 58 engellenen yargı alanında mevcut değildir. Konum, başlatma sırasında ve her ödeme öncesinde doğrulanır.</li>
+        <li><strong>Haklarınız</strong> — Ayarlar üzerinden erişim, kaldırarak silme, kullanmayı durdurarak vazgeçme. KVKK/GDPR/CCPA tam olarak desteklenir.</li>
+        <li><strong>İletişim</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Kısaca:</strong> Çok az veri topluyoruz — esas olarak ödemeler için genel cüzdan adresinizi ve yaptırım kontrolü için yaklaşık konumunuzu. Diğer her şey telefonunuzda kalır. Sizi takip etmiyor, reklam göstermiyor ve verilerinizi asla satmıyoruz.</div>
+</article>
+
+<!-- ============== UKRAINIAN ============== -->
+<article id="uk" lang="uk">
+    <div class="header"><h1>Політика конфіденційності</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Повідомлення:</strong> Англійська версія вище є юридично обов'язковим текстом. Це резюме надається для зручності.</div>
+    <p>Цей документ підсумовує, як AardAppvark Toolkit обробляє ваші дані. Повний текст міститься в <a href="#en">англійському розділі вище</a>.</p>
+    <ol>
+        <li><strong>Вступ</strong> — Ми зобов'язуємося захищати вашу конфіденційність. Принципи: мінімізація даних, локальна обробка, прозорість, без відстеження, контроль користувача.</li>
+        <li><strong>Інформація, яку збираємо</strong> — адреса гаманця Solana для платежів, приблизне місцезнаходження для дотримання санкцій, список установлених програм (лише локально).</li>
+        <li><strong>Чого НЕ збираємо</strong> — жодних особистих ідентифікаторів, ідентифікаторів пристрою, приватних ключів, аналітики чи рекламних трекерів.</li>
+        <li><strong>Використання</strong> — перевірка платежів, дотримання санкцій, відображення програм, функції підписки.</li>
+        <li><strong>Передача</strong> — Ми ніколи не продаємо ваші дані. Обмежене розкриття лише для блокчейн-транзакцій і юридичних вимог.</li>
+        <li><strong>Сторонні служби</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Зберігання та безпека</strong> — Усі дані зберігаються локально. Ми не керуємо серверами, що зберігають ваші дані.</li>
+        <li><strong>Географічні обмеження</strong> — Додаток недоступний у 58 заблокованих юрисдикціях. Місцезнаходження перевіряється при запуску та перед кожним платежем.</li>
+        <li><strong>Ваші права</strong> — доступ через Налаштування, видалення видаленням, відмова припиненням використання. GDPR/CCPA повністю підтримуються.</li>
+        <li><strong>Контакти</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Коротко:</strong> Ми збираємо дуже мало даних — переважно вашу публічну адресу гаманця для платежів і ваше приблизне місцезнаходження для перевірки санкцій. Усе інше залишається на вашому телефоні. Ми не відстежуємо вас, не показуємо рекламу і ніколи не продаємо ваші дані.</div>
+</article>
+
+<!-- ============== URDU (RTL) ============== -->
+<article id="ur" lang="ur" dir="rtl">
+    <div class="header"><h1>پرائیویسی پالیسی</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>نوٹس:</strong> اوپر کی انگریزی نسخہ قانونی طور پر پابند کرنے والا متن ہے۔ یہ خلاصہ سہولت کے لئے فراہم کیا گیا ہے۔</div>
+    <p>یہ دستاویز AardAppvark Toolkit آپ کے ڈیٹا کو کیسے ہینڈل کرتا ہے کا خلاصہ پیش کرتی ہے۔ مکمل متن کے لئے، <a href="#en">اوپر انگریزی سیکشن</a> دیکھیں۔</p>
+    <ol>
+        <li><strong>تعارف</strong> — ہم آپ کی پرائیویسی کی حفاظت کے لئے پرعزم ہیں۔ اصول: ڈیٹا کم سے کم، مقامی-پہلے، شفافیت، کوئی ٹریکنگ نہیں، صارف کنٹرول۔</li>
+        <li><strong>جمع کی گئی معلومات</strong> — ادائیگیوں کے لئے Solana والیٹ ایڈریس، پابندیوں کی تعمیل کے لئے تخمینی مقام، انسٹال شدہ ایپس کی فہرست (صرف مقامی)۔</li>
+        <li><strong>جو ہم نہیں جمع کرتے</strong> — کوئی ذاتی شناخت کنندہ، ڈیوائس ID، نجی کیز، تجزیات، یا اشتہاری ٹریکرز نہیں۔</li>
+        <li><strong>استعمال</strong> — ادائیگی کی تصدیق، پابندیوں کی تعمیل، ایپس دکھانا، سبسکرپشن خصوصیات۔</li>
+        <li><strong>اشتراک</strong> — ہم آپ کا ڈیٹا کبھی فروخت نہیں کرتے۔ محدود انکشاف صرف بلاکچین لین دین اور قانونی تقاضوں کے لئے۔</li>
+        <li><strong>تیسرے فریق کی خدمات</strong> — Solana Blockchain، Mobile Wallet Adapter، Shizuku، Solana dApp Store۔</li>
+        <li><strong>اسٹوریج اور سیکیورٹی</strong> — تمام ڈیٹا مقامی طور پر محفوظ ہے۔ ہم آپ کا ڈیٹا اسٹور کرنے والے سرورز نہیں چلاتے۔</li>
+        <li><strong>جغرافیائی پابندیاں</strong> — ایپ 58 بلاک شدہ دائرہ اختیارات میں دستیاب نہیں ہے۔ مقام لانچ پر اور ہر ادائیگی سے پہلے تصدیق کیا جاتا ہے۔</li>
+        <li><strong>آپ کے حقوق</strong> — ترتیبات کے ذریعے رسائی، ان انسٹال کرکے حذف، استعمال بند کرکے آپٹ آؤٹ۔ GDPR/CCPA مکمل طور پر سپورٹ شدہ۔</li>
+        <li><strong>رابطہ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>سادہ الفاظ میں:</strong> ہم بہت کم ڈیٹا جمع کرتے ہیں — بنیادی طور پر ادائیگیوں کے لئے آپ کا عوامی والیٹ ایڈریس اور پابندیاں چیک کرنے کے لئے آپ کا تخمینی مقام۔ باقی سب کچھ آپ کے فون پر ہی رہتا ہے۔ ہم آپ کو ٹریک نہیں کرتے، اشتہارات نہیں دکھاتے، اور آپ کا ڈیٹا کبھی فروخت نہیں کرتے۔</div>
+</article>
+
+<!-- ============== VIETNAMESE ============== -->
+<article id="vi" lang="vi">
+    <div class="header"><h1>Chính sách Bảo mật</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>Thông báo:</strong> Phiên bản tiếng Anh ở trên là văn bản có giá trị pháp lý ràng buộc. Bản tóm tắt này được cung cấp để thuận tiện.</div>
+    <p>Tài liệu này tóm tắt cách AardAppvark Toolkit xử lý dữ liệu của bạn. Để biết văn bản đầy đủ, hãy xem <a href="#en">phần tiếng Anh ở trên</a>.</p>
+    <ol>
+        <li><strong>Giới thiệu</strong> — Chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Nguyên tắc: tối thiểu hóa dữ liệu, xử lý cục bộ trước, minh bạch, không theo dõi, kiểm soát người dùng.</li>
+        <li><strong>Thông tin chúng tôi thu thập</strong> — địa chỉ ví Solana để thanh toán, vị trí gần đúng để tuân thủ trừng phạt, danh sách ứng dụng (chỉ cục bộ).</li>
+        <li><strong>Những gì chúng tôi KHÔNG thu thập</strong> — không có thông tin nhận dạng cá nhân, ID thiết bị, khóa riêng, phân tích hoặc trình theo dõi quảng cáo.</li>
+        <li><strong>Cách sử dụng</strong> — xác minh thanh toán, tuân thủ trừng phạt, hiển thị ứng dụng, các tính năng đăng ký.</li>
+        <li><strong>Chia sẻ</strong> — Chúng tôi không bao giờ bán dữ liệu của bạn. Tiết lộ hạn chế chỉ cho các giao dịch blockchain và yêu cầu pháp lý.</li>
+        <li><strong>Dịch vụ Bên thứ Ba</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
+        <li><strong>Lưu trữ và Bảo mật</strong> — Tất cả dữ liệu được lưu trữ cục bộ. Chúng tôi không vận hành máy chủ lưu trữ dữ liệu của bạn.</li>
+        <li><strong>Hạn chế Địa lý</strong> — Ứng dụng không khả dụng ở 58 khu vực pháp lý bị chặn. Vị trí được xác minh khi khởi chạy và trước mỗi lần thanh toán.</li>
+        <li><strong>Quyền của bạn</strong> — truy cập qua Cài đặt, xóa bằng cách gỡ cài đặt, từ chối bằng cách ngừng sử dụng. GDPR/CCPA được hỗ trợ đầy đủ.</li>
+        <li><strong>Liên hệ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>Tóm lại:</strong> Chúng tôi thu thập rất ít dữ liệu — chủ yếu là địa chỉ ví công khai của bạn cho thanh toán và vị trí gần đúng để kiểm tra trừng phạt. Mọi thứ khác đều ở lại điện thoại của bạn. Chúng tôi không theo dõi bạn, không hiển thị quảng cáo và không bao giờ bán dữ liệu của bạn.</div>
+</article>
+
+<!-- ============== CHINESE SIMPLIFIED ============== -->
+<article id="zh-CN" lang="zh-CN">
+    <div class="header"><h1>隐私政策</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>声明:</strong> 上方英文版本为具有法律约束力的文本。本摘要仅为便利提供。</div>
+    <p>本文档总结了 AardAppvark Toolkit 如何处理您的数据。完整文本请参阅<a href="#en">上方英文部分</a>。</p>
+    <ol>
+        <li><strong>引言</strong> — 我们致力于保护您的隐私。原则:数据最小化、本地优先、透明度、不追踪、用户控制。</li>
+        <li><strong>我们收集的信息</strong> — 用于支付的 Solana 钱包地址、用于制裁合规的大致位置、已安装应用列表(仅限本地)。</li>
+        <li><strong>我们不收集的信息</strong> — 不收集任何个人标识符、设备 ID、私钥、分析数据或广告追踪器。</li>
+        <li><strong>使用方式</strong> — 验证支付、遵守制裁、显示应用、授予订阅功能。</li>
+        <li><strong>共享</strong> — 我们绝不出售您的数据。仅在区块链交易和法律要求时进行有限披露。</li>
+        <li><strong>第三方服务</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
+        <li><strong>存储和安全</strong> — 所有数据均存储在本地。我们不运营存储您数据的服务器。</li>
+        <li><strong>地理限制</strong> — 应用在 58 个被屏蔽的司法管辖区不可用。位置在启动时和每次支付前进行验证。</li>
+        <li><strong>您的权利</strong> — 通过设置访问、卸载删除、停用退出。完全支持 GDPR/CCPA。</li>
+        <li><strong>联系方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>简而言之:</strong> 我们收集的数据非常少——主要是您用于支付的公共钱包地址和用于制裁检查的大致位置。其他所有信息都留在您的手机上。我们不追踪您,不显示广告,绝不出售您的数据。</div>
+</article>
+
+<!-- ============== CHINESE TRADITIONAL ============== -->
+<article id="zh-TW" lang="zh-TW">
+    <div class="header"><h1>隱私政策</h1><p class="meta">AardAppvark Toolkit</p></div>
+    <div class="binding-notice"><strong>聲明:</strong> 上方英文版本為具有法律約束力的文本。本摘要僅為便利提供。</div>
+    <p>本文件總結了 AardAppvark Toolkit 如何處理您的資料。完整文本請參閱<a href="#en">上方英文部分</a>。</p>
+    <ol>
+        <li><strong>引言</strong> — 我們致力於保護您的隱私。原則:資料最小化、本地優先、透明度、不追蹤、使用者控制。</li>
+        <li><strong>我們收集的資訊</strong> — 用於付款的 Solana 錢包地址、用於制裁合規的大致位置、已安裝應用程式列表(僅限本地)。</li>
+        <li><strong>我們不收集的資訊</strong> — 不收集任何個人識別碼、裝置 ID、私鑰、分析資料或廣告追蹤器。</li>
+        <li><strong>使用方式</strong> — 驗證付款、遵守制裁、顯示應用程式、授予訂閱功能。</li>
+        <li><strong>共享</strong> — 我們絕不出售您的資料。僅在區塊鏈交易和法律要求時進行有限揭露。</li>
+        <li><strong>第三方服務</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
+        <li><strong>儲存和安全</strong> — 所有資料均儲存在本地。我們不營運儲存您資料的伺服器。</li>
+        <li><strong>地理限制</strong> — 應用程式在 58 個被封鎖的司法管轄區不可用。位置在啟動時和每次付款前進行驗證。</li>
+        <li><strong>您的權利</strong> — 透過設定存取、解除安裝刪除、停用退出。完全支援 GDPR/CCPA。</li>
+        <li><strong>聯絡方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
+    </ol>
+    <div class="summary-box"><strong>簡而言之:</strong> 我們收集的資料非常少——主要是您用於付款的公共錢包地址和用於制裁檢查的大致位置。其他所有資訊都留在您的手機上。我們不追蹤您,不顯示廣告,絕不出售您的資料。</div>
+</article>
+
+<div class="footer">
+    <p>&copy; 2026 AardAppvark Toolkit. All rights reserved.</p>
+    <p><a href="terms.html">Terms of Service</a> | <a href="copyright.html">Copyright</a> | <a href="index.html">Home</a></p>
+</div>
+</div>
 </body>
 </html>
