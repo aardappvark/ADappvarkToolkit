@@ -1,145 +1,73 @@
-# AardAppvark Toolkit
+# Befran
 
-**First in line. Every dApp, every time.**
+**Publisher of 29 dApps for the Solana Seeker.**
 
-The essential dApp lifecycle manager for Solana Seeker.
+Befran (trading as MidMightBit Games) builds small, focused apps exclusively for the Solana
+Seeker — prayer and meditation companions, utilities, verification tools and games.
 
-[![Discord](https://img.shields.io/badge/Discord-Join%20Server-5865F2?logo=discord&logoColor=white)](https://discord.gg/sGXgKG4U)
-
----
-
-## Features
-
-- **Bulk Uninstall** - Clean up dApps in seconds with silent ADB-powered removal
-- **Bulk Reinstall** - Restore your entire dApp collection from the Solana dApp Store with auto-install
-- **Auto-Accept** - Payment-gated auto-tap for system uninstall/reinstall dialogs (7-day pass, 1 SKR / 0.01 SOL)
-- **Smart Favourites** - Star your favourite dApps so they're never accidentally removed
-- **SGT Verification** - Seeker Genesis Token holders get the full dApp unlocked
-- **Wallet Login** - Non-custodial Sign In With Solana (SIWS) with side-button fingerprint
-- **Liquid Glass UI** - Beautiful glassmorphism design with animated gradients, AMOLED-dark theme, and breathing glow effects
-- **Analytics Dashboard** - Track installed dApps, storage usage, uninstall/reinstall stats
-- **Privacy First** - Zero analytics, no cloud, all data local, GDPR/CCPA compliant
-- **Geo-Restriction** - Sanctions compliance with periodic location checks
+Publisher home: **https://aardappvark.github.io**
 
 ---
 
-## Built For Seeker
+## Principles
 
-Designed exclusively for the Solana Seeker device. Uses standard Android intents for uninstall and dApp Store deep links for reinstall. Sign In With Solana (SIWS) triggers the Seeker's physical side-button fingerprint confirmation for maximum security.
-
----
-
-## Payment Model
-
-| Tier | Price | Details |
-|------|-------|---------|
-| Free | $0 | Up to 4 apps per bulk operation |
-| Bulk (5+ apps) | 1 SKR / 0.01 SOL | Flat fee per operation, real on-chain payment |
-| Auto-Accept | 1 SKR / 0.01 SOL | 7-day pass, auto-tap system dialogs |
-| SGT Holders | Full unlock | Verified Seeker Genesis Token holders |
-
-All payments are processed on-chain via Solana Mobile Wallet Adapter.
+- **Non-custodial.** No app we publish ever holds your funds or your keys. Payments are made
+  directly from your own wallet, and unlocks are restorable from the blockchain on any device.
+- **Local by default.** Your data stays on your device. Where an app reports anonymous usage
+  counts, it says so plainly in its privacy policy and offers an opt-out.
+- **Honest listings.** Every app publishes its own End-User Licence Agreement, privacy policy
+  and licence notices, linked below.
 
 ---
 
-## Privacy First
+## Our dApps
 
-- No analytics or tracking
-- No cloud database or user accounts
-- All data stored locally on your device
-- Non-custodial wallet integration via Mobile Wallet Adapter
-- GDPR and CCPA compliant
-- Full data export and deletion in Settings
-- Geo-restriction for sanctioned jurisdictions
-- On-chain wallet sanctions screening
-
----
-
-## Tech Stack
-
-- **Language:** Kotlin
-- **UI:** Jetpack Compose (Material 3) with Liquid Glass theme
-- **Wallet:** Solana Mobile Wallet Adapter 2.0 (SIWS)
-- **Payments:** On-chain SOL transfers via MWA
-- **SGT Verification:** seeker-verify 1.1.0
-- **Target:** Android 15 (API 35), Min SDK 26
-- **Theme:** AMOLED-dark with Solana purple/green glassmorphism
-
----
-
-## Installation
-
-### From Solana dApp Store
-
-1. Open the Solana dApp Store on your Seeker
-2. Search for "AardAppvark"
-3. Install and launch
-4. Sign in with your Seeker wallet (SIWS)
-
-### From APK
-
-```bash
-adb install app/build/outputs/apk/release/app-release.apk
-```
+| dApp | What it does | Legal |
+|---|---|---|
+| **AardAppvark Toolkit** | dApp manager exclusively for Seeker | [Terms &amp; privacy](https://aardappvark.github.io/ADappvarkToolkit/) |
+| **BountySeeker** | Live Solana bounty radar | [Terms &amp; privacy](https://aardappvark.github.io/bountyseeker-legal/) |
+| **CallSealSkr** | Tamper-proof call & SMS records | [Terms &amp; privacy](https://aardappvark.github.io/callsealskr-legal/) |
+| **ChotkiSol** | Orthodox prayer rope companion | [Terms &amp; privacy](https://aardappvark.github.io/chotkisol-legal/) |
+| **CitizenSol** | Citizenship test practice, 25 countries | [Terms &amp; privacy](https://aardappvark.github.io/citizensol-legal/) |
+| **Divine Quotes Sol** | Daily wisdom from sacred texts | [Terms &amp; privacy](https://aardappvark.github.io/divinequotes-legal/) |
+| **FarmSolDirect** | Farm-to-table, direct from growers | [Terms &amp; privacy](https://aardappvark.github.io/farmsoldirect-legal/) |
+| **HealthSeeker** | Isometric training timer | [Terms &amp; privacy](https://aardappvark.github.io/healthseeker-legal/) |
+| **JapaMalaSol** | Japa mala meditation counter | [Terms &amp; privacy](https://aardappvark.github.io/japamalasol-legal/) |
+| **Roaring Trades** | Prohibition-era trading game | [Terms &amp; privacy](https://aardappvark.github.io/RoaringTrades/) |
+| **ScreenRecSkr** | Screen recorder with on-chain proof | [Terms &amp; privacy](https://aardappvark.github.io/screenrecskr-legal/) |
+| **Scrolls for Sol: Enoch** | Ancient text reader | [Terms &amp; privacy](https://aardappvark.github.io/scrollsforsol-enoch/) |
+| **Seeker Verify** | Seeker device & staking companion | [Terms &amp; privacy](https://aardappvark.github.io/SeekerVerify/) |
+| **SignalFortSkr** | Wi-Fi security proof | [Terms &amp; privacy](https://aardappvark.github.io/signalfortskr-legal/) |
+| **Sol Card Games** | Ten classic card games | [Terms &amp; privacy](https://aardappvark.github.io/solcardgames-legal/) |
+| **Sol Clock** | Clock, alarms and world time | [Terms &amp; privacy](https://aardappvark.github.io/solclock-legal/) |
+| **SolHerd** | Cattle herd management | [Terms &amp; privacy](https://aardappvark.github.io/solherd-legal/) |
+| **Sol Mala** | 108-bead mala counter | [Terms &amp; privacy](https://aardappvark.github.io/solmala-legal/) |
+| **Sol Price Widget** | SOL price on your home screen | [Terms &amp; privacy](https://aardappvark.github.io/solpricewidget-legal/) |
+| **Sol Quotes** | Quote of the day | [Terms &amp; privacy](https://aardappvark.github.io/solquotes-legal/) |
+| **Sol Rosary** | Catholic rosary companion | [Terms &amp; privacy](https://aardappvark.github.io/solrosary-legal/) |
+| **SolScripture** | Bible reader for Seeker | [Terms &amp; privacy](https://aardappvark.github.io/solscripture/) |
+| **SolSow** | Planting guide by season | [Terms &amp; privacy](https://aardappvark.github.io/solsow-legal/) |
+| **Sol Weather** | Weather built for Seeker | [Terms &amp; privacy](https://aardappvark.github.io/solweather-legal/) |
+| **TasbihSol** | Digital tasbih & prayer times | [Terms &amp; privacy](https://aardappvark.github.io/tasbihsol-legal/) |
+| **Time and Weather Sol** | Time and weather at a glance | [Terms &amp; privacy](https://aardappvark.github.io/timeandweathersol-legal/) |
+| **VeilScreenSkr** | Screen privacy shield | [Terms &amp; privacy](https://aardappvark.github.io/veilscreenskr-legal/) |
+| **VeriCapture** | Media capture with proof of origin | [Terms &amp; privacy](https://aardappvark.github.io/vericapture-legal/) |
+| **WalkDivine** | Walk a sacred path | [Terms &amp; privacy](https://aardappvark.github.io/walkdivine/) |
 
 ---
 
-## Build From Source
+## Contact
 
-### Prerequisites
-
-- Android Studio (latest stable)
-- Java 17+
-- Solana Seeker device
-
-### Build
-
-```bash
-JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home" ./gradlew assembleRelease
-```
-
-The signed APK will be at `app/build/outputs/apk/release/app-release.apk`.
+- **Support and general enquiries:** aardappvark@proton.me
+- **Publisher:** Befran, trading as MidMightBit Games — Commonwealth of Australia
+- **All repositories:** https://github.com/aardappvark
 
 ---
 
-## Version History
+## About this repository
 
-| Version | Code | Changes |
-|---------|------|---------|
-| 1.0.5 | 6 | Liquid glass UI, redesigned entry screen, payment-gated auto-accept, animated logo, glass navigation |
-| 1.0.4 | 5 | Settings screen, haptic feedback, pull-to-refresh, screen animations, app preferences |
-| 1.0.3 | 4 | Search bars, analytics dashboard, empty states, compact list view |
-| 1.0.2 | 3 | SGT verification, credit system, geo-restriction |
-| 1.0.1 | 2 | Payment system, bulk reinstall |
-| 1.0.0 | 1 | Initial release, bulk uninstall |
+This repository hosts the published legal documents for one of our apps, **AardAppvark Toolkit**,
+served at <https://aardappvark.github.io/ADappvarkToolkit/>. It is named after that app for
+historical reasons and also serves as our publisher landing page.
 
----
-
-## Legal
-
-- [Terms of Service](https://aardappvark.github.io/ADappvarkToolkit/terms.html)
-- [Privacy Policy](https://aardappvark.github.io/ADappvarkToolkit/privacy.html)
-- [Website](https://aardappvark.github.io/ADappvarkToolkit)
-
----
-
-## Support
-
-- **Discord:** [Join Server](https://discord.gg/sGXgKG4U)
-- **Email:** aardappvark@proton.me
-
----
-
-## License
-
-Proprietary Software. Copyright 2026 AardAppvark. All rights reserved.
-
-Uses open-source components under Apache 2.0:
-- Jetpack Compose
-- Material Design 3
-- Solana Mobile Wallet Adapter
-- seeker-verify
-
----
-
-**Built for the Solana Mobile ecosystem | MONOLITH Hackathon 2026**
+For the full publisher site covering every app, see **https://aardappvark.github.io**.
