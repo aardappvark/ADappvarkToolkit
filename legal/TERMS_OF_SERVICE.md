@@ -76,7 +76,7 @@ For the purposes of these Terms:
 - **"Bulk Operation"** means any uninstall or reinstall action involving 6 or more applications.
 - **"dApp"** means a decentralized application installed via the Solana dApp Store.
 - **"Device"** means the Solana Seeker or compatible Android mobile device on which the App is installed.
-- **"Fee"** means the payment required for Bulk Operations (0.01 SOL or 1 SKR per operation).
+- **"Unlimited Pass"** means the one-time payment that unlocks Bulk Operations of any size (0.0685 SOL or 793 SKR).
 - **"Free Tier"** means operations involving 5 or fewer applications, which do not require payment.
 - **"MWA"** means the Solana Mobile Wallet Adapter protocol.
 - **"Operation"** means a single uninstall or reinstall batch action.
@@ -154,7 +154,7 @@ The Service is NOT available to users located in, ordinarily resident in, or nat
 - Ukraine (including occupied territories), Moldova, Zimbabwe, Sudan, South Sudan, Central African Republic, Democratic Republic of Congo, Mali, Guinea, Burkina Faso, Niger, Haiti, Bosnia and Herzegovina, Serbia, Kosovo
 
 **Blocked (FATF / High-Risk AML/CFT):**
-- Afghanistan, Iraq, Lebanon, Libya, Somalia, Yemen, Pakistan, Jordan, Tanzania, Nigeria, Senegal, Kenya, Philippines, Vietnam, Cameroon, Togo, Trinidad and Tobago, Jamaica, Barbados, Panama, Croatia, Bulgaria, Albania, Montenegro, North Macedonia, Georgia, Armenia, Azerbaijan, Kazakhstan, Uzbekistan, Tajikistan, Turkmenistan, Kyrgyzstan
+- Afghanistan, Iraq, Lebanon, Libya, Somalia, Yemen, Pakistan, Jordan, Tanzania, Senegal, Kenya, Vietnam, Cameroon, Togo, Trinidad and Tobago, Jamaica, Barbados, Panama, Croatia, Bulgaria, Albania, Montenegro, North Macedonia, Georgia, Armenia, Azerbaijan, Kazakhstan, Uzbekistan, Tajikistan, Turkmenistan, Kyrgyzstan
 
 This list is subject to change based on evolving international sanctions and FATF designations.
 
@@ -232,7 +232,7 @@ The Service associates your device with the connected wallet address. Reconnecti
 - No payment required for small batch operations
 
 **Paid Operations:**
-- Operations involving 6+ applications: 0.01 SOL (or 1 SKR) per operation
+- Operations involving 5+ applications: require the Unlimited Pass — a one-time 0.0685 SOL (or 793 SKR). Not a subscription, no expiry, and restorable from the wallet that paid.
 - Fee is per batch operation, not per application
 - Each new bulk operation requires a new payment
 
@@ -576,7 +576,7 @@ We do NOT guarantee:
 TO THE MAXIMUM EXTENT PERMITTED BY LAW:
 
 **Maximum Liability:**
-Our total liability for any claims arising from your use of the Service is limited to the amount of your last payment (maximum 0.01 SOL or equivalent).
+Our total liability for any claims arising from your use of the Service is limited to the amount you actually paid us (maximum: the price of one Unlimited Pass, 0.0685 SOL or 793 SKR, or equivalent).
 
 **Exclusion of Damages:**
 We are NOT liable for:
