@@ -2,6 +2,12 @@
 
 **Publisher of 29 dApps for the Solana Seeker.**
 
+> **You are on Befran's publisher page.** This repository is *named* `ADappvarkToolkit`
+> because it also hosts the published legal documents for one of our apps, served at
+> <https://aardappvark.github.io/ADappvarkToolkit/>. It is not that app's project page.
+> Our full publisher site, covering every app we publish, is
+> **<https://aardappvark.github.io>**.
+
 Befran (trading as MidMightBit Games) builds small, focused apps exclusively for the Solana
 Seeker — prayer and meditation companions, utilities, verification tools and games.
 
@@ -63,11 +69,3 @@ Publisher home: **https://aardappvark.github.io**
 - **All repositories:** https://github.com/aardappvark
 
 ---
-
-## About this repository
-
-This repository hosts the published legal documents for one of our apps, **AardAppvark Toolkit**,
-served at <https://aardappvark.github.io/ADappvarkToolkit/>. It is named after that app for
-historical reasons and also serves as our publisher landing page.
-
-For the full publisher site covering every app, see **https://aardappvark.github.io**.
