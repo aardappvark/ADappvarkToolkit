@@ -73,11 +73,11 @@ For the purposes of these Terms:
 
 - **"App"** or **"Application"** means the ADappvark Toolkit mobile application for Android devices.
 - **"Blockchain"** means the Solana distributed ledger network.
-- **"Bulk Operation"** means any uninstall or reinstall action involving 6 or more applications.
+- **"Bulk Operation"** means any uninstall or reinstall action performed on multiple applications in one batch.
 - **"dApp"** means a decentralized application installed via the Solana dApp Store.
 - **"Device"** means the Solana Seeker or compatible Android mobile device on which the App is installed.
-- **"Unlimited Pass"** means the one-time payment that unlocks Bulk Operations of any size (0.0685 SOL or 793 SKR).
-- **"Free Tier"** means operations involving 5 or fewer applications, which do not require payment.
+- **"Unlimited Pass"** means the one-time payment (0.0607 SOL or 682 SKR) that removes the batch-size limit on Bulk Operations.
+- **"Free Tier"** means operations involving 4 or fewer applications, which do not require payment. Wallets holding a verified Seeker Genesis Token (SGT) have a larger free allowance of up to 25 applications per batch.
 - **"MWA"** means the Solana Mobile Wallet Adapter protocol.
 - **"Operation"** means a single uninstall or reinstall batch action.
 - **"Sanctioned Jurisdiction"** means any country, region, or territory subject to comprehensive economic sanctions.
@@ -228,13 +228,15 @@ The Service associates your device with the connected wallet address. Reconnecti
 ### 6.1 Current Pricing Model
 
 **Free Tier:**
-- Operations involving 1-5 applications: FREE
+- Operations involving 1-4 applications: FREE
 - No payment required for small batch operations
 
+**Seeker Tier:**
+- Wallets holding a verified Seeker Genesis Token (SGT): batches of up to 25 applications, FREE
+
 **Paid Operations:**
-- Operations involving 5+ applications: require the Unlimited Pass — a one-time 0.0685 SOL (or 793 SKR). Not a subscription, no expiry, and restorable from the wallet that paid.
-- Fee is per batch operation, not per application
-- Each new bulk operation requires a new payment
+- Batches larger than your free allowance (4 applications, or 25 with a verified SGT): require the Unlimited Pass — a one-time 0.0607 SOL (or 682 SKR). Not a subscription, no expiry, and restorable from the wallet that paid.
+- The Pass is charged once and covers all later batches of any size
 
 ### 6.2 Payment Processing
 
@@ -296,8 +298,8 @@ We do not provide tax advice and are not responsible for your tax obligations.
 Without payment, you may:
 
 - Scan and view installed dApps
-- Uninstall up to 5 apps in a single batch operation
-- Reinstall up to 5 apps in a single batch operation
+- Uninstall up to 4 apps in a single batch operation (up to 25 with a verified Seeker Genesis Token)
+- Reinstall up to 4 apps in a single batch operation (up to 25 with a verified Seeker Genesis Token)
 - View uninstall history
 - Mark apps as favorites/protected
 - Access all storage management features
@@ -306,8 +308,8 @@ Without payment, you may:
 
 Payment is required for:
 
-- Bulk uninstall operations (6+ apps)
-- Bulk reinstall operations (6+ apps)
+- Bulk uninstall operations above your free allowance (5+ apps, or 26+ with a verified SGT)
+- Bulk reinstall operations above your free allowance (5+ apps, or 26+ with a verified SGT)
 
 ### 7.3 Feature Parity
 
@@ -576,7 +578,7 @@ We do NOT guarantee:
 TO THE MAXIMUM EXTENT PERMITTED BY LAW:
 
 **Maximum Liability:**
-Our total liability for any claims arising from your use of the Service is limited to the amount you actually paid us (maximum: the price of one Unlimited Pass, 0.0685 SOL or 793 SKR, or equivalent).
+Our total liability for any claims arising from your use of the Service is limited to the amount you actually paid us (maximum: the price of one Unlimited Pass, 0.0607 SOL or 682 SKR, or equivalent).
 
 **Exclusion of Damages:**
 We are NOT liable for:
@@ -762,7 +764,8 @@ Your privacy is governed by our Privacy Policy, available at:
 ### 18.2 Key Privacy Points
 
 - We collect minimal data
-- No analytics or tracking
+- No third-party analytics or trackers; our own anonymous aggregate counter (event type only, no
+  identifiers) can be switched off in Settings > Anonymous Analytics
 - Local storage preferred
 - Blockchain transactions are public
 - Location used only for sanctions compliance
