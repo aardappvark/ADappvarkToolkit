@@ -1,8 +1,8 @@
 # Terms of Service - ADappvark Toolkit
 
 **Effective Date:** February 4, 2026
-**Last Updated:** February 8, 2026
-**Version:** 1.1.0
+**Last Updated:** September 4, 2026
+**Version:** 1.2.0
 
 ---
 
@@ -235,8 +235,9 @@ The Service associates your device with the connected wallet address. Reconnecti
 - Wallets holding a verified Seeker Genesis Token (SGT): batches of up to 25 applications, FREE
 
 **Paid Operations:**
-- Batches larger than your free allowance (4 applications, or 25 with a verified SGT): require the Unlimited Pass — a one-time 0.0607 SOL (or 682 SKR). Not a subscription, no expiry, and restorable from the wallet that paid.
-- The Pass is charged once and covers all later batches of any size
+- Batches larger than your free allowance (4 applications, or 25 with a verified SGT): require the Unlimited Pass — a single payment of 0.0607 SOL (or 682 SKR), **valid for 12 months from the date of purchase**. It does not renew automatically and is not a subscription: no further payment is ever taken without a new purchase signed in your wallet. It is restorable from the wallet that paid.
+- While valid, the Pass covers unlimited bulk operations of any size. When it lapses, bulk operations return to the free and Seeker allowances and a new Pass may be purchased.
+- Passes purchased before 21 September 2026 were sold without an expiry and remain valid indefinitely for the features available at the time of purchase; features added after that date may require a current 12-month Pass.
 
 ### 6.2 Payment Processing
 
@@ -966,7 +967,7 @@ Nothing in these Terms creates:
 ---
 
 **Document Version:** 1.1.0
-**Last Updated:** February 8, 2026
+**Last Updated:** September 4, 2026
 **Approved By:** ADappvark Legal Team
 
 ---
