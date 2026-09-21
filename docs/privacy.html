@@ -53,7 +53,7 @@
 
 <!-- ============== ENGLISH (source / legally binding) ============== -->
 <article id="en" lang="en">
-    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: August 8, 2026 | Version 1.3.0</p></div>
+    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: September 21, 2026 | Version 1.3.1</p></div>
     <h2>1. Introduction</h2>
     <p>AardAppvark Toolkit ("we," "our," "us," or the "Company") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application ("App") and related services.</p>
     <h3>Our Core Privacy Principles</h3>
@@ -114,7 +114,7 @@
             <li><strong>TRM Labs sanctions screening</strong> &mdash; <code>api.trmlabs.com</code>. Before a payment, your wallet's public address is screened against sanctions lists using TRM Labs' free public screening API. TRM Labs receives that public address and your IP address. If the call fails, the App falls back to an offline list bundled in the App.</li>
             <li><strong>Our analytics endpoint</strong> &mdash; <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code> (Cloudflare Workers, run by us). Receives an event type and, at the network level, your IP address, from which an approximate country/city is derived and then discarded. Only aggregate counts are stored. See section 2.2.</li>
             <li><strong>Featured dApp feed</strong> &mdash; <code>sponsr.provenby.dev</code> and <code>sponsr-kappa.vercel.app</code> (Vercel, run by us). Serves the Featured dApp card's copy and images, and receives Featured-placement applications you choose to submit (section 10).</li>
-            <li><strong>Solana dApp Store catalogue</strong> &mdash; <code>dappstore.solanamobile.com</code> (Solana Mobile). Queried for dApp names and icons. Receives the package name being looked up and your IP address.</li>
+            <li><strong>Solana dApp Store catalogue</strong> &mdash; <code>dappstore.solanamobile.com</code> (Solana Mobile). Queried for dApp names and icons. Receives the package name being looked up and your IP address. If you turn on <strong>Weekly dApp Check</strong> in Settings (off by default), the App also downloads the store&rsquo;s public category listings from this address once a week, or when you tap Check Now. Nothing from your device is sent except the request itself, which includes your IP address.</li>
             <li><strong>IPFS / Arweave gateways</strong> &mdash; <code>ipfs.io</code>, <code>arweave.net</code>. Used only to fetch dApp icon images referenced by on-chain metadata.</li>
             <li><strong>Solana Mobile Wallet Adapter</strong> &mdash; on-device communication with your wallet app. No network service of ours is involved.</li>
             <li><strong>Solana blockchain</strong> &mdash; payments are public on-chain transactions by design.</li>
