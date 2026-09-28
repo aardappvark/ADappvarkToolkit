@@ -1,0 +1,9 @@
+Contact: mailto:aardappvark@proton.me
+Expires: 2027-08-24T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://aardappvark.github.io/ADappvarkToolkit/.well-known/security.txt
+
+# Report a vulnerability in this app to the address above.
+# Please include: the app and version, what you found, and how to reproduce it.
+# We aim to acknowledge within 72 hours. Please give us a reasonable period to
+# fix the issue before any public disclosure.

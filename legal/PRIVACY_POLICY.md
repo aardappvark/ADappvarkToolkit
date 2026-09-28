@@ -1,7 +1,7 @@
 # Privacy Policy - ADappvark Toolkit
 
 **Effective Date:** February 4, 2026
-**Last Updated:** February 8, 2026
+**Last Updated:** August 24, 2026
 **Version:** 1.1.0
 
 ---
@@ -37,7 +37,10 @@ ADappvark Toolkit ("we," "our," "us," or the "Company") is committed to protecti
 1. **Data Minimization:** We collect only the absolute minimum data necessary to provide our Services.
 2. **Local-First:** We store data locally on your device whenever possible.
 3. **Transparency:** We are clear about what we collect and why.
-4. **No Tracking:** We do not use analytics, advertising trackers, or profiling.
+4. **No Third-Party Tracking:** We do not use third-party analytics services, advertising trackers, or
+   profiling. The App does send anonymous, aggregate first-party usage counts to our own endpoint
+   (event type only — no identifier of any kind); see Section 5.4. You can switch this off in
+   Settings > Anonymous Analytics.
 5. **User Control:** You maintain control over your data at all times.
 
 By downloading, installing, accessing, or using the App, you acknowledge that you have read, understood, and agree to be bound by this Privacy Policy. If you do not agree to this Privacy Policy, please do not use our Services.
@@ -113,7 +116,9 @@ We want to be explicitly clear about what we do NOT collect:
 - **No Biometric Data:** Fingerprints, facial recognition data, voice prints
 - **No Financial Information:** Bank accounts, credit cards (we only see your public wallet address)
 - **No Private Keys:** We never have access to your wallet's private keys
-- **No Analytics:** We do not use Google Analytics, Firebase Analytics, Mixpanel, or any tracking service
+- **No Third-Party Analytics:** We do not use Google Analytics, Firebase Analytics, Mixpanel, or any
+  other third-party analytics or tracking service. (We do operate our own anonymous aggregate
+  counter — event type only, no identifiers — described in Section 5.4.)
 - **No Crash Reports:** We do not use Crashlytics, Sentry, or similar services
 - **No Advertising Trackers:** We do not display ads or use advertising SDKs
 - **No Browsing History:** We do not track your browsing or app usage outside our App
@@ -175,6 +180,28 @@ Processing necessary for our legitimate interests:
 - Improving service quality (without tracking individual users)
 
 We have conducted a legitimate interest assessment for each processing activity to ensure our interests do not override your rights and freedoms.
+
+
+### 5.4 Anonymous Aggregate Analytics (First-Party)
+
+The App sends an **event type and nothing else** (for example `app_open`, `wallet_connected`,
+`bulk_uninstall`, `payments_sol`, `geo_blocked`) to our own analytics endpoint at
+`aardappvark-toolkit-analytics.aardappvark.workers.dev`. That endpoint derives an approximate
+country and city from the network IP address of the request and stores **only** daily counts per
+country/city/event. The IP address itself is never stored, and no user ID, device ID, wallet
+address or advertising identifier is ever sent. We treat this as anonymous statistical data
+(GDPR Recital 26). Aggregate totals are published at the same host under `/public-stats`.
+
+**Featured dApp (showcase) events.** If a Featured dApp card is shown to you, or you tap
+**Install** on one, the App sends `showcase_impression:<package>`, `showcase_tap:<package>` or
+`showcase_install:<package>` so the sponsor can be told how their placement performed. The package
+name identifies the *advertised dApp*, never you or your device.
+
+**Opt-out.** Settings > Anonymous Analytics switches all of the above off, including the showcase
+events.
+
+The full, current published version of this policy is the page at
+https://aardappvark.github.io/ADappvarkToolkit/privacy.html
 
 ---
 
@@ -474,14 +501,18 @@ We do not collect or use:
 - Android ID for advertising purposes
 - Any advertising SDK or framework
 
-### 14.3 No Analytics
+### 14.3 No Third-Party Analytics
 
 We do not use:
 - Google Analytics
 - Firebase Analytics
 - Mixpanel
 - Amplitude
-- Any other analytics service
+- Any other third-party analytics or attribution service
+
+**We do operate our own first-party anonymous counter.** See Section 5.4 — it records an event
+type only, is not linked to you or your device, and can be switched off in
+Settings > Anonymous Analytics.
 
 ---
 

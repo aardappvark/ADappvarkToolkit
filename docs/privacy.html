@@ -53,7 +53,7 @@
 
 <!-- ============== ENGLISH (source / legally binding) ============== -->
 <article id="en" lang="en">
-    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: September 21, 2026 | Version 1.3.1</p></div>
+    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: September 28, 2026 | Version 1.3.2</p></div>
     <h2>1. Introduction</h2>
     <p>AardAppvark Toolkit ("we," "our," "us," or the "Company") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application ("App") and related services.</p>
     <h3>Our Core Privacy Principles</h3>
@@ -73,13 +73,13 @@
     <h3>2.2 Information Collected Automatically</h3>
     <ul>
         <li><strong>Location Data (for Sanctions Compliance):</strong> Approximate country determined from your SIM card country, network carrier country or device locale. The App does <strong>not</strong> request any Android location permission, so GPS is only ever used if you have already granted location access to the App for some other reason. Used solely to verify you are not in a blocked jurisdiction. Checked at app launch, every 30 minutes while the App is open, and before each payment transaction. <strong>Not stored after verification</strong> &mdash; only the result (allowed/blocked) is retained.</li>
-        <li><strong>Device and Package Information:</strong> The App reads the list of applications installed on your device to show you what can be uninstalled or reinstalled. That list stays on your device &mdash; we never upload it. Two narrow exceptions, both anonymous: (a) if you tap <em>Install</em> on a Featured dApp card, the anonymous event <code>showcase_tap:&lt;that dApp's package name&gt;</code> is sent so the sponsor can be told how their placement performed, and a matching <code>showcase_install</code> event if that dApp appears installed within 7 days; (b) when the App looks up a dApp's icon it asks the Solana dApp Store catalogue about that package. Neither carries any identifier for you or your device.</li>
+        <li><strong>Device and Package Information:</strong> The App reads the list of applications installed on your device to show you what can be uninstalled or reinstalled. That list stays on your device &mdash; we never upload it. Two narrow exceptions, both anonymous: (a) the Featured dApp card sends anonymous per-placement events so the sponsor can be told how their placement performed &mdash; <code>showcase_impression:&lt;that dApp's package name&gt;</code> when the card is shown, <code>showcase_tap:&lt;package&gt;</code> if you tap <em>Install</em>, and <code>showcase_install:&lt;package&gt;</code> if that dApp then appears installed within 7 days. The package name is always the featured dApp's, never a list of what you have installed; but because the card prefers a Featured dApp you do not already have, which card you are shown can indirectly reflect whether other Featured dApps are already on your device (never your wider app list, and only ever stored as a daily count); (b) when the App looks up a dApp's icon it asks the Solana dApp Store catalogue about that package. Neither carries any identifier for you or your device.</li>
         <li><strong>Anonymous Aggregate Analytics:</strong> The App sends an event type only (for example <code>app_open</code>, <code>wallet_connected</code>, <code>bulk_uninstall</code>, <code>payment_sol</code>, <code>geo_blocked</code>) to our analytics endpoint at <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code>. That endpoint derives an approximate country and city from the network IP address of the request and stores <strong>only</strong> daily counts per country/city/event. The IP address itself is never stored, and no user ID, device ID, wallet address or advertising identifier is ever sent. We treat this as anonymous statistical data (GDPR Recital 26). Aggregate totals are published at the same host under <code>/public-stats</code>.</li>
         <li><strong>Uninstall History (on your device, in a folder you own):</strong> So your reinstall list survives the App itself being uninstalled, the App writes a copy of your uninstall history to <code>Documents/AardAppvark/uninstall_history.json</code> in your device's own Documents folder. It is not uploaded anywhere. You can delete it at any time from Settings &rarr; More &rarr; "Delete A Backup File", or with any file manager.</li>
         <li><strong>App Usage Information (Local Only):</strong> Credit balance, payment receipts (transaction signatures) and preferences. Stored locally.</li>
     </ul>
     
-    </ul>
+    
     <h3>2.3 Information We DO NOT Collect</h3>
     <ul>
         <li>No Personal Identifiers (name, email or phone) &mdash; except the contact email you type yourself if you buy a Featured dApp placement (see section 9)</li>
@@ -137,7 +137,7 @@
         <ul>
             <li><strong>Access and portability:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Export My Data</em> writes everything the App holds about you (consent record, wallet link, Seeker status, credits, payment receipts, uninstall history) to a JSON file you choose.</li>
             <li><strong>Erasure:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Delete My Data</em> erases all of it from the device. Note that this does not and cannot reverse an on-chain payment, and does not delete the uninstall-history file in your Documents folder (use Settings &rarr; More &rarr; "Delete A Backup File" for that) or any Google backup you have taken.</li>
-            <li><strong>Analytics:</strong> the aggregate counts described in section 2.2 contain no personal data, so there is nothing to access, correct or erase &mdash; and consequently no opt-out toggle is offered. If you would rather send nothing at all, deny the App network access in Android Settings or uninstall it.</li>
+            <li><strong>Analytics:</strong> the aggregate counts described in section 2.2 contain no personal data, so there is nothing to access, correct or erase. You can still switch them off at any time in Settings &rarr; Anonymous Analytics. If you would rather send nothing at all, deny the App network access in Android Settings or uninstall it.</li>
             <li><strong>Complaints:</strong> contact us at the address below, or your local data protection authority.</li>
         </ul>
         <p>We honour GDPR and CCPA/CPRA rights to the extent they apply to the very limited data described above. We do not sell personal information as defined by the CCPA, and we do not process personal data of children.</p>
@@ -698,6 +698,83 @@
     </ol>
     <div class="summary-box"><strong>簡而言之:</strong> 我們收集的資料非常少——主要是您用於付款的公共錢包地址和用於制裁檢查的大致位置。其他所有資訊都留在您的手機上。我們不追蹤您,不顯示廣告,絕不出售您的資料。</div>
 </article>
+
+
+<!-- eu-gdpr-block v1 -->
+<h2>European Union and EEA Users &mdash; GDPR</h2>
+<p>This section applies if you are in the European Union or the European Economic Area, and explains
+how Regulation (EU) 2016/679 (GDPR) applies to AarDappvark Toolkit.</p>
+
+<h3>Controller</h3>
+<p>MidMightBit Games, a sole trader established in Australia, is the data controller. Contact:
+<a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a>. We have not appointed a Data Protection Officer; we are not
+required to.</p>
+
+<h3>Representative in the Union (Article 27)</h3>
+<p>We have not designated a representative in the Union. We rely on the exemption in Article 27(2)(a):
+our processing of EU personal data is occasional, does not include large-scale processing of special
+categories of data under Article 9 or data relating to criminal convictions under Article 10, and is
+unlikely to result in a risk to the rights and freedoms of natural persons. You can contact us
+directly at <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a> about any GDPR matter, and we answer in English.</p>
+
+<h3>What we process, and on what legal basis</h3>
+<ul>
+<li><strong>Data held on your device</strong> (your settings, your content, and any wallet public
+address you connect) &mdash; processed to perform the contract with you, Article 6(1)(b). This stays
+in app-private storage on your device. We do not receive it and cannot read it.</li>
+<li><strong>Anonymous usage counts</strong> &mdash; an event name, with an approximate country derived
+at the network edge, aggregated per day. Basis: our legitimate interest in understanding how many people use the App and roughly where (Article 6(1)(f)), which you can object to at any time using the control in the App's Settings screen. Because the counts carry no
+identifier and cannot be linked to you or to each other, we treat the stored result as anonymous
+statistical data within the meaning of Recital 26.</li>
+<li><strong>Sanctions and region screening</strong> &mdash; carried out on your device to comply with
+legal obligations to which we are subject, Article 6(1)(c), and our legitimate interest in not
+supplying restricted jurisdictions, Article 6(1)(f). The result is a yes or no evaluated on your
+device; it is not stored by us and never transmitted.</li>
+<li><strong>Blockchain interactions</strong> &mdash; if you connect a wallet or make a payment, your
+wallet's public address is sent to public Solana RPC providers to read on-chain state or submit your
+signed transaction. That is necessary to perform the contract, Article 6(1)(b). Anything you write to
+a public blockchain is permanent, public, and outside our control &mdash; it cannot be erased or
+rectified by us or by anyone.</li>
+</ul>
+<p>You can stop this processing at any time from the App's Settings screen, where the privacy section carries the control. Turning it off stops all event sending immediately.</p>
+
+<h3>Storage on and access to your device (ePrivacy, Article 5(3))</h3>
+<p>AarDappvark Toolkit stores settings on your device using Android's app-private storage. That storage is strictly
+necessary to provide the service you asked for, so it does not require separate consent. The App sets
+no cookies, uses no advertising identifier, no device fingerprinting and no third-party analytics SDK,
+and does not read information stored on your device for any purpose other than running the App.</p>
+
+<h3>Transfers outside the EEA</h3>
+<p>We are established in Australia, so where we receive anything it is processed in Australia.
+Australia is not the subject of an adequacy decision under Article 45. Our analytics endpoint is
+operated for us in the United States by our hosting provider. The transferred payload is a single
+event name and contains no identifier and no personal data, so in our assessment Chapter V is not
+engaged by it; to the extent it is, we rely on Article 46(2)(c) standard contractual clauses with our
+provider, or the EU&ndash;US Data Privacy Framework where that provider is certified. Public Solana RPC
+providers you interact with may be located outside the EEA and receive your IP address and wallet
+public address as an unavoidable part of any internet request.</p>
+
+<h3>Retention</h3>
+<p>Data on your device is kept until you delete it, clear the App's data, or uninstall the App.
+Aggregate daily counters hold no personal data and are kept indefinitely as statistics. We operate no
+user accounts and hold no profile of you.</p>
+
+<h3>Your rights</h3>
+<p>You have the rights of access (Article 15), rectification (16), erasure (17), restriction (18),
+data portability (20) and objection (21), and the right to withdraw consent at any time where consent
+is the basis. Because your data lives on your device and we hold no identifier for you, you exercise
+most of these directly: the data is visible in the App, and clearing the App's data or uninstalling it
+erases it. For anything else, email <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a> &mdash; we respond within one
+month, free of charge.</p>
+<p>There is no automated decision-making producing legal or similarly significant effects, and no
+profiling within the meaning of Article 22.</p>
+
+<h3>Complaints</h3>
+<p>You have the right to lodge a complaint with the supervisory authority of your Member State of
+residence, place of work, or of the alleged infringement (Article 77). A list is published by the
+European Data Protection Board at
+<a href="https://www.edpb.europa.eu/about-edpb/about-edpb/members_en">edpb.europa.eu</a>. We would
+appreciate the chance to resolve it first.</p>
 
 <div class="footer">
     <p>&copy; 2026 AardAppvark Toolkit. All rights reserved.</p>
