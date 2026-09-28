@@ -1,7 +1,7 @@
 # Privacy Policy - ADappvark Toolkit
 
 **Effective Date:** February 4, 2026
-**Last Updated:** August 24, 2026
+**Last Updated:** September 28, 2026
 **Version:** 1.1.0
 
 ---
@@ -121,7 +121,7 @@ We want to be explicitly clear about what we do NOT collect:
   counter — event type only, no identifiers — described in Section 5.4.)
 - **No Crash Reports:** We do not use Crashlytics, Sentry, or similar services
 - **No Advertising Trackers:** We do not display ads or use advertising SDKs
-- **No Browsing History:** We do not track your browsing or app usage outside our App
+- **No Browsing History:** We do not track your browsing. App usage times are read only if you grant Usage access, stay on your device, and are never collected by us (see the published policy, section 2.2)
 - **No Social Media Data:** We do not access your social media accounts
 - **No Contacts:** We do not access your contact list
 - **No Photos/Media:** We do not access your photos, videos, or media files

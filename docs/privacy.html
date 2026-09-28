@@ -53,7 +53,7 @@
 
 <!-- ============== ENGLISH (source / legally binding) ============== -->
 <article id="en" lang="en">
-    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: September 28, 2026 | Version 1.3.2</p></div>
+    <div class="header"><h1>Privacy Policy</h1><p class="meta">Effective Date: February 4, 2026 | Last Updated: September 28, 2026 | Version 1.3.3</p></div>
     <h2>1. Introduction</h2>
     <p>AardAppvark Toolkit ("we," "our," "us," or the "Company") is committed to protecting the privacy and security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application ("App") and related services.</p>
     <h3>Our Core Privacy Principles</h3>
@@ -76,6 +76,9 @@
         <li><strong>Device and Package Information:</strong> The App reads the list of applications installed on your device to show you what can be uninstalled or reinstalled. That list stays on your device &mdash; we never upload it. Two narrow exceptions, both anonymous: (a) the Featured dApp card sends anonymous per-placement events so the sponsor can be told how their placement performed &mdash; <code>showcase_impression:&lt;that dApp's package name&gt;</code> when the card is shown, <code>showcase_tap:&lt;package&gt;</code> if you tap <em>Install</em>, and <code>showcase_install:&lt;package&gt;</code> if that dApp then appears installed within 7 days. The package name is always the featured dApp's, never a list of what you have installed; but because the card prefers a Featured dApp you do not already have, which card you are shown can indirectly reflect whether other Featured dApps are already on your device (never your wider app list, and only ever stored as a daily count); (b) when the App looks up a dApp's icon it asks the Solana dApp Store catalogue about that package. Neither carries any identifier for you or your device.</li>
         <li><strong>Anonymous Aggregate Analytics:</strong> The App sends an event type only (for example <code>app_open</code>, <code>wallet_connected</code>, <code>bulk_uninstall</code>, <code>payment_sol</code>, <code>geo_blocked</code>) to our analytics endpoint at <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code>. That endpoint derives an approximate country and city from the network IP address of the request and stores <strong>only</strong> daily counts per country/city/event. The IP address itself is never stored, and no user ID, device ID, wallet address or advertising identifier is ever sent. We treat this as anonymous statistical data (GDPR Recital 26). Aggregate totals are published at the same host under <code>/public-stats</code>.</li>
         <li><strong>Uninstall History (on your device, in a folder you own):</strong> So your reinstall list survives the App itself being uninstalled, the App writes a copy of your uninstall history to <code>Documents/AardAppvark/uninstall_history.json</code> in your device's own Documents folder. It is not uploaded anywhere. You can delete it at any time from Settings &rarr; More &rarr; "Delete A Backup File", or with any file manager.</li>
+        <li><strong>Accessibility service (on your device only):</strong> Toolkit's accessibility service presses buttons for tasks you start. It confirms the uninstall dialogs of a bulk uninstall, taps <em>Install</em> in the Solana dApp Store for a reinstall, and moves home-screen icons when you use Launch. Android lets an accessibility service see whatever is on screen. Toolkit only acts while a task you started is running, and only on the Android uninstall dialog, the Solana dApp Store, Settings (for Clear Stuck Downloads) and the home screen. There it reads button labels, app names and where the icons sit. It never records what you type, and nothing it sees leaves the device. You can turn it off in Android Settings &rarr; Accessibility.</li>
+        <li><strong>App usage times (optional, on your device only):</strong> If you allow Toolkit <em>Usage access</em> in Android Settings, the Uninstall screen can offer "Not opened in 30 days". Toolkit asks Android when each app was last opened, over the last 60 days, and only while that list is open. The answer isn't stored and is never sent anywhere. Without that permission, the option only offers to open that Android setting. You can withdraw the permission at any time in Android Settings &rarr; Usage access.</li>
+        <li><strong>Home-screen layouts (on your device only):</strong> Launch keeps, in Toolkit's private storage, where your home-screen icons are (icon names and positions), the layouts you save, an undo point, and where an uninstalled app's icon was so it can go back after a reinstall. Nothing is uploaded. <em>Share this layout</em> creates a file or clipboard text of icon names and positions only when you ask, and you choose where it goes.</li>
         <li><strong>App Usage Information (Local Only):</strong> Credit balance, payment receipts (transaction signatures) and preferences. Stored locally.</li>
     </ul>
     
@@ -96,6 +99,8 @@
         <tr><td>Wallet Address</td><td>Verify payment transactions</td><td>Contract performance</td></tr>
         <tr><td>Location Data</td><td>Sanctions compliance</td><td>Legal obligation</td></tr>
         <tr><td>Package Information</td><td>Display installed apps</td><td>Contract performance</td></tr>
+        <tr><td>App usage times (optional)</td><td>Suggest apps not opened recently</td><td>Consent (Android Usage access permission)</td></tr>
+        <tr><td>Home-screen layout</td><td>Arrange, save, undo and restore icons</td><td>Contract performance</td></tr>
         <tr><td>Credits / payment receipts</td><td>Grant access to paid bulk operations</td><td>Contract performance</td></tr>
         <tr><td>Anonymous event counts</td><td>Aggregate usage statistics</td><td>Legitimate interests (no personal data processed)</td></tr>
     </table>
@@ -114,7 +119,7 @@
             <li><strong>TRM Labs sanctions screening</strong> &mdash; <code>api.trmlabs.com</code>. Before a payment, your wallet's public address is screened against sanctions lists using TRM Labs' free public screening API. TRM Labs receives that public address and your IP address. If the call fails, the App falls back to an offline list bundled in the App.</li>
             <li><strong>Our analytics endpoint</strong> &mdash; <code>aardappvark-toolkit-analytics.aardappvark.workers.dev</code> (Cloudflare Workers, run by us). Receives an event type and, at the network level, your IP address, from which an approximate country/city is derived and then discarded. Only aggregate counts are stored. See section 2.2.</li>
             <li><strong>Featured dApp feed</strong> &mdash; <code>sponsr.provenby.dev</code> and <code>sponsr-kappa.vercel.app</code> (Vercel, run by us). Serves the Featured dApp card's copy and images, and receives Featured-placement applications you choose to submit (section 10).</li>
-            <li><strong>Solana dApp Store catalogue</strong> &mdash; <code>dappstore.solanamobile.com</code> (Solana Mobile). Queried for dApp names and icons. Receives the package name being looked up and your IP address. If you turn on <strong>Weekly dApp Check</strong> in Settings (off by default), the App also downloads the store&rsquo;s public category listings from this address once a week, or when you tap Check Now. Nothing from your device is sent except the request itself, which includes your IP address.</li>
+            <li><strong>Solana dApp Store catalogue</strong> &mdash; <code>dappstore.solanamobile.com</code> (Solana Mobile). Queried for dApp names and icons. Receives the package name being looked up and your IP address. If you turn on <strong>Weekly dApp Check</strong> in Settings (off by default), the App also downloads the store&rsquo;s public category listings from this address once a week, or when you tap Check Now. If it finds dApps new to the store, the App can show you a notification naming them. Nothing from your device is sent except the request itself, which includes your IP address.</li>
             <li><strong>IPFS / Arweave gateways</strong> &mdash; <code>ipfs.io</code>, <code>arweave.net</code>. Used only to fetch dApp icon images referenced by on-chain metadata.</li>
             <li><strong>Solana Mobile Wallet Adapter</strong> &mdash; on-device communication with your wallet app. No network service of ours is involved.</li>
             <li><strong>Solana blockchain</strong> &mdash; payments are public on-chain transactions by design.</li>
@@ -135,7 +140,7 @@
         <p>Your country is determined from your SIM card, network carrier and device locale (and GPS only if you have separately granted the App location access) at app launch, every 30 minutes while the App is open, and before each payment. If a blocked jurisdiction is detected the App is not usable. Payments are refused if your country cannot be determined at all.</p>
     <h2>8. Your Rights</h2>
         <ul>
-            <li><strong>Access and portability:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Export My Data</em> writes everything the App holds about you (consent record, wallet link, Seeker status, credits, payment receipts, uninstall history) to a JSON file you choose.</li>
+            <li><strong>Access and portability:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Export My Data</em> writes everything the App holds about you (consent record, wallet link, Seeker status, credits, payment receipts, uninstall history, saved home-screen layouts) to a JSON file you choose.</li>
             <li><strong>Erasure:</strong> Settings &rarr; Payments &amp; your data &rarr; <em>Delete My Data</em> erases all of it from the device. Note that this does not and cannot reverse an on-chain payment, and does not delete the uninstall-history file in your Documents folder (use Settings &rarr; More &rarr; "Delete A Backup File" for that) or any Google backup you have taken.</li>
             <li><strong>Analytics:</strong> the aggregate counts described in section 2.2 contain no personal data, so there is nothing to access, correct or erase. You can still switch them off at any time in Settings &rarr; Anonymous Analytics. If you would rather send nothing at all, deny the App network access in Android Settings or uninstall it.</li>
             <li><strong>Complaints:</strong> contact us at the address below, or your local data protection authority.</li>
@@ -165,18 +170,20 @@
     <div class="binding-notice"><strong>إشعار:</strong> النسخة الإنجليزية أعلاه هي النص الملزم قانونيًا. هذا الملخص مقدم للراحة.</div>
     <p>تلخص هذه الوثيقة كيفية تعامل AardAppvark Toolkit مع بياناتك. للنص الكامل، راجع <a href="#en">القسم الإنجليزي أعلاه</a>.</p>
     <ol>
-        <li><strong>المقدمة</strong> — نلتزم بحماية خصوصيتك. مبادئنا الأساسية: تقليل البيانات، المعالجة المحلية أولاً، الشفافية، عدم التتبع، تحكم المستخدم.</li>
-        <li><strong>المعلومات التي نجمعها</strong> — عنوان محفظة Solana للدفع، الموقع التقريبي للامتثال للعقوبات، قائمة التطبيقات (محلية فقط).</li>
-        <li><strong>ما لا نجمعه</strong> — لا معرفات شخصية، لا معرفات أجهزة، لا مفاتيح خاصة، لا تحليلات، لا متتبعات إعلانية.</li>
-        <li><strong>كيف نستخدم البيانات</strong> — التحقق من الدفع، الامتثال للعقوبات، عرض التطبيقات المثبتة، منح ميزات الاشتراك.</li>
-        <li><strong>المشاركة</strong> — لا نبيع بياناتك. الإفصاح المحدود فقط للمعاملات على البلوكتشين والمتطلبات القانونية.</li>
-        <li><strong>الخدمات الخارجية</strong> — Solana Blockchain، Mobile Wallet Adapter، Shizuku، Solana dApp Store.</li>
-        <li><strong>التخزين والأمان</strong> — جميع البيانات مخزنة محليًا على جهازك. لا نشغل خوادم تخزن بياناتك.</li>
-        <li><strong>القيود الجغرافية</strong> — التطبيق غير متوفر في 58 ولاية قضائية محظورة. يتم التحقق من الموقع عند التشغيل وقبل كل عملية دفع.</li>
-        <li><strong>حقوقك</strong> — وصول عبر إعدادات التطبيق، الحذف بإلغاء التثبيت، الانسحاب بإيقاف الاستخدام. حقوق GDPR و CCPA مدعومة بالكامل.</li>
+        <li><strong>المقدمة</strong> — نلتزم بحماية خصوصيتك. مبادئنا الأساسية: تقليل البيانات، المعالجة المحلية أولاً، الشفافية، عدم التتبع من قبل أطراف ثالثة، تحكم المستخدم.</li>
+        <li><strong>المعلومات التي نجمعها</strong> — عنوان محفظة Solana للدفع، الدولة التقريبية للامتثال للعقوبات، قائمة التطبيقات المثبتة (تبقى على الهاتف).</li>
+        <li><strong>فقط على هاتفك</strong> — إذا سمحت بـ"Usage access"، وقت آخر فتح لكل تطبيق (غير مخزَّن)؛ تخطيطات شاشتك الرئيسية الخاصة بـLaunch؛ وما تقرأه خدمة إمكانية الوصول أثناء ضغط الأزرار لمهمة بدأتها أنت (تأكيدات إلغاء التثبيت، عمليات التثبيت من dApp Store، نقل أيقونات الشاشة الرئيسية). لا شيء من ذلك يغادر الهاتف.</li>
+        <li><strong>الإحصاءات المجهولة</strong> — يرسل التطبيق أعداد الأحداث المجهولة (نوع الحدث فقط، دون أي معرّفات) إلى خادمنا الخاص. يمكنك إيقاف هذا من الإعدادات → "Anonymous Analytics".</li>
+        <li><strong>ما لا نجمعه</strong> — لا معرّفات شخصية، ولا معرّفات أجهزة، ولا مفاتيح خاصة، ولا تحليلات من طرف ثالث أو متتبعات إعلانية.</li>
+        <li><strong>كيف نستخدم البيانات</strong> — التحقق من الدفع، الامتثال للعقوبات، عرض التطبيقات المثبتة، منح الميزات المدفوعة.</li>
+        <li><strong>المشاركة</strong> — لا نبيع بياناتك أبدًا. الإفصاح المحدود فقط للمعاملات على البلوكتشين والمتطلبات القانونية.</li>
+        <li><strong>الخدمات الخارجية</strong> — بلوكتشين Solana ومزوّدو RPC، وMobile Wallet Adapter، وShizuku، وSolana dApp Store، وTRM Labs (فحص العقوبات). القائمة الكاملة متوفرة في النص الإنجليزي.</li>
+        <li><strong>التخزين والأمان</strong> — تُخزَّن بياناتك على هاتفك. تحتفظ خوادمنا بإحصاءات يومية مجهولة الهوية، وبعنوان بريد إلكتروني للتواصل فقط إذا اشتريت إدراج dApp مميزًا (Featured dApp placement).</li>
+        <li><strong>القيود الجغرافية</strong> — التطبيق غير متوفر في 58 ولاية قضائية محظورة. يتم التحقق من بلدك عند بدء التشغيل وقبل كل عملية دفع.</li>
+        <li><strong>حقوقك</strong> — "Export My Data" و"Delete My Data" في الإعدادات. حقوق GDPR و CCPA مدعومة بالكامل.</li>
         <li><strong>الاتصال</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>ملخص بسيط:</strong> نجمع بيانات قليلة جدًا — عنوان محفظتك للدفع وموقعك التقريبي للتحقق من العقوبات. كل شيء آخر يبقى على هاتفك. لا نتتبعك، لا نعرض إعلانات، ولا نبيع بياناتك أبدًا.</div>
+    <div class="summary-box"><strong>ملخص بسيط:</strong> نجمع القليل جدًا من البيانات — بشكل أساسي عنوان محفظتك العام للدفع وبلدك التقريبي للتحقق من العقوبات. كل شيء آخر يبقى على هاتفك، باستثناء الإحصاءات المجهولة التي يمكنك إيقافها. لا نعرض إعلانات ولا نبيع بياناتك أبدًا.</div>
 </article>
 
 <!-- ============== CZECH ============== -->
@@ -185,18 +192,20 @@
     <div class="binding-notice"><strong>Upozornění:</strong> Anglická verze výše je právně závazným textem. Tento souhrn je poskytován pro pohodlí.</div>
     <p>Tento dokument shrnuje, jak AardAppvark Toolkit nakládá s vašimi údaji. Úplný text najdete v <a href="#en">anglické sekci výše</a>.</p>
     <ol>
-        <li><strong>Úvod</strong> — zavazujeme se chránit vaše soukromí. Naše principy: minimalizace dat, lokální zpracování, transparentnost, žádné sledování, kontrola uživatele.</li>
-        <li><strong>Informace, které shromažďujeme</strong> — adresa Solana peněženky pro platby, přibližná poloha pro kontrolu sankcí, seznam aplikací (pouze lokálně).</li>
+        <li><strong>Úvod</strong> — Zavazujeme se chránit vaše soukromí. Naše zásady: minimalizace dat, lokální zpracování, transparentnost, žádné sledování třetími stranami, kontrola uživatele.</li>
+        <li><strong>Informace, které shromažďujeme</strong> — adresa peněženky Solana pro platby, přibližná země pro kontrolu sankcí, seznam nainstalovaných aplikací (zůstává v telefonu).</li>
+        <li><strong>Pouze ve vašem telefonu</strong> — pokud povolíte "Usage access", kdy byla každá aplikace naposledy otevřena (neukládá se); rozložení vaší domovské obrazovky pro Launch; a co čte služba přístupnosti, zatímco za vás mačká tlačítka u úkolu, který jste sami spustili (potvrzení odinstalace, instalace z dApp Store, přesouvání ikon na domovské obrazovce). Nic z toho neopouští telefon.</li>
+        <li><strong>Anonymní počty</strong> — aplikace odesílá na náš vlastní server anonymní počty událostí (pouze typ události, žádné identifikátory). Můžete to vypnout v Nastavení → "Anonymous Analytics".</li>
         <li><strong>Co neshromažďujeme</strong> — žádné osobní identifikátory, identifikátory zařízení, soukromé klíče, analytika ani reklamní sledovače.</li>
-        <li><strong>Jak data používáme</strong> — ověření platby, dodržování sankcí, zobrazení nainstalovaných aplikací, udělení funkcí předplatného.</li>
-        <li><strong>Sdílení</strong> — nikdy neprodáváme vaše data. Omezené sdělování pouze pro blockchain transakce a právní požadavky.</li>
-        <li><strong>Služby třetích stran</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Ukládání a zabezpečení</strong> — všechna data jsou uložena lokálně. Neprovozujeme servery uchovávající vaše data.</li>
-        <li><strong>Geografická omezení</strong> — aplikace není dostupná v 58 zablokovaných jurisdikcích. Poloha je ověřena při spuštění a před každou platbou.</li>
-        <li><strong>Vaše práva</strong> — přístup přes Nastavení aplikace, smazání odinstalací, odhlášení ukončením používání. Práva GDPR a CCPA plně podporována.</li>
+        <li><strong>Jak data používáme</strong> — ověření platby, dodržování sankcí, zobrazení nainstalovaných aplikací, udělení placených funkcí.</li>
+        <li><strong>Sdílení</strong> — Nikdy neprodáváme vaše data. Omezené sdělování pouze pro blockchain transakce a právní požadavky.</li>
+        <li><strong>Služby třetích stran</strong> — Solana blockchain a poskytovatelé RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (kontrola sankcí). Úplný seznam je v anglickém textu.</li>
+        <li><strong>Ukládání a zabezpečení</strong> — Vaše data jsou uložena ve vašem telefonu. Naše servery uchovávají anonymní denní počty a kontaktní e-mail pouze pokud si zakoupíte zvýrazněné umístění dApp (Featured dApp placement).</li>
+        <li><strong>Geografická omezení</strong> — Aplikace není dostupná v 58 zablokovaných jurisdikcích. Vaše země je kontrolována při spuštění a před každou platbou.</li>
+        <li><strong>Vaše práva</strong> — "Export My Data" a "Delete My Data" v Nastavení. Práva GDPR/CCPA jsou plně podporována.</li>
         <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Jednoduše:</strong> Shromažďujeme velmi málo dat — hlavně vaši veřejnou adresu peněženky pro platby a přibližnou polohu pro kontrolu sankcí. Vše ostatní zůstává ve vašem telefonu. Nesledujeme vás, nezobrazujeme reklamy a nikdy neprodáváme vaše data.</div>
+    <div class="summary-box"><strong>Jednoduše:</strong> Shromažďujeme velmi málo dat — hlavně vaši veřejnou adresu peněženky pro platby a přibližnou zemi pro kontrolu sankcí. Vše ostatní zůstává ve vašem telefonu, kromě anonymních počtů, které můžete vypnout. Nezobrazujeme reklamy a nikdy neprodáváme vaše data.</div>
 </article>
 
 <!-- ============== GERMAN ============== -->
@@ -205,18 +214,20 @@
     <div class="binding-notice"><strong>Hinweis:</strong> Die englische Fassung oben ist der rechtsverbindliche Text. Diese Zusammenfassung dient nur zur Information.</div>
     <p>Dieses Dokument fasst zusammen, wie AardAppvark Toolkit mit Ihren Daten umgeht. Den vollständigen Text finden Sie im <a href="#en">englischen Abschnitt oben</a>.</p>
     <ol>
-        <li><strong>Einführung</strong> — Wir verpflichten uns zum Schutz Ihrer Privatsphäre. Unsere Grundsätze: Datenminimierung, lokale Verarbeitung, Transparenz, kein Tracking, Nutzerkontrolle.</li>
-        <li><strong>Erhobene Informationen</strong> — Solana-Wallet-Adresse für Zahlungen, ungefährer Standort zur Sanktionsprüfung, Liste installierter Apps (nur lokal).</li>
+        <li><strong>Einführung</strong> — Wir verpflichten uns zum Schutz Ihrer Privatsphäre. Unsere Grundsätze: Datenminimierung, lokale Verarbeitung, Transparenz, kein Tracking durch Dritte, Nutzerkontrolle.</li>
+        <li><strong>Erhobene Informationen</strong> — Solana-Wallet-Adresse für Zahlungen, ungefähres Land zur Sanktionsprüfung, die Liste installierter Apps (bleibt auf dem Telefon).</li>
+        <li><strong>Nur auf Ihrem Telefon</strong> — wenn Sie den Zugriff „Usage access“ erlauben, wann jede App zuletzt geöffnet wurde (wird nicht gespeichert); Ihre Homescreen-Layouts für Launch; und was der Dienst für Bedienungshilfen liest, während er für eine von Ihnen gestartete Aufgabe Schaltflächen drückt (Deinstallationsbestätigungen, Installationen aus dem dApp Store, das Verschieben von Homescreen-Symbolen). Nichts davon verlässt das Telefon.</li>
+        <li><strong>Anonyme Zählungen</strong> — Die App sendet anonyme Ereigniszahlen (nur den Ereignistyp, keine Identifikatoren) an unseren eigenen Server. Sie können dies in den Einstellungen → "Anonymous Analytics" deaktivieren.</li>
         <li><strong>Was wir nicht erheben</strong> — keine persönlichen Identifikatoren, Gerätekennungen, privaten Schlüssel, Analysen oder Werbe-Tracker.</li>
-        <li><strong>Datennutzung</strong> — Zahlungsverifikation, Sanktionseinhaltung, Anzeige installierter Apps, Gewährung von Abonnementfunktionen.</li>
+        <li><strong>Datennutzung</strong> — Zahlungsverifikation, Sanktionseinhaltung, Anzeige installierter Apps, Gewährung kostenpflichtiger Funktionen.</li>
         <li><strong>Weitergabe</strong> — Wir verkaufen Ihre Daten niemals. Eingeschränkte Offenlegung nur für Blockchain-Transaktionen und rechtliche Anforderungen.</li>
-        <li><strong>Drittanbieterdienste</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Speicherung und Sicherheit</strong> — Alle Daten werden lokal gespeichert. Wir betreiben keine Server, die Ihre Daten speichern.</li>
-        <li><strong>Geografische Einschränkungen</strong> — Die App ist in 58 blockierten Jurisdiktionen nicht verfügbar. Standort wird beim Start und vor jeder Zahlung verifiziert.</li>
-        <li><strong>Ihre Rechte</strong> — Zugriff über App-Einstellungen, Löschen durch Deinstallation, Opt-Out durch Nichtnutzung. DSGVO/CCPA-Rechte vollständig unterstützt.</li>
+        <li><strong>Drittanbieterdienste</strong> — Solana-Blockchain und RPC-Anbieter, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (Sanktionsprüfung). Die vollständige Liste finden Sie im englischen Text.</li>
+        <li><strong>Speicherung und Sicherheit</strong> — Ihre Daten werden auf Ihrem Telefon gespeichert. Unsere Server speichern anonyme Tageszählungen sowie eine Kontakt-E-Mail-Adresse, aber nur, wenn Sie eine hervorgehobene dApp-Platzierung (Featured dApp placement) erwerben.</li>
+        <li><strong>Geografische Einschränkungen</strong> — Die App ist in 58 blockierten Jurisdiktionen nicht verfügbar. Ihr Land wird beim Start und vor jeder Zahlung überprüft.</li>
+        <li><strong>Ihre Rechte</strong> — "Export My Data" und "Delete My Data" in den Einstellungen. GDPR/CCPA-Rechte werden vollständig unterstützt.</li>
         <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Einfach gesagt:</strong> Wir erheben sehr wenig Daten — hauptsächlich Ihre öffentliche Wallet-Adresse für Zahlungen und Ihren ungefähren Standort zur Sanktionsprüfung. Alles andere bleibt auf Ihrem Telefon. Wir tracken Sie nicht, zeigen keine Werbung und verkaufen Ihre Daten nie.</div>
+    <div class="summary-box"><strong>Einfach gesagt:</strong> Wir erheben sehr wenig — hauptsächlich Ihre öffentliche Wallet-Adresse für Zahlungen und Ihr ungefähres Land zur Sanktionsprüfung. Alles andere bleibt auf Ihrem Telefon, abgesehen von anonymen Zählungen, die Sie deaktivieren können. Wir zeigen keine Werbung und verkaufen Ihre Daten nie.</div>
 </article>
 
 <!-- ============== GREEK ============== -->
@@ -225,18 +236,20 @@
     <div class="binding-notice"><strong>Σημείωση:</strong> Η αγγλική έκδοση παραπάνω είναι το νομικά δεσμευτικό κείμενο. Αυτή η περίληψη παρέχεται για διευκόλυνση.</div>
     <p>Αυτό το έγγραφο συνοψίζει πώς το AardAppvark Toolkit χειρίζεται τα δεδομένα σας. Για το πλήρες κείμενο, ανατρέξτε στην <a href="#en">αγγλική ενότητα παραπάνω</a>.</p>
     <ol>
-        <li><strong>Εισαγωγή</strong> — Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Αρχές: ελαχιστοποίηση δεδομένων, τοπική επεξεργασία, διαφάνεια, χωρίς παρακολούθηση, έλεγχος χρήστη.</li>
-        <li><strong>Πληροφορίες που Συλλέγουμε</strong> — διεύθυνση πορτοφολιού Solana για πληρωμές, κατά προσέγγιση τοποθεσία για συμμόρφωση με κυρώσεις, λίστα εγκατεστημένων εφαρμογών (μόνο τοπικά).</li>
+        <li><strong>Εισαγωγή</strong> — Δεσμευόμαστε να προστατεύουμε το απόρρητό σας. Αρχές μας: ελαχιστοποίηση δεδομένων, τοπική επεξεργασία, διαφάνεια, καμία παρακολούθηση από τρίτους, έλεγχος από τον χρήστη.</li>
+        <li><strong>Πληροφορίες που Συλλέγουμε</strong> — διεύθυνση πορτοφολιού Solana για πληρωμές, κατά προσέγγιση χώρα για έλεγχο κυρώσεων, η λίστα εγκατεστημένων εφαρμογών (παραμένει στο τηλέφωνο).</li>
+        <li><strong>Μόνο στο τηλέφωνό σας</strong> — αν επιτρέψετε το "Usage access", πότε ανοίχτηκε τελευταία φορά κάθε εφαρμογή (δεν αποθηκεύεται)· τις διατάξεις της αρχικής σας οθόνης για το Launch· και όσα διαβάζει η υπηρεσία προσβασιμότητας ενώ πατάει κουμπιά για μια εργασία που ξεκινήσατε εσείς (επιβεβαιώσεις απεγκατάστασης, εγκαταστάσεις από το dApp Store, μετακίνηση εικονιδίων στην αρχική οθόνη). Τίποτα από αυτά δεν φεύγει από το τηλέφωνο.</li>
+        <li><strong>Ανώνυμες μετρήσεις</strong> — η εφαρμογή στέλνει ανώνυμες μετρήσεις συμβάντων (μόνο τον τύπο συμβάντος, χωρίς αναγνωριστικά) στον δικό μας διακομιστή. Μπορείτε να το απενεργοποιήσετε στις Ρυθμίσεις → "Anonymous Analytics".</li>
         <li><strong>Τι ΔΕΝ Συλλέγουμε</strong> — χωρίς προσωπικά αναγνωριστικά, αναγνωριστικά συσκευής, ιδιωτικά κλειδιά, αναλυτικά στοιχεία ή trackers διαφημίσεων.</li>
-        <li><strong>Πώς Χρησιμοποιούμε</strong> — επαλήθευση πληρωμών, συμμόρφωση με κυρώσεις, εμφάνιση εφαρμογών, παροχή χαρακτηριστικών συνδρομής.</li>
-        <li><strong>Κοινή χρήση</strong> — Δεν πωλούμε τα δεδομένα σας. Περιορισμένη αποκάλυψη μόνο για συναλλαγές blockchain και νομικές απαιτήσεις.</li>
-        <li><strong>Υπηρεσίες Τρίτων</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Αποθήκευση και Ασφάλεια</strong> — Όλα τα δεδομένα αποθηκεύονται τοπικά. Δεν λειτουργούμε διακομιστές που αποθηκεύουν τα δεδομένα σας.</li>
-        <li><strong>Γεωγραφικοί Περιορισμοί</strong> — Η εφαρμογή δεν είναι διαθέσιμη σε 58 αποκλεισμένες δικαιοδοσίες. Η τοποθεσία επαληθεύεται κατά την εκκίνηση και πριν από κάθε πληρωμή.</li>
-        <li><strong>Τα Δικαιώματά σας</strong> — πρόσβαση μέσω Ρυθμίσεων, διαγραφή με απεγκατάσταση, αποχώρηση με διακοπή χρήσης. GDPR/CCPA πλήρως υποστηριζόμενα.</li>
+        <li><strong>Πώς Χρησιμοποιούμε</strong> — επαλήθευση πληρωμών, συμμόρφωση με κυρώσεις, εμφάνιση εγκατεστημένων εφαρμογών, παροχή επί πληρωμή λειτουργιών.</li>
+        <li><strong>Κοινή χρήση</strong> — Δεν πωλούμε ποτέ τα δεδομένα σας. Περιορισμένη αποκάλυψη μόνο για συναλλαγές blockchain και νομικές απαιτήσεις.</li>
+        <li><strong>Υπηρεσίες Τρίτων</strong> — Solana blockchain και πάροχοι RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (έλεγχος κυρώσεων). Η πλήρης λίστα βρίσκεται στο αγγλικό κείμενο.</li>
+        <li><strong>Αποθήκευση και Ασφάλεια</strong> — Τα δεδομένα σας αποθηκεύονται στο τηλέφωνό σας. Οι διακομιστές μας διατηρούν ανώνυμες ημερήσιες μετρήσεις, καθώς και ένα email επικοινωνίας, μόνο αν αγοράσετε μια προβεβλημένη τοποθέτηση dApp (Featured dApp placement).</li>
+        <li><strong>Γεωγραφικοί Περιορισμοί</strong> — Η εφαρμογή δεν είναι διαθέσιμη σε 58 αποκλεισμένες δικαιοδοσίες. Η χώρα σας ελέγχεται κατά την εκκίνηση και πριν από κάθε πληρωμή.</li>
+        <li><strong>Τα Δικαιώματά σας</strong> — "Export My Data" και "Delete My Data" στις Ρυθμίσεις. Τα δικαιώματα GDPR/CCPA υποστηρίζονται πλήρως.</li>
         <li><strong>Επικοινωνία</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Σε απλά λόγια:</strong> Συλλέγουμε ελάχιστα δεδομένα — κυρίως τη δημόσια διεύθυνση πορτοφολιού σας για πληρωμές και την κατά προσέγγιση τοποθεσία σας για έλεγχο κυρώσεων. Όλα τα άλλα μένουν στο τηλέφωνό σας. Δεν σας παρακολουθούμε, δεν εμφανίζουμε διαφημίσεις και δεν πουλάμε ποτέ τα δεδομένα σας.</div>
+    <div class="summary-box"><strong>Σε απλά λόγια:</strong> Συλλέγουμε ελάχιστα δεδομένα — κυρίως τη δημόσια διεύθυνση πορτοφολιού σας για πληρωμές και την κατά προσέγγιση χώρα σας για έλεγχο κυρώσεων. Όλα τα άλλα μένουν στο τηλέφωνό σας, εκτός από τις ανώνυμες μετρήσεις που μπορείτε να απενεργοποιήσετε. Δεν εμφανίζουμε διαφημίσεις και δεν πουλάμε ποτέ τα δεδομένα σας.</div>
 </article>
 
 <!-- ============== SPANISH ============== -->
@@ -245,18 +258,20 @@
     <div class="binding-notice"><strong>Aviso:</strong> La versión en inglés de arriba es el texto legalmente vinculante. Este resumen se proporciona por conveniencia.</div>
     <p>Este documento resume cómo AardAppvark Toolkit maneja sus datos. Para el texto completo, consulte la <a href="#en">sección en inglés más arriba</a>.</p>
     <ol>
-        <li><strong>Introducción</strong> — Nos comprometemos a proteger su privacidad. Principios: minimización de datos, procesamiento local, transparencia, sin rastreo, control del usuario.</li>
-        <li><strong>Información que Recopilamos</strong> — dirección de billetera Solana para pagos, ubicación aproximada para cumplimiento de sanciones, lista de aplicaciones (solo local).</li>
+        <li><strong>Introducción</strong> — Nos comprometemos a proteger su privacidad. Nuestros principios: minimización de datos, procesamiento local, transparencia, sin rastreo por parte de terceros, control del usuario.</li>
+        <li><strong>Información que Recopilamos</strong> — dirección de billetera Solana para pagos, país aproximado para el cumplimiento de sanciones, la lista de aplicaciones instaladas (permanece en el teléfono).</li>
+        <li><strong>Solo en su teléfono</strong> — si permite "Usage access", cuándo se abrió cada aplicación por última vez (no se almacena); los diseños de su pantalla de inicio para Launch; y lo que lee el servicio de accesibilidad mientras pulsa botones para una tarea que usted inició (confirmaciones de desinstalación, instalaciones desde dApp Store, movimiento de iconos de la pantalla de inicio). Nada de esto sale del teléfono.</li>
+        <li><strong>Recuentos anónimos</strong> — la aplicación envía recuentos anónimos de eventos (solo el tipo de evento, sin identificadores) a nuestro propio servidor. Puede desactivarlo en Configuración → "Anonymous Analytics".</li>
         <li><strong>Lo que NO Recopilamos</strong> — sin identificadores personales, identificadores de dispositivo, claves privadas, analítica o rastreadores publicitarios.</li>
-        <li><strong>Cómo Usamos los Datos</strong> — verificación de pago, cumplimiento de sanciones, mostrar aplicaciones, otorgar funciones de suscripción.</li>
+        <li><strong>Cómo Usamos los Datos</strong> — verificación de pago, cumplimiento de sanciones, mostrar aplicaciones instaladas, otorgar funciones de pago.</li>
         <li><strong>Compartir</strong> — Nunca vendemos sus datos. Divulgación limitada solo para transacciones blockchain y requisitos legales.</li>
-        <li><strong>Servicios de Terceros</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Almacenamiento y Seguridad</strong> — Todos los datos se almacenan localmente. No operamos servidores que almacenen sus datos.</li>
-        <li><strong>Restricciones Geográficas</strong> — La aplicación no está disponible en 58 jurisdicciones bloqueadas. La ubicación se verifica al inicio y antes de cada pago.</li>
-        <li><strong>Sus Derechos</strong> — acceso vía Configuración, eliminación al desinstalar, exclusión al dejar de usar. RGPD/CCPA completamente respaldados.</li>
+        <li><strong>Servicios de Terceros</strong> — Solana blockchain y proveedores de RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (verificación de sanciones). La lista completa está en el texto en inglés.</li>
+        <li><strong>Almacenamiento y Seguridad</strong> — Sus datos se almacenan en su teléfono. Nuestros servidores conservan recuentos diarios anónimos, y un correo electrónico de contacto solo si compra una ubicación destacada de dApp (Featured dApp placement).</li>
+        <li><strong>Restricciones Geográficas</strong> — La aplicación no está disponible en 58 jurisdicciones bloqueadas. Su país se verifica al iniciar la aplicación y antes de cada pago.</li>
+        <li><strong>Sus Derechos</strong> — "Export My Data" y "Delete My Data" en Configuración. Los derechos RGPD/CCPA están totalmente respaldados.</li>
         <li><strong>Contacto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>En pocas palabras:</strong> Recopilamos muy pocos datos — principalmente su dirección pública de billetera para pagos y su ubicación aproximada para verificar sanciones. Todo lo demás se queda en su teléfono. No le rastreamos, no mostramos anuncios y nunca vendemos sus datos.</div>
+    <div class="summary-box"><strong>En pocas palabras:</strong> Recopilamos muy pocos datos — principalmente su dirección pública de billetera para pagos y su país aproximado para verificar sanciones. Todo lo demás permanece en su teléfono, salvo los recuentos anónimos que puede desactivar. No mostramos anuncios y nunca vendemos sus datos.</div>
 </article>
 
 <!-- ============== FILIPINO ============== -->
@@ -265,18 +280,20 @@
     <div class="binding-notice"><strong>Paalala:</strong> Ang bersyong Ingles sa itaas ang legal na may bisa. Ang buod na ito ay para sa kaginhawahan.</div>
     <p>Binubuod ng dokumentong ito kung paano hinahawakan ng AardAppvark Toolkit ang iyong data. Para sa buong teksto, tingnan ang <a href="#en">seksyong Ingles sa itaas</a>.</p>
     <ol>
-        <li><strong>Panimula</strong> — Nakatuon kami sa pagprotekta ng iyong privacy. Mga prinsipyo: data minimization, lokal-una, transparency, walang tracking, kontrol ng user.</li>
-        <li><strong>Impormasyong Kinokolekta</strong> — Solana wallet address para sa pagbabayad, tinatayang lokasyon para sa pagsunod sa parusa, listahan ng apps (lokal lamang).</li>
+        <li><strong>Panimula</strong> — Nakatuon kami sa pagprotekta ng iyong privacy. Mga prinsipyo: data minimization, lokal na pagproseso, transparency, walang third-party tracking, kontrol ng user.</li>
+        <li><strong>Impormasyong Kinokolekta</strong> — Solana wallet address para sa pagbabayad, tinatayang bansa para sa pagsunod sa mga parusa, listahan ng mga naka-install na app (nananatili sa telepono).</li>
+        <li><strong>Sa Telepono Mo Lamang</strong> — kung papayagan mo ang "Usage access", kung kailan huling binuksan ang bawat app (hindi ito nasa-save); ang mga layout ng iyong home screen para sa Launch; at ang binabasa ng accessibility service habang pumipindot ito ng mga button para sa isang gawain na sinimulan mo (mga kumpirmasyon ng pag-uninstall, mga pag-install mula sa dApp Store, paglipat ng mga icon sa home screen). Wala sa mga ito ang umaalis sa telepono.</li>
+        <li><strong>Anonymous na Bilang</strong> — nagpapadala ang app ng anonymous na bilang ng mga event (uri lang ng event, walang identifier) sa sarili naming server. Puwede mong i-off ito sa Settings → "Anonymous Analytics".</li>
         <li><strong>Hindi Namin Kinokolekta</strong> — walang personal identifier, device ID, private keys, analytics o advertising trackers.</li>
-        <li><strong>Paano Gamit ang Data</strong> — pag-verify ng bayad, pagsunod sa parusa, pagpapakita ng apps, pagbibigay ng subscription features.</li>
-        <li><strong>Pagbabahagi</strong> — Hindi namin ibinebenta ang iyong data. Limitadong disclosure lamang para sa blockchain transactions at legal na pangangailangan.</li>
-        <li><strong>Mga Third-Party Services</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Storage at Seguridad</strong> — Lahat ng data ay nakaimbak nang lokal. Hindi kami nagpapatakbo ng mga server na nag-iimbak ng iyong data.</li>
-        <li><strong>Mga Restriksyon sa Heograpiya</strong> — Hindi available ang app sa 58 na hinarangang hurisdiksyon. Bina-verify ang lokasyon sa paglulunsad at bago ang bawat bayad.</li>
-        <li><strong>Iyong mga Karapatan</strong> — pag-access sa Settings, pag-alis sa pamamagitan ng pag-uninstall, pag-opt-out. GDPR/CCPA buong sinusuportahan.</li>
+        <li><strong>Paano Gamit ang Data</strong> — pag-verify ng bayad, pagsunod sa parusa, pagpapakita ng mga naka-install na app, pagbibigay ng mga bayad na feature (paid features).</li>
+        <li><strong>Pagbabahagi</strong> — Hindi namin kailanman ibinebenta ang iyong data. Limitadong disclosure lamang para sa mga blockchain transaction at legal na pangangailangan.</li>
+        <li><strong>Mga Third-Party Services</strong> — Solana blockchain at mga RPC provider, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (sanctions screening). Nasa English text ang kumpletong listahan.</li>
+        <li><strong>Storage at Seguridad</strong> — Naka-imbak ang iyong data sa iyong telepono. Iniimbak ng aming mga server ang anonymous na araw-araw na bilang, at isang contact email lamang kung bibili ka ng Featured dApp placement.</li>
+        <li><strong>Mga Restriksyon sa Heograpiya</strong> — Hindi available ang app sa 58 na hinarangang hurisdiksyon. Sinusuri ang bansa mo kapag naglunsad ang app at bago ang bawat bayad.</li>
+        <li><strong>Iyong mga Karapatan</strong> — "Export My Data" at "Delete My Data" sa Settings. Buong suportado ang mga karapatan sa GDPR/CCPA.</li>
         <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Sa simpleng salita:</strong> Kakaunti lang ang kinokolekta naming data — pangunahin ang iyong public wallet address para sa bayad at iyong tinatayang lokasyon para sa pag-check ng parusa. Lahat ng iba ay nananatili sa iyong telepono. Hindi ka namin tina-track, walang ads, at kailanman hindi ibinebenta ang iyong data.</div>
+    <div class="summary-box"><strong>Sa simpleng salita:</strong> Kaunti lang ang kinokolekta naming data — pangunahin ang iyong pampublikong wallet address para sa bayad at ang tinatayang bansa mo para sa pag-check ng parusa. Ang lahat ng iba pa ay nananatili sa iyong telepono, maliban sa anonymous na bilang na puwede mong i-off. Wala kaming ipinapakitang ads at kailanman hindi namin ibinebenta ang iyong data.</div>
 </article>
 
 <!-- ============== FRENCH ============== -->
@@ -285,18 +302,20 @@
     <div class="binding-notice"><strong>Avis :</strong> La version anglaise ci-dessus constitue le texte juridiquement contraignant. Ce résumé est fourni à titre indicatif.</div>
     <p>Ce document résume la manière dont AardAppvark Toolkit traite vos données. Pour le texte intégral, consultez la <a href="#en">section anglaise ci-dessus</a>.</p>
     <ol>
-        <li><strong>Introduction</strong> — Nous nous engageons à protéger votre vie privée. Principes : minimisation des données, traitement local, transparence, pas de suivi, contrôle utilisateur.</li>
-        <li><strong>Informations collectées</strong> — adresse du portefeuille Solana pour les paiements, localisation approximative pour la conformité aux sanctions, liste des applications (local uniquement).</li>
+        <li><strong>Introduction</strong> — Nous nous engageons à protéger votre vie privée. Nos principes : minimisation des données, traitement local, transparence, pas de suivi par des tiers, contrôle de l'utilisateur.</li>
+        <li><strong>Informations collectées</strong> — adresse du portefeuille Solana pour les paiements, pays approximatif pour la conformité aux sanctions, la liste des applications installées (reste sur le téléphone).</li>
+        <li><strong>Uniquement sur votre téléphone</strong> — si vous autorisez "Usage access", la dernière fois que chaque application a été ouverte (non stockée) ; les dispositions de votre écran d'accueil pour Launch ; et ce que lit le service d'accessibilité pendant qu'il appuie sur des boutons pour une tâche que vous avez lancée (confirmations de désinstallation, installations depuis le dApp Store, déplacement d'icônes de l'écran d'accueil). Rien de tout cela ne quitte le téléphone.</li>
+        <li><strong>Décomptes anonymes</strong> — l'application envoie des décomptes anonymes d'événements (uniquement le type d'événement, sans identifiants) à notre propre serveur. Vous pouvez désactiver cela dans Paramètres → "Anonymous Analytics".</li>
         <li><strong>Ce que nous ne collectons PAS</strong> — pas d'identifiants personnels, d'identifiants d'appareil, de clés privées, d'analyse ou de traceurs publicitaires.</li>
-        <li><strong>Utilisation des données</strong> — vérification des paiements, conformité aux sanctions, affichage des applications installées, octroi des fonctionnalités d'abonnement.</li>
-        <li><strong>Partage</strong> — Nous ne vendons jamais vos données. Divulgation limitée uniquement pour les transactions blockchain et exigences légales.</li>
-        <li><strong>Services tiers</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Stockage et Sécurité</strong> — Toutes les données sont stockées localement. Nous n'exploitons pas de serveurs qui stockent vos données.</li>
-        <li><strong>Restrictions Géographiques</strong> — L'application n'est pas disponible dans 58 juridictions bloquées. La localisation est vérifiée au lancement et avant chaque paiement.</li>
-        <li><strong>Vos Droits</strong> — accès via les Paramètres, suppression par désinstallation, désinscription en cessant l'utilisation. RGPD/CCPA entièrement pris en charge.</li>
+        <li><strong>Utilisation des données</strong> — vérification des paiements, conformité aux sanctions, affichage des applications installées, octroi de fonctionnalités payantes.</li>
+        <li><strong>Partage</strong> — Nous ne vendons jamais vos données. Divulgation limitée uniquement pour les transactions blockchain et les exigences légales.</li>
+        <li><strong>Services tiers</strong> — Solana blockchain et fournisseurs RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (contrôle des sanctions). La liste complète figure dans le texte en anglais.</li>
+        <li><strong>Stockage et Sécurité</strong> — Vos données sont stockées sur votre téléphone. Nos serveurs conservent des décomptes quotidiens anonymes, ainsi qu'une adresse e-mail de contact, uniquement si vous achetez un placement dApp en vedette (Featured dApp placement).</li>
+        <li><strong>Restrictions Géographiques</strong> — L'application n'est pas disponible dans 58 juridictions bloquées. Votre pays est vérifié au lancement et avant chaque paiement.</li>
+        <li><strong>Vos Droits</strong> — "Export My Data" et "Delete My Data" dans les Paramètres. Les droits RGPD/CCPA sont entièrement pris en charge.</li>
         <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>En clair :</strong> Nous collectons très peu de données — principalement votre adresse de portefeuille publique pour les paiements et votre localisation approximative pour vérifier les sanctions. Tout le reste reste sur votre téléphone. Nous ne vous suivons pas, ne montrons pas de publicité et ne vendons jamais vos données.</div>
+    <div class="summary-box"><strong>En clair :</strong> Nous collectons très peu de données — principalement votre adresse de portefeuille publique pour les paiements et votre pays approximatif pour vérifier les sanctions. Tout le reste reste sur votre téléphone, à l'exception des décomptes anonymes que vous pouvez désactiver. Nous n'affichons aucune publicité et ne vendons jamais vos données.</div>
 </article>
 
 <!-- ============== HINDI ============== -->
@@ -305,18 +324,20 @@
     <div class="binding-notice"><strong>सूचना:</strong> ऊपर दिया गया अंग्रेज़ी संस्करण कानूनी रूप से बाध्यकारी पाठ है। यह सारांश केवल सुविधा के लिए है।</div>
     <p>यह दस्तावेज़ संक्षेप में बताता है कि AardAppvark Toolkit आपके डेटा को कैसे संभालता है। पूर्ण पाठ के लिए, <a href="#en">ऊपर अंग्रेज़ी अनुभाग</a> देखें।</p>
     <ol>
-        <li><strong>परिचय</strong> — हम आपकी गोपनीयता की रक्षा के लिए प्रतिबद्ध हैं। सिद्धांत: डेटा न्यूनतमकरण, स्थानीय-प्रथम, पारदर्शिता, कोई ट्रैकिंग नहीं, उपयोगकर्ता नियंत्रण।</li>
-        <li><strong>एकत्रित जानकारी</strong> — भुगतान के लिए Solana वॉलेट पता, प्रतिबंधों के अनुपालन के लिए अनुमानित स्थान, स्थापित ऐप्स की सूची (केवल स्थानीय)।</li>
+        <li><strong>परिचय</strong> — हम आपकी गोपनीयता की सुरक्षा के लिए प्रतिबद्ध हैं। हमारे सिद्धांत: डेटा न्यूनतमकरण, स्थानीय प्रसंस्करण, पारदर्शिता, कोई तृतीय-पक्ष ट्रैकिंग नहीं, उपयोगकर्ता नियंत्रण।</li>
+        <li><strong>एकत्रित जानकारी</strong> — भुगतान के लिए Solana वॉलेट पता, प्रतिबंधों की जांच के लिए अनुमानित देश, इंस्टॉल किए गए ऐप्स की सूची (फोन पर ही रहती है)।</li>
+        <li><strong>केवल आपके फोन पर</strong> — यदि आप "Usage access" की अनुमति देते हैं, तो प्रत्येक ऐप आखिरी बार कब खोला गया (यह संग्रहीत नहीं होता); Launch के लिए आपके होम-स्क्रीन लेआउट; और आपके द्वारा शुरू किए गए किसी कार्य के लिए बटन दबाते समय एक्सेसिबिलिटी सेवा क्या पढ़ती है (अनइंस्टॉल की पुष्टि, dApp Store इंस्टॉल, होम-स्क्रीन आइकन को स्थानांतरित करना)। इनमें से कुछ भी फोन से बाहर नहीं जाता।</li>
+        <li><strong>अनाम गणनाएँ</strong> — ऐप हमारे अपने सर्वर पर अनाम इवेंट गणनाएँ (केवल इवेंट प्रकार, कोई पहचानकर्ता नहीं) भेजता है। आप इसे सेटिंग्स → "Anonymous Analytics" में बंद कर सकते हैं।</li>
         <li><strong>जो हम एकत्र नहीं करते</strong> — कोई व्यक्तिगत पहचानकर्ता, डिवाइस आईडी, निजी कुंजी, एनालिटिक्स या विज्ञापन ट्रैकर्स नहीं।</li>
-        <li><strong>उपयोग</strong> — भुगतान सत्यापन, प्रतिबंध अनुपालन, ऐप्स प्रदर्शन, सदस्यता सुविधाएं।</li>
+        <li><strong>उपयोग</strong> — भुगतान सत्यापन, प्रतिबंध अनुपालन, इंस्टॉल किए गए ऐप्स दिखाना, सशुल्क सुविधाएँ (paid features) प्रदान करना।</li>
         <li><strong>साझा करना</strong> — हम आपका डेटा कभी नहीं बेचते। सीमित खुलासा केवल ब्लॉकचेन लेनदेन और कानूनी आवश्यकताओं के लिए।</li>
-        <li><strong>तृतीय-पक्ष सेवाएँ</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store।</li>
-        <li><strong>संग्रहण और सुरक्षा</strong> — सभी डेटा स्थानीय रूप से संग्रहीत हैं। हम आपके डेटा को संग्रहीत करने वाले सर्वर नहीं चलाते।</li>
-        <li><strong>भौगोलिक प्रतिबंध</strong> — ऐप 58 अवरुद्ध न्यायालयों में उपलब्ध नहीं है। स्थान को लॉन्च और प्रत्येक भुगतान से पहले सत्यापित किया जाता है।</li>
-        <li><strong>आपके अधिकार</strong> — सेटिंग्स के माध्यम से पहुंच, अनइंस्टॉल द्वारा हटाना, उपयोग बंद करके ऑप्ट-आउट। GDPR/CCPA पूरी तरह से समर्थित।</li>
+        <li><strong>तृतीय-पक्ष सेवाएँ</strong> — Solana blockchain और RPC प्रदाता, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (प्रतिबंध जांच)। पूरी सूची अंग्रेज़ी पाठ में है।</li>
+        <li><strong>संग्रहण और सुरक्षा</strong> — आपका डेटा आपके फोन पर संग्रहीत है। हमारे सर्वर अनाम दैनिक गणनाएँ रखते हैं, और केवल तभी संपर्क ईमेल रखते हैं जब आप कोई Featured dApp placement खरीदते हैं।</li>
+        <li><strong>भौगोलिक प्रतिबंध</strong> — ऐप 58 अवरुद्ध न्यायक्षेत्रों में उपलब्ध नहीं है। आपके देश की जांच ऐप शुरू होने पर और हर भुगतान से पहले की जाती है।</li>
+        <li><strong>आपके अधिकार</strong> — सेटिंग्स में "Export My Data" और "Delete My Data"। GDPR/CCPA अधिकार पूरी तरह समर्थित हैं।</li>
         <li><strong>संपर्क</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>सरल शब्दों में:</strong> हम बहुत कम डेटा एकत्र करते हैं — मुख्य रूप से भुगतान के लिए आपका सार्वजनिक वॉलेट पता और प्रतिबंध जांच के लिए आपका अनुमानित स्थान। बाकी सब कुछ आपके फोन पर ही रहता है। हम आपको ट्रैक नहीं करते, विज्ञापन नहीं दिखाते, और आपका डेटा कभी नहीं बेचते।</div>
+    <div class="summary-box"><strong>सरल शब्दों में:</strong> हम बहुत कम डेटा एकत्र करते हैं — मुख्य रूप से भुगतान के लिए आपका सार्वजनिक वॉलेट पता और प्रतिबंध जांच के लिए आपका अनुमानित देश। बाकी सब कुछ आपके फोन पर ही रहता है, सिवाय उन अनाम गणनाओं के जिन्हें आप बंद कर सकते हैं। हम कोई विज्ञापन नहीं दिखाते और आपका डेटा कभी नहीं बेचते।</div>
 </article>
 
 <!-- ============== HUNGARIAN ============== -->
@@ -325,18 +346,20 @@
     <div class="binding-notice"><strong>Megjegyzés:</strong> A fenti angol változat a jogilag kötelező érvényű szöveg. Ez az összefoglaló a kényelmet szolgálja.</div>
     <p>Ez a dokumentum összefoglalja, hogyan kezeli a(z) AardAppvark Toolkit az adatait. A teljes szöveg a <a href="#en">fenti angol szakaszban</a> található.</p>
     <ol>
-        <li><strong>Bevezetés</strong> — Elkötelezettek vagyunk az adatvédelem mellett. Alapelvek: adatminimalizálás, helyi feldolgozás, átláthatóság, nincs nyomkövetés, felhasználói kontroll.</li>
-        <li><strong>Gyűjtött információk</strong> — Solana pénztárcacím fizetésekhez, hozzávetőleges hely a szankciómegfeleléshez, telepített alkalmazások listája (csak helyileg).</li>
+        <li><strong>Bevezetés</strong> — Elkötelezettek vagyunk az adatvédelem mellett. Alapelveink: adatminimalizálás, helyi feldolgozás, átláthatóság, nincs harmadik féltől származó nyomkövetés, felhasználói kontroll.</li>
+        <li><strong>Gyűjtött információk</strong> — Solana pénztárcacím a fizetésekhez, hozzávetőleges ország a szankciók ellenőrzéséhez, a telepített alkalmazások listája (a telefonon marad).</li>
+        <li><strong>Csak a telefonján</strong> — ha engedélyezi a "Usage access" funkciót, mikor nyitották meg utoljára az egyes alkalmazásokat (ezt nem tárolja); a Launch funkcióhoz tartozó kezdőképernyő-elrendezéseit; és amit a kisegítő lehetőségek szolgáltatás olvas, miközben egy Ön által elindított feladathoz gombokat nyom meg (eltávolítási megerősítések, dApp Store telepítések, kezdőképernyő-ikonok mozgatása). Ebből semmi sem hagyja el a telefont.</li>
+        <li><strong>Névtelen számlálások</strong> — az alkalmazás névtelen eseményszámlálásokat (csak az esemény típusát, azonosítók nélkül) küld a saját szerverünkre. Ezt kikapcsolhatja a Beállítások → "Anonymous Analytics" menüpontban.</li>
         <li><strong>Amit NEM gyűjtünk</strong> — semmilyen személyes azonosító, eszközazonosító, privát kulcs, analitika vagy reklámkövető.</li>
-        <li><strong>Adatfelhasználás</strong> — fizetés ellenőrzése, szankciómegfelelés, alkalmazások megjelenítése, előfizetési funkciók.</li>
-        <li><strong>Megosztás</strong> — Soha nem adjuk el adatait. Korlátozott közzététel csak blockchain tranzakciókhoz és jogi követelményekhez.</li>
-        <li><strong>Harmadik fél szolgáltatásai</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Tárolás és biztonság</strong> — Minden adat helyileg tárolódik. Nem üzemeltetünk az Ön adatait tároló szervereket.</li>
-        <li><strong>Földrajzi korlátozások</strong> — Az alkalmazás 58 letiltott joghatóságban nem érhető el. Hely indításkor és minden fizetés előtt ellenőrizve.</li>
-        <li><strong>Jogai</strong> — hozzáférés a Beállításokon keresztül, törlés az eltávolítással, leiratkozás a használat befejezésével. GDPR/CCPA teljes mértékben támogatott.</li>
+        <li><strong>Adatfelhasználás</strong> — fizetés ellenőrzése, szankciómegfelelés, telepített alkalmazások megjelenítése, fizetős funkciók biztosítása.</li>
+        <li><strong>Megosztás</strong> — Soha nem adjuk el az adatait. Korlátozott közzététel csak blockchain tranzakciókhoz és jogi követelményekhez.</li>
+        <li><strong>Harmadik fél szolgáltatásai</strong> — Solana blockchain és RPC-szolgáltatók, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (szankciószűrés). A teljes lista az angol szövegben található.</li>
+        <li><strong>Tárolás és biztonság</strong> — Az Ön adatait a telefonján tároljuk. Szervereink névtelen napi számlálásokat őriznek, valamint egy kapcsolattartási e-mail-címet, de csak akkor, ha egy kiemelt dApp-elhelyezést (Featured dApp placement) vásárol.</li>
+        <li><strong>Földrajzi korlátozások</strong> — Az alkalmazás 58 letiltott joghatóságban nem érhető el. Az Ön országát induláskor és minden fizetés előtt ellenőrizzük.</li>
+        <li><strong>Jogai</strong> — "Export My Data" és "Delete My Data" a Beállításokban. A GDPR/CCPA jogok teljes mértékben támogatottak.</li>
         <li><strong>Kapcsolat</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Egyszerűen:</strong> Nagyon kevés adatot gyűjtünk — főleg a nyilvános pénztárcacímét fizetésekhez és hozzávetőleges helyét a szankciók ellenőrzéséhez. Minden más a telefonján marad. Nem követjük Önt, nem mutatunk hirdetéseket, és soha nem adjuk el adatait.</div>
+    <div class="summary-box"><strong>Egyszerűen:</strong> Nagyon kevés adatot gyűjtünk — főként a nyilvános pénztárcacímét a fizetésekhez és a hozzávetőleges országát a szankciók ellenőrzéséhez. Minden más a telefonján marad, kivéve a névtelen számlálásokat, amelyeket kikapcsolhat. Nem jelenítünk meg hirdetéseket, és soha nem adjuk el az adatait.</div>
 </article>
 
 <!-- ============== INDONESIAN ============== -->
@@ -345,18 +368,20 @@
     <div class="binding-notice"><strong>Pemberitahuan:</strong> Versi bahasa Inggris di atas adalah teks yang mengikat secara hukum. Ringkasan ini hanya untuk kemudahan.</div>
     <p>Dokumen ini meringkas bagaimana AardAppvark Toolkit menangani data Anda. Untuk teks lengkap, lihat <a href="#en">bagian bahasa Inggris di atas</a>.</p>
     <ol>
-        <li><strong>Pendahuluan</strong> — Kami berkomitmen melindungi privasi Anda. Prinsip: minimalisasi data, pemrosesan lokal, transparansi, tanpa pelacakan, kontrol pengguna.</li>
-        <li><strong>Informasi yang Dikumpulkan</strong> — alamat dompet Solana untuk pembayaran, lokasi perkiraan untuk kepatuhan sanksi, daftar aplikasi (hanya lokal).</li>
-        <li><strong>Yang TIDAK Kami Kumpulkan</strong> — tidak ada pengenal pribadi, ID perangkat, kunci pribadi, analitik atau pelacak iklan.</li>
-        <li><strong>Penggunaan</strong> — verifikasi pembayaran, kepatuhan sanksi, menampilkan aplikasi, fitur langganan.</li>
-        <li><strong>Berbagi</strong> — Kami tidak pernah menjual data Anda. Pengungkapan terbatas hanya untuk transaksi blockchain dan kebutuhan hukum.</li>
-        <li><strong>Layanan Pihak Ketiga</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Penyimpanan dan Keamanan</strong> — Semua data disimpan lokal. Kami tidak mengoperasikan server yang menyimpan data Anda.</li>
-        <li><strong>Pembatasan Geografis</strong> — Aplikasi tidak tersedia di 58 yurisdiksi yang diblokir. Lokasi diverifikasi saat peluncuran dan sebelum setiap pembayaran.</li>
-        <li><strong>Hak Anda</strong> — akses melalui Pengaturan, penghapusan dengan uninstall, opt-out dengan berhenti menggunakan. GDPR/CCPA didukung penuh.</li>
+        <li><strong>Pendahuluan</strong> — Kami berkomitmen melindungi privasi Anda. Prinsip kami: minimalisasi data, pemrosesan lokal, transparansi, tanpa pelacakan pihak ketiga, kontrol pengguna.</li>
+        <li><strong>Informasi yang Dikumpulkan</strong> — alamat dompet Solana untuk pembayaran, perkiraan negara untuk pemeriksaan sanksi, daftar aplikasi yang terinstal (tetap di ponsel).</li>
+        <li><strong>Hanya di Ponsel Anda</strong> — jika Anda mengizinkan "Usage access": kapan setiap aplikasi terakhir dibuka (tidak disimpan); tata letak layar utama Anda untuk Launch; dan apa yang dibaca oleh layanan aksesibilitas saat menekan tombol untuk tugas yang Anda mulai (konfirmasi uninstal, instalasi dari dApp Store, memindahkan ikon layar utama). Tidak ada satu pun yang meninggalkan ponsel.</li>
+        <li><strong>Jumlah Anonim</strong> — aplikasi mengirim jumlah kejadian anonim (hanya jenis kejadian, tanpa pengenal) ke server kami sendiri. Anda dapat menonaktifkan ini di Pengaturan → "Anonymous Analytics".</li>
+        <li><strong>Yang TIDAK Kami Kumpulkan</strong> — tidak ada pengenal pribadi, ID perangkat, kunci pribadi, analitik pihak ketiga, atau pelacak iklan.</li>
+        <li><strong>Penggunaan Data</strong> — verifikasi pembayaran, kepatuhan sanksi, menampilkan aplikasi yang terinstal, memberikan fitur berbayar.</li>
+        <li><strong>Berbagi</strong> — Kami tidak pernah menjual data Anda. Pengungkapan terbatas hanya untuk transaksi blockchain dan persyaratan hukum.</li>
+        <li><strong>Layanan Pihak Ketiga</strong> — Solana blockchain dan penyedia RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (penyaringan sanksi). Daftar lengkapnya ada di teks bahasa Inggris.</li>
+        <li><strong>Penyimpanan dan Keamanan</strong> — Data Anda disimpan di ponsel Anda. Server kami menyimpan jumlah harian anonim, dan alamat email kontak hanya jika Anda membeli penempatan dApp unggulan.</li>
+        <li><strong>Pembatasan Geografis</strong> — Aplikasi tidak tersedia di 58 yurisdiksi yang diblokir. Negara Anda diperiksa saat peluncuran dan sebelum setiap pembayaran.</li>
+        <li><strong>Hak Anda</strong> — "Export My Data" dan "Delete My Data" di Pengaturan. Hak GDPR/CCPA didukung penuh.</li>
         <li><strong>Kontak</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Sederhananya:</strong> Kami mengumpulkan sangat sedikit data — terutama alamat dompet publik Anda untuk pembayaran dan lokasi perkiraan Anda untuk pemeriksaan sanksi. Semua lainnya tetap di ponsel Anda. Kami tidak melacak Anda, tidak menampilkan iklan, dan tidak pernah menjual data Anda.</div>
+    <div class="summary-box"><strong>Sederhananya:</strong> Kami mengumpulkan sangat sedikit data — terutama alamat dompet publik Anda untuk pembayaran dan perkiraan negara Anda untuk pemeriksaan sanksi. Semua lainnya tetap di ponsel Anda, kecuali jumlah anonim yang dapat Anda nonaktifkan. Kami tidak menampilkan iklan dan tidak pernah menjual data Anda.</div>
 </article>
 
 <!-- ============== ITALIAN ============== -->
@@ -365,18 +390,20 @@
     <div class="binding-notice"><strong>Avviso:</strong> La versione in inglese sopra è il testo giuridicamente vincolante. Questo riassunto è fornito per comodità.</div>
     <p>Questo documento riassume come AardAppvark Toolkit gestisce i tuoi dati. Per il testo completo, consulta la <a href="#en">sezione in inglese sopra</a>.</p>
     <ol>
-        <li><strong>Introduzione</strong> — Ci impegniamo a proteggere la tua privacy. Principi: minimizzazione dei dati, elaborazione locale, trasparenza, nessun tracciamento, controllo utente.</li>
-        <li><strong>Informazioni Raccolte</strong> — indirizzo del portafoglio Solana per i pagamenti, posizione approssimativa per la conformità alle sanzioni, elenco delle app (solo locale).</li>
-        <li><strong>Cosa NON Raccogliamo</strong> — nessun identificatore personale, ID dispositivo, chiavi private, analisi o tracker pubblicitari.</li>
-        <li><strong>Utilizzo</strong> — verifica del pagamento, conformità alle sanzioni, visualizzazione app, funzionalità di abbonamento.</li>
-        <li><strong>Condivisione</strong> — Non vendiamo mai i tuoi dati. Divulgazione limitata solo per transazioni blockchain e requisiti legali.</li>
-        <li><strong>Servizi di Terze Parti</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Archiviazione e Sicurezza</strong> — Tutti i dati sono archiviati localmente. Non gestiamo server che memorizzano i tuoi dati.</li>
-        <li><strong>Restrizioni Geografiche</strong> — L'app non è disponibile in 58 giurisdizioni bloccate. La posizione è verificata all'avvio e prima di ogni pagamento.</li>
-        <li><strong>I Tuoi Diritti</strong> — accesso tramite Impostazioni, eliminazione con disinstallazione, rinuncia con interruzione dell'uso. GDPR/CCPA pienamente supportati.</li>
+        <li><strong>Introduzione</strong> — Ci impegniamo a proteggere la tua privacy. I nostri principi: minimizzazione dei dati, elaborazione locale, trasparenza, nessun tracciamento da parte di terzi, controllo dell'utente.</li>
+        <li><strong>Informazioni Raccolte</strong> — indirizzo del portafoglio Solana per i pagamenti, paese approssimativo per i controlli sulle sanzioni, l'elenco delle app installate (resta sul telefono).</li>
+        <li><strong>Solo sul Tuo Telefono</strong> — se consenti "Usage access": quando ogni app è stata aperta l'ultima volta (non viene memorizzato); i layout della tua schermata Home per Launch; e ciò che il servizio di accessibilità legge mentre preme i pulsanti per un'attività che hai avviato (conferme di disinstallazione, installazioni dal dApp Store, spostamento delle icone della schermata Home). Nulla di tutto ciò lascia il telefono.</li>
+        <li><strong>Conteggi Anonimi</strong> — l'app invia conteggi anonimi di eventi (solo il tipo di evento, senza identificatori) al nostro server. Puoi disattivarlo in Impostazioni → "Anonymous Analytics".</li>
+        <li><strong>Cosa NON Raccogliamo</strong> — nessun identificatore personale, ID dispositivo, chiave privata, analisi di terze parti o tracker pubblicitari.</li>
+        <li><strong>Utilizzo dei Dati</strong> — verifica del pagamento, conformità alle sanzioni, visualizzazione delle app installate, sblocco delle funzionalità a pagamento.</li>
+        <li><strong>Condivisione</strong> — Non vendiamo mai i tuoi dati. Divulgazione limitata solo per le transazioni blockchain e per obblighi di legge.</li>
+        <li><strong>Servizi di Terze Parti</strong> — Solana blockchain e provider RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (screening sanzioni). L'elenco completo è nel testo in inglese.</li>
+        <li><strong>Archiviazione e Sicurezza</strong> — I tuoi dati sono archiviati sul tuo telefono. I nostri server conservano conteggi giornalieri anonimi e un indirizzo email di contatto solo se acquisti un posizionamento dApp in evidenza.</li>
+        <li><strong>Restrizioni Geografiche</strong> — L'app non è disponibile in 58 giurisdizioni bloccate. Il tuo paese viene verificato all'avvio e prima di ogni pagamento.</li>
+        <li><strong>I Tuoi Diritti</strong> — "Export My Data" e "Delete My Data" in Impostazioni. Diritti GDPR/CCPA pienamente supportati.</li>
         <li><strong>Contatto</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>In breve:</strong> Raccogliamo pochissimi dati — principalmente il tuo indirizzo del portafoglio pubblico per i pagamenti e la tua posizione approssimativa per il controllo delle sanzioni. Tutto il resto rimane sul tuo telefono. Non ti tracciamo, non mostriamo pubblicità e non vendiamo mai i tuoi dati.</div>
+    <div class="summary-box"><strong>In breve:</strong> Raccogliamo pochissimi dati — principalmente il tuo indirizzo del portafoglio pubblico per i pagamenti e il tuo paese approssimativo per i controlli sulle sanzioni. Tutto il resto resta sul tuo telefono, a parte i conteggi anonimi che puoi disattivare. Non mostriamo pubblicità e non vendiamo mai i tuoi dati.</div>
 </article>
 
 <!-- ============== JAPANESE ============== -->
@@ -385,18 +412,20 @@
     <div class="binding-notice"><strong>お知らせ:</strong> 上記の英語版が法的に拘束力のある本文です。この要約は便宜上のものです。</div>
     <p>本書はAardAppvark Toolkitがあなたのデータをどのように扱うかを要約したものです。完全な本文は<a href="#en">上記の英語セクション</a>をご参照ください。</p>
     <ol>
-        <li><strong>はじめに</strong> — プライバシー保護に努めます。原則:データ最小化、ローカル処理優先、透明性、追跡なし、ユーザー管理。</li>
-        <li><strong>収集する情報</strong> — 支払い用のSolanaウォレットアドレス、制裁遵守のための概算位置、インストール済みアプリのリスト(ローカルのみ)。</li>
-        <li><strong>収集しない情報</strong> — 個人識別子、デバイスID、秘密鍵、分析、広告トラッカーは一切なし。</li>
-        <li><strong>使用方法</strong> — 支払い検証、制裁遵守、アプリ表示、サブスクリプション機能の付与。</li>
-        <li><strong>共有</strong> — データを販売することは決してありません。ブロックチェーン取引と法的要件のみ限定的開示。</li>
-        <li><strong>第三者サービス</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
-        <li><strong>保存とセキュリティ</strong> — すべてのデータはローカルに保存されます。あなたのデータを保存するサーバーは運用していません。</li>
-        <li><strong>地理的制限</strong> — アプリは58の制限管轄区域では利用不可。位置は起動時と各支払い前に確認されます。</li>
-        <li><strong>あなたの権利</strong> — 設定からアクセス、アンインストールで削除、使用停止でオプトアウト。GDPR/CCPA完全サポート。</li>
+        <li><strong>はじめに</strong> — プライバシー保護に努めます。原則:データ最小化、ローカル処理優先、透明性、第三者による追跡なし、ユーザーによる管理。</li>
+        <li><strong>収集する情報</strong> — 支払い用のSolanaウォレットアドレス、制裁チェックのためのおおよその国、インストール済みアプリの一覧(端末内にとどまります)。</li>
+        <li><strong>端末内のみ</strong> — "Usage access"を許可した場合、各アプリが最後に開かれた日時(保存されません)、Launch用のホーム画面レイアウト、そしてあなたが開始した操作(アンインストールの確認、dApp Storeでのインストール、ホーム画面アイコンの移動)のためにボタンを押す際にユーザー補助サービスが読み取る内容です。これらはいずれも端末の外には出ません。</li>
+        <li><strong>匿名の集計</strong> — アプリは匿名のイベント件数(イベントの種類のみ、識別子は含みません)を当社自身のサーバーに送信します。設定 → "Anonymous Analytics" でオフにできます。</li>
+        <li><strong>収集しない情報</strong> — 個人識別子、デバイスID、秘密鍵、第三者の分析・広告トラッカーは一切ありません。</li>
+        <li><strong>データの利用</strong> — 支払いの検証、制裁遵守、インストール済みアプリの表示、有料機能の付与。</li>
+        <li><strong>共有</strong> — データを販売することは決してありません。ブロックチェーン取引と法的要件のためにのみ限定的に開示します。</li>
+        <li><strong>第三者サービス</strong> — Solanaブロックチェーンおよび RPC プロバイダー、Mobile Wallet Adapter、Shizuku、Solana dApp Store、TRM Labs(制裁スクリーニング)。完全なリストは英語本文に記載されています。</li>
+        <li><strong>保存とセキュリティ</strong> — あなたのデータは端末に保存されます。当社サーバーは匿名の日次集計を保持し、おすすめdApp掲載枠を購入した場合に限り連絡用メールアドレスを保持します。</li>
+        <li><strong>地理的制限</strong> — アプリは58の制限管轄区域では利用できません。起動時および支払いのたびに国が確認されます。</li>
+        <li><strong>あなたの権利</strong> — 設定内の"Export My Data"および"Delete My Data"。GDPR/CCPAの権利を完全にサポートします。</li>
         <li><strong>連絡先</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>簡単に言うと:</strong> 収集するデータは非常に少なく、主に支払い用のあなたの公開ウォレットアドレスと制裁チェック用の概算位置です。それ以外はすべてあなたの端末に留まります。追跡せず、広告を表示せず、データを販売することは決してありません。</div>
+    <div class="summary-box"><strong>簡単に言うと:</strong> 収集するデータは非常に少なく、主に支払い用の公開ウォレットアドレスと制裁チェック用のおおよその国です。それ以外はすべて端末内にとどまりますが、オフにできる匿名の集計は例外です。広告は表示せず、データを販売することも決してありません。</div>
 </article>
 
 <!-- ============== KOREAN ============== -->
@@ -405,18 +434,20 @@
     <div class="binding-notice"><strong>공지:</strong> 위의 영어 버전이 법적으로 구속력 있는 본문입니다. 이 요약은 편의를 위해 제공됩니다.</div>
     <p>이 문서는 AardAppvark Toolkit이 귀하의 데이터를 어떻게 처리하는지 요약합니다. 전체 본문은 <a href="#en">위의 영어 섹션</a>을 참조하십시오.</p>
     <ol>
-        <li><strong>소개</strong> — 개인정보 보호에 최선을 다합니다. 원칙: 데이터 최소화, 로컬 우선, 투명성, 추적 없음, 사용자 통제.</li>
-        <li><strong>수집하는 정보</strong> — 결제용 Solana 지갑 주소, 제재 준수를 위한 대략적 위치, 설치된 앱 목록(로컬 전용).</li>
-        <li><strong>수집하지 않는 정보</strong> — 개인 식별자, 기기 ID, 개인 키, 분석, 광고 추적기 일체 없음.</li>
-        <li><strong>사용 방법</strong> — 결제 확인, 제재 준수, 앱 표시, 구독 기능 제공.</li>
-        <li><strong>공유</strong> — 귀하의 데이터를 절대 판매하지 않습니다. 블록체인 거래 및 법적 요구사항에만 제한적 공개.</li>
-        <li><strong>제3자 서비스</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>저장 및 보안</strong> — 모든 데이터는 로컬에 저장됩니다. 귀하의 데이터를 저장하는 서버를 운영하지 않습니다.</li>
-        <li><strong>지리적 제한</strong> — 앱은 58개 차단된 관할 구역에서 사용할 수 없습니다. 위치는 실행 시 및 각 결제 전 확인됩니다.</li>
-        <li><strong>귀하의 권리</strong> — 설정을 통한 액세스, 제거를 통한 삭제, 사용 중단을 통한 옵트아웃. GDPR/CCPA 완전 지원.</li>
+        <li><strong>소개</strong> — 개인정보 보호에 최선을 다합니다. 원칙: 데이터 최소화, 로컬 우선 처리, 투명성, 제3자 추적 없음, 사용자 통제.</li>
+        <li><strong>수집하는 정보</strong> — 결제용 Solana 지갑 주소, 제재 확인을 위한 대략적인 국가, 설치된 앱 목록(휴대폰에만 저장).</li>
+        <li><strong>휴대폰에만 저장되는 정보</strong> — "Usage access"를 허용한 경우 각 앱을 마지막으로 연 시각(저장되지 않음), Launch를 위한 홈 화면 레이아웃, 그리고 사용자가 시작한 작업(제거 확인, dApp Store 설치, 홈 화면 아이콘 이동)을 위해 버튼을 누르는 동안 접근성 서비스가 읽는 내용입니다. 이 중 어느 것도 휴대폰 밖으로 나가지 않습니다.</li>
+        <li><strong>익명 집계</strong> — 앱은 익명의 이벤트 횟수(이벤트 유형만, 식별자 없음)를 당사 서버로 전송합니다. 설정 → "Anonymous Analytics"에서 끌 수 있습니다.</li>
+        <li><strong>수집하지 않는 정보</strong> — 개인 식별자, 기기 ID, 개인 키, 제3자 분석 또는 광고 추적기는 전혀 없습니다.</li>
+        <li><strong>데이터 사용</strong> — 결제 확인, 제재 준수, 설치된 앱 표시, 유료 기능 제공.</li>
+        <li><strong>공유</strong> — 귀하의 데이터를 절대 판매하지 않습니다. 블록체인 거래 및 법적 요구사항에 한해서만 제한적으로 공개합니다.</li>
+        <li><strong>제3자 서비스</strong> — Solana 블록체인 및 RPC 제공업체, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs(제재 심사). 전체 목록은 영어 본문에 있습니다.</li>
+        <li><strong>저장 및 보안</strong> — 귀하의 데이터는 휴대폰에 저장됩니다. 당사 서버는 익명의 일일 집계를 보관하며, 추천 dApp 게재 위치를 구매한 경우에 한해 연락용 이메일 주소를 보관합니다.</li>
+        <li><strong>지리적 제한</strong> — 앱은 차단된 58개 관할 구역에서 사용할 수 없습니다. 실행 시 및 결제할 때마다 국가가 확인됩니다.</li>
+        <li><strong>귀하의 권리</strong> — 설정의 "Export My Data" 및 "Delete My Data". GDPR/CCPA 권리를 완전히 지원합니다.</li>
         <li><strong>문의</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>간단히 말하면:</strong> 매우 적은 데이터만 수집합니다 — 주로 결제용 공개 지갑 주소와 제재 확인용 대략적 위치입니다. 그 외 모든 것은 귀하의 휴대폰에 남아 있습니다. 추적하지 않고, 광고를 표시하지 않으며, 절대 데이터를 판매하지 않습니다.</div>
+    <div class="summary-box"><strong>간단히 말하면:</strong> 매우 적은 데이터만 수집합니다 — 주로 결제용 공개 지갑 주소와 제재 확인용 대략적인 국가입니다. 그 외 모든 것은 휴대폰에만 남아 있으며, 끌 수 있는 익명 집계만 예외입니다. 광고를 표시하지 않으며 귀하의 데이터를 절대 판매하지 않습니다.</div>
 </article>
 
 <!-- ============== DUTCH ============== -->
@@ -425,18 +456,20 @@
     <div class="binding-notice"><strong>Mededeling:</strong> De Engelse versie hierboven is de juridisch bindende tekst. Deze samenvatting wordt ter informatie verstrekt.</div>
     <p>Dit document vat samen hoe AardAppvark Toolkit omgaat met uw gegevens. Voor de volledige tekst zie het <a href="#en">Engelse gedeelte hierboven</a>.</p>
     <ol>
-        <li><strong>Introductie</strong> — Wij zetten ons in voor uw privacy. Principes: dataminimalisatie, lokale verwerking, transparantie, geen tracking, gebruikerscontrole.</li>
-        <li><strong>Verzamelde informatie</strong> — Solana-portemonnee-adres voor betalingen, geschatte locatie voor sanctienaleving, lijst geïnstalleerde apps (alleen lokaal).</li>
-        <li><strong>Wat we NIET verzamelen</strong> — geen persoonlijke identificatoren, apparaat-ID's, privésleutels, analyses of advertentietrackers.</li>
-        <li><strong>Gebruik</strong> — betalingsverificatie, sanctienaleving, apps tonen, abonnementsfuncties verlenen.</li>
-        <li><strong>Delen</strong> — Wij verkopen uw gegevens nooit. Beperkte openbaarmaking alleen voor blockchaintransacties en juridische vereisten.</li>
-        <li><strong>Diensten van derden</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Opslag en Beveiliging</strong> — Alle gegevens worden lokaal opgeslagen. We exploiteren geen servers die uw gegevens opslaan.</li>
-        <li><strong>Geografische Beperkingen</strong> — De app is niet beschikbaar in 58 geblokkeerde rechtsgebieden. Locatie wordt gecontroleerd bij opstarten en voor elke betaling.</li>
-        <li><strong>Uw Rechten</strong> — toegang via Instellingen, verwijdering door deïnstalleren, opt-out door gebruik te stoppen. AVG/CCPA volledig ondersteund.</li>
+        <li><strong>Introductie</strong> — Wij zetten ons in voor uw privacy. Onze principes: dataminimalisatie, lokale verwerking, transparantie, geen tracking door derden, gebruikerscontrole.</li>
+        <li><strong>Verzamelde informatie</strong> — Solana-portemonnee-adres voor betalingen, geschat land voor sanctiecontroles, de lijst met geïnstalleerde apps (blijft op de telefoon).</li>
+        <li><strong>Alleen op uw telefoon</strong> — als u "Usage access" toestaat: wanneer elke app voor het laatst is geopend (niet opgeslagen); uw startschermindelingen voor Launch; en wat de toegankelijkheidsservice leest terwijl deze knoppen indrukt voor een taak die u bent gestart (verwijderbevestigingen, installaties vanuit de dApp Store, het verplaatsen van startschermpictogrammen). Niets daarvan verlaat de telefoon.</li>
+        <li><strong>Anonieme tellingen</strong> — de app stuurt anonieme gebeurtenistellingen (alleen het type gebeurtenis, geen identificatoren) naar onze eigen server. U kunt dit uitschakelen in Instellingen → "Anonymous Analytics".</li>
+        <li><strong>Wat we NIET verzamelen</strong> — geen persoonlijke identificatoren, apparaat-ID's, privésleutels, analyses van derden of advertentietrackers.</li>
+        <li><strong>Gebruik van gegevens</strong> — betalingsverificatie, sanctienaleving, tonen van geïnstalleerde apps, toekennen van betaalde functies.</li>
+        <li><strong>Delen</strong> — Wij verkopen uw gegevens nooit. Beperkte openbaarmaking alleen voor blockchaintransacties en wettelijke vereisten.</li>
+        <li><strong>Diensten van derden</strong> — Solana-blockchain en RPC-providers, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (sanctiescreening). De volledige lijst staat in de Engelse tekst.</li>
+        <li><strong>Opslag en Beveiliging</strong> — Uw gegevens worden op uw telefoon opgeslagen. Onze servers bewaren anonieme dagelijkse tellingen, en een contact-e-mailadres alleen als u een uitgelichte dApp-plaatsing koopt.</li>
+        <li><strong>Geografische Beperkingen</strong> — De app is niet beschikbaar in 58 geblokkeerde rechtsgebieden. Uw land wordt gecontroleerd bij het opstarten en vóór elke betaling.</li>
+        <li><strong>Uw Rechten</strong> — "Export My Data" en "Delete My Data" in Instellingen. GDPR/CCPA-rechten volledig ondersteund.</li>
         <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Kort gezegd:</strong> We verzamelen heel weinig gegevens — voornamelijk uw openbare portemonnee-adres voor betalingen en uw geschatte locatie voor sanctiecontrole. Al het andere blijft op uw telefoon. We volgen u niet, tonen geen advertenties en verkopen uw gegevens nooit.</div>
+    <div class="summary-box"><strong>Kort gezegd:</strong> We verzamelen heel weinig gegevens — voornamelijk uw openbare portemonnee-adres voor betalingen en uw geschatte land voor sanctiecontroles. Al het andere blijft op uw telefoon, behalve anonieme tellingen die u kunt uitschakelen. We tonen geen advertenties en verkopen uw gegevens nooit.</div>
 </article>
 
 <!-- ============== POLISH ============== -->
@@ -445,18 +478,20 @@
     <div class="binding-notice"><strong>Uwaga:</strong> Wersja angielska powyżej stanowi prawnie wiążący tekst. To podsumowanie jest udostępniane dla wygody.</div>
     <p>Ten dokument podsumowuje sposób, w jaki AardAppvark Toolkit obsługuje Twoje dane. Pełny tekst znajduje się w <a href="#en">sekcji angielskiej powyżej</a>.</p>
     <ol>
-        <li><strong>Wprowadzenie</strong> — Zobowiązujemy się chronić Twoją prywatność. Zasady: minimalizacja danych, przetwarzanie lokalne, przejrzystość, brak śledzenia, kontrola użytkownika.</li>
-        <li><strong>Zbierane informacje</strong> — adres portfela Solana do płatności, przybliżona lokalizacja dla zgodności z sankcjami, lista zainstalowanych aplikacji (tylko lokalnie).</li>
-        <li><strong>Czego NIE zbieramy</strong> — żadnych identyfikatorów osobistych, identyfikatorów urządzenia, kluczy prywatnych, analityki ani trackerów reklamowych.</li>
-        <li><strong>Wykorzystanie</strong> — weryfikacja płatności, zgodność z sankcjami, wyświetlanie aplikacji, funkcje subskrypcji.</li>
-        <li><strong>Udostępnianie</strong> — Nigdy nie sprzedajemy Twoich danych. Ograniczone ujawnianie tylko dla transakcji blockchain i wymagań prawnych.</li>
-        <li><strong>Usługi stron trzecich</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Przechowywanie i bezpieczeństwo</strong> — Wszystkie dane są przechowywane lokalnie. Nie prowadzimy serwerów przechowujących Twoje dane.</li>
-        <li><strong>Ograniczenia geograficzne</strong> — Aplikacja nie jest dostępna w 58 zablokowanych jurysdykcjach. Lokalizacja jest weryfikowana przy uruchomieniu i przed każdą płatnością.</li>
-        <li><strong>Twoje prawa</strong> — dostęp przez Ustawienia, usuwanie przez odinstalowanie, rezygnacja przez zaprzestanie używania. RODO/CCPA w pełni obsługiwane.</li>
+        <li><strong>Wprowadzenie</strong> — Zobowiązujemy się chronić Twoją prywatność. Nasze zasady: minimalizacja danych, przetwarzanie lokalne, przejrzystość, brak śledzenia przez podmioty trzecie, kontrola użytkownika.</li>
+        <li><strong>Zbierane informacje</strong> — adres portfela Solana do płatności, przybliżony kraj do kontroli sankcji, lista zainstalowanych aplikacji (pozostaje na telefonie).</li>
+        <li><strong>Tylko na Twoim telefonie</strong> — jeśli zezwolisz na "Usage access": kiedy każda aplikacja była ostatnio otwierana (nie jest przechowywane); układy Twojego ekranu głównego dla Launch; oraz to, co odczytuje usługa ułatwień dostępu podczas naciskania przycisków w ramach zadania, które rozpocząłeś (potwierdzenia odinstalowania, instalacje z dApp Store, przenoszenie ikon ekranu głównego). Nic z tego nie opuszcza telefonu.</li>
+        <li><strong>Anonimowe liczniki</strong> — aplikacja wysyła anonimowe liczniki zdarzeń (tylko typ zdarzenia, bez identyfikatorów) na nasz własny serwer. Możesz to wyłączyć w Ustawieniach → "Anonymous Analytics".</li>
+        <li><strong>Czego NIE zbieramy</strong> — żadnych identyfikatorów osobistych, identyfikatorów urządzenia, kluczy prywatnych, analityki stron trzecich ani trackerów reklamowych.</li>
+        <li><strong>Wykorzystanie danych</strong> — weryfikacja płatności, zgodność z sankcjami, wyświetlanie zainstalowanych aplikacji, przyznawanie płatnych funkcji.</li>
+        <li><strong>Udostępnianie</strong> — Nigdy nie sprzedajemy Twoich danych. Ograniczone ujawnianie wyłącznie na potrzeby transakcji blockchain i wymogów prawnych.</li>
+        <li><strong>Usługi stron trzecich</strong> — blockchain Solana i dostawcy RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (weryfikacja sankcji). Pełna lista znajduje się w tekście angielskim.</li>
+        <li><strong>Przechowywanie i bezpieczeństwo</strong> — Twoje dane są przechowywane na Twoim telefonie. Nasze serwery przechowują anonimowe dzienne liczniki oraz adres e-mail kontaktowy wyłącznie w przypadku zakupu wyróżnionego miejsca dla dApp.</li>
+        <li><strong>Ograniczenia geograficzne</strong> — Aplikacja nie jest dostępna w 58 zablokowanych jurysdykcjach. Twój kraj jest sprawdzany przy uruchomieniu i przed każdą płatnością.</li>
+        <li><strong>Twoje prawa</strong> — "Export My Data" i "Delete My Data" w Ustawieniach. Prawa wynikające z GDPR/CCPA są w pełni obsługiwane.</li>
         <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Krótko mówiąc:</strong> Zbieramy bardzo niewiele danych — głównie Twój publiczny adres portfela do płatności i przybliżoną lokalizację do sprawdzenia sankcji. Wszystko inne pozostaje na Twoim telefonie. Nie śledzimy Cię, nie pokazujemy reklam i nigdy nie sprzedajemy Twoich danych.</div>
+    <div class="summary-box"><strong>Krótko mówiąc:</strong> Zbieramy bardzo niewiele danych — głównie Twój publiczny adres portfela do płatności i przybliżony kraj do kontroli sankcji. Wszystko inne pozostaje na Twoim telefonie, poza anonimowymi licznikami, które możesz wyłączyć. Nie wyświetlamy reklam i nigdy nie sprzedajemy Twoich danych.</div>
 </article>
 
 <!-- ============== PORTUGUESE (BRAZIL) ============== -->
@@ -465,18 +500,20 @@
     <div class="binding-notice"><strong>Aviso:</strong> A versão em inglês acima é o texto juridicamente vinculativo. Este resumo é fornecido por conveniência.</div>
     <p>Este documento resume como AardAppvark Toolkit lida com seus dados. Para o texto completo, consulte a <a href="#en">seção em inglês acima</a>.</p>
     <ol>
-        <li><strong>Introdução</strong> — Comprometemo-nos a proteger sua privacidade. Princípios: minimização de dados, processamento local, transparência, sem rastreamento, controle do usuário.</li>
-        <li><strong>Informações Coletadas</strong> — endereço da carteira Solana para pagamentos, localização aproximada para conformidade com sanções, lista de aplicativos (apenas local).</li>
-        <li><strong>O Que NÃO Coletamos</strong> — sem identificadores pessoais, IDs de dispositivo, chaves privadas, análises ou rastreadores de anúncios.</li>
-        <li><strong>Como Usamos</strong> — verificação de pagamento, conformidade com sanções, exibição de apps, recursos de assinatura.</li>
-        <li><strong>Compartilhamento</strong> — Nunca vendemos seus dados. Divulgação limitada apenas para transações blockchain e requisitos legais.</li>
-        <li><strong>Serviços de Terceiros</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Armazenamento e Segurança</strong> — Todos os dados são armazenados localmente. Não operamos servidores que armazenam seus dados.</li>
-        <li><strong>Restrições Geográficas</strong> — O app não está disponível em 58 jurisdições bloqueadas. A localização é verificada na inicialização e antes de cada pagamento.</li>
-        <li><strong>Seus Direitos</strong> — acesso via Configurações, exclusão por desinstalação, opt-out interrompendo o uso. LGPD/GDPR/CCPA totalmente suportados.</li>
+        <li><strong>Introdução</strong> — Comprometemo-nos a proteger sua privacidade. Nossos princípios: minimização de dados, processamento local, transparência, sem rastreamento por terceiros, controle do usuário.</li>
+        <li><strong>Informações Coletadas</strong> — endereço da carteira Solana para pagamentos, país aproximado para verificações de sanções, a lista de apps instalados (permanece no celular).</li>
+        <li><strong>Somente no Seu Celular</strong> — se você permitir "Usage access", quando cada app foi aberto pela última vez (não é armazenado); os layouts da sua tela inicial para o Launch; e o que o serviço de acessibilidade lê enquanto pressiona botões para uma tarefa que você iniciou (confirmações de desinstalação, instalações pela dApp Store, movimentação de ícones da tela inicial). Nada disso sai do celular.</li>
+        <li><strong>Contagens Anônimas</strong> — o app envia contagens anônimas de eventos (apenas o tipo de evento, sem identificadores) para nosso próprio servidor. Você pode desativar isso em Configurações → "Anonymous Analytics".</li>
+        <li><strong>O Que NÃO Coletamos</strong> — nenhum identificador pessoal, ID de dispositivo, chave privada, análise de terceiros ou rastreador de anúncios.</li>
+        <li><strong>Uso dos Dados</strong> — verificação de pagamento, conformidade com sanções, exibição de apps instalados, concessão de recursos pagos.</li>
+        <li><strong>Compartilhamento</strong> — Nunca vendemos seus dados. Divulgação limitada apenas para transações em blockchain e exigências legais.</li>
+        <li><strong>Serviços de Terceiros</strong> — blockchain da Solana e provedores de RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (triagem de sanções). A lista completa está no texto em inglês.</li>
+        <li><strong>Armazenamento e Segurança</strong> — Seus dados são armazenados no seu celular. Nossos servidores mantêm contagens diárias anônimas, e um e-mail de contato apenas se você comprar um posicionamento de dApp em destaque.</li>
+        <li><strong>Restrições Geográficas</strong> — O app não está disponível em 58 jurisdições bloqueadas. Seu país é verificado na inicialização e antes de cada pagamento.</li>
+        <li><strong>Seus Direitos</strong> — "Export My Data" e "Delete My Data" em Configurações. Direitos de GDPR/CCPA totalmente suportados.</li>
         <li><strong>Contato</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Em resumo:</strong> Coletamos muito poucos dados — principalmente seu endereço de carteira público para pagamentos e sua localização aproximada para verificar sanções. Tudo o mais permanece em seu telefone. Não te rastreamos, não mostramos anúncios e nunca vendemos seus dados.</div>
+    <div class="summary-box"><strong>Em resumo:</strong> Coletamos muito poucos dados — principalmente seu endereço de carteira público para pagamentos e seu país aproximado para verificações de sanções. Tudo o mais permanece no seu celular, exceto as contagens anônimas que você pode desativar. Não exibimos anúncios e nunca vendemos seus dados.</div>
 </article>
 
 <!-- ============== BENGALI ============== -->
@@ -485,18 +522,20 @@
     <div class="binding-notice"><strong>নোট:</strong> উপরের ইংরেজি সংস্করণটি আইনগতভাবে বাধ্যতামূলক পাঠ্য। এই সারাংশটি কেবলমাত্র সুবিধার্থে প্রদান করা হয়েছে।</div>
     <p>এই নথিটি AardAppvark Toolkit আপনার ডেটা কীভাবে পরিচালনা করে তা সারাংশ করে। সম্পূর্ণ পাঠ্যের জন্য, <a href="#en">উপরের ইংরেজি বিভাগটি</a> দেখুন।</p>
     <ol>
-        <li><strong>ভূমিকা</strong> — আমরা আপনার গোপনীয়তা রক্ষায় প্রতিশ্রুতিবদ্ধ। নীতিমালা: ডেটা ন্যূনতমকরণ, স্থানীয় প্রক্রিয়াকরণ, স্বচ্ছতা, কোনো ট্র্যাকিং নেই, ব্যবহারকারীর নিয়ন্ত্রণ।</li>
-        <li><strong>সংগৃহীত তথ্য</strong> — পেমেন্টের জন্য Solana ওয়ালেট ঠিকানা, নিষেধাজ্ঞা সম্মতির জন্য আনুমানিক অবস্থান, অ্যাপ তালিকা (কেবলমাত্র স্থানীয়)।</li>
-        <li><strong>আমরা যা সংগ্রহ করি না</strong> — কোনো ব্যক্তিগত শনাক্তকারী, ডিভাইস আইডি, প্রাইভেট কী, অ্যানালিটিক্স বা বিজ্ঞাপন ট্র্যাকার নেই।</li>
-        <li><strong>আমরা কীভাবে ব্যবহার করি</strong> — পেমেন্ট যাচাইকরণ, নিষেধাজ্ঞা সম্মতি, অ্যাপ প্রদর্শন, সাবস্ক্রিপশন বৈশিষ্ট্য।</li>
+        <li><strong>ভূমিকা</strong> — আমরা আপনার গোপনীয়তা রক্ষায় প্রতিশ্রুতিবদ্ধ। আমাদের নীতিমালা: ডেটা ন্যূনতমকরণ, স্থানীয় প্রক্রিয়াকরণ, স্বচ্ছতা, কোনো তৃতীয়-পক্ষের ট্র্যাকিং নেই, ব্যবহারকারীর নিয়ন্ত্রণ।</li>
+        <li><strong>সংগৃহীত তথ্য</strong> — পেমেন্টের জন্য Solana ওয়ালেট ঠিকানা, নিষেধাজ্ঞা যাচাইয়ের জন্য আনুমানিক দেশ, ইনস্টল করা অ্যাপের তালিকা (ফোনেই থাকে)।</li>
+        <li><strong>শুধুমাত্র আপনার ফোনে</strong> — আপনি যদি "Usage access" অনুমতি দেন: প্রতিটি অ্যাপ সর্বশেষ কখন খোলা হয়েছিল (সংরক্ষিত হয় না); Launch-এর জন্য আপনার হোম-স্ক্রিন লেআউট; এবং আপনি শুরু করা কোনো কাজের জন্য বোতাম চাপার সময় অ্যাক্সেসিবিলিটি পরিষেবা যা পড়ে (আনইনস্টল নিশ্চিতকরণ, dApp Store ইনস্টল, হোম-স্ক্রিন আইকন সরানো)। এর কোনোটাই ফোনের বাইরে যায় না।</li>
+        <li><strong>বেনামী গণনা</strong> — অ্যাপটি বেনামী ইভেন্ট গণনা (শুধু ইভেন্টের ধরন, কোনো শনাক্তকারী ছাড়াই) আমাদের নিজস্ব সার্ভারে পাঠায়। আপনি এটি সেটিংস → "Anonymous Analytics"-এ বন্ধ করতে পারেন।</li>
+        <li><strong>আমরা যা সংগ্রহ করি না</strong> — কোনো ব্যক্তিগত শনাক্তকারী, ডিভাইস আইডি, প্রাইভেট কী, তৃতীয়-পক্ষের অ্যানালিটিক্স বা বিজ্ঞাপন ট্র্যাকার নেই।</li>
+        <li><strong>ডেটার ব্যবহার</strong> — পেমেন্ট যাচাইকরণ, নিষেধাজ্ঞা সম্মতি, ইনস্টল করা অ্যাপ প্রদর্শন, পেইড ফিচার প্রদান।</li>
         <li><strong>শেয়ারিং</strong> — আমরা কখনই আপনার ডেটা বিক্রি করি না। সীমিত প্রকাশ কেবল ব্লকচেইন লেনদেন এবং আইনি প্রয়োজনীয়তার জন্য।</li>
-        <li><strong>তৃতীয়-পক্ষের পরিষেবা</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store।</li>
-        <li><strong>সংরক্ষণ এবং নিরাপত্তা</strong> — সমস্ত ডেটা স্থানীয়ভাবে সংরক্ষিত হয়। আমরা আপনার ডেটা সংরক্ষণকারী কোনো সার্ভার পরিচালনা করি না।</li>
-        <li><strong>ভৌগোলিক সীমাবদ্ধতা</strong> — অ্যাপটি ৫৪টি অবরুদ্ধ এখতিয়ারে উপলব্ধ নয়। স্টার্টআপে এবং প্রতিটি পেমেন্টের পূর্বে অবস্থান যাচাই করা হয়।</li>
-        <li><strong>আপনার অধিকার</strong> — সেটিংসের মাধ্যমে অ্যাক্সেস, আনইনস্টল করে মুছে ফেলা, ব্যবহার বন্ধ করে অপ্ট-আউট। GDPR/CCPA সম্পূর্ণরূপে সমর্থিত।</li>
+        <li><strong>তৃতীয়-পক্ষের পরিষেবা</strong> — Solana ব্লকচেইন এবং RPC প্রদানকারী, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (নিষেধাজ্ঞা স্ক্রিনিং)। সম্পূর্ণ তালিকা ইংরেজি লেখায় রয়েছে।</li>
+        <li><strong>সংরক্ষণ এবং নিরাপত্তা</strong> — আপনার ডেটা আপনার ফোনে সংরক্ষিত হয়। আমাদের সার্ভার বেনামী দৈনিক গণনা সংরক্ষণ করে, এবং শুধুমাত্র আপনি কোনো বিশেষভাবে প্রদর্শিত dApp প্লেসমেন্ট কিনলে একটি যোগাযোগের ইমেইল ঠিকানা সংরক্ষণ করে।</li>
+        <li><strong>ভৌগোলিক সীমাবদ্ধতা</strong> — অ্যাপটি ৫৮টি অবরুদ্ধ এখতিয়ারে উপলব্ধ নয়। চালুর সময় এবং প্রতিটি পেমেন্টের আগে আপনার দেশ যাচাই করা হয়।</li>
+        <li><strong>আপনার অধিকার</strong> — সেটিংসে "Export My Data" এবং "Delete My Data"। GDPR/CCPA অধিকার সম্পূর্ণরূপে সমর্থিত।</li>
         <li><strong>যোগাযোগ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>সংক্ষেপে:</strong> আমরা খুব কম ডেটা সংগ্রহ করি — মূলত পেমেন্টের জন্য আপনার পাবলিক ওয়ালেট ঠিকানা এবং নিষেধাজ্ঞা যাচাইয়ের জন্য আপনার আনুমানিক অবস্থান। বাকি সবকিছু আপনার ফোনেই থাকে। আমরা আপনাকে ট্র্যাক করি না, বিজ্ঞাপন দেখাই না এবং কখনো আপনার ডেটা বিক্রি করি না।</div>
+    <div class="summary-box"><strong>সংক্ষেপে:</strong> আমরা খুব কম ডেটা সংগ্রহ করি — মূলত পেমেন্টের জন্য আপনার পাবলিক ওয়ালেট ঠিকানা এবং নিষেধাজ্ঞা যাচাইয়ের জন্য আপনার আনুমানিক দেশ। বাকি সবকিছু আপনার ফোনেই থাকে, বেনামী গণনা ছাড়া, যা আপনি বন্ধ করতে পারেন। আমরা কোনো বিজ্ঞাপন দেখাই না এবং কখনো আপনার ডেটা বিক্রি করি না।</div>
 </article>
 
 <!-- ============== ROMANIAN ============== -->
@@ -505,18 +544,20 @@
     <div class="binding-notice"><strong>Notă:</strong> Versiunea în limba engleză de mai sus este textul cu valoare juridică. Acest rezumat este furnizat pentru comoditate.</div>
     <p>Acest document rezumă modul în care AardAppvark Toolkit gestionează datele dumneavoastră. Pentru textul complet, consultați <a href="#en">secțiunea în limba engleză de mai sus</a>.</p>
     <ol>
-        <li><strong>Introducere</strong> — Ne angajăm să vă protejăm confidențialitatea. Principii: minimizarea datelor, procesare locală, transparență, fără urmărire, control al utilizatorului.</li>
-        <li><strong>Informații Colectate</strong> — adresa portofelului Solana pentru plăți, locația aproximativă pentru respectarea sancțiunilor, lista aplicațiilor (doar local).</li>
-        <li><strong>Ce NU Colectăm</strong> — niciun identificator personal, ID-uri de dispozitiv, chei private, analiză sau trackere publicitare.</li>
-        <li><strong>Utilizare</strong> — verificarea plății, respectarea sancțiunilor, afișarea aplicațiilor, funcționalități de abonament.</li>
+        <li><strong>Introducere</strong> — Ne angajăm să vă protejăm confidențialitatea. Principiile noastre: minimizarea datelor, procesare locală, transparență, fără urmărire din partea terților, control al utilizatorului.</li>
+        <li><strong>Informații Colectate</strong> — adresa portofelului Solana pentru plăți, țara aproximativă pentru verificări de sancțiuni, lista aplicațiilor instalate (rămâne pe telefon).</li>
+        <li><strong>Numai pe Telefonul Dvs.</strong> — dacă permiteți „Usage access”, când a fost deschisă ultima dată fiecare aplicație (nu se stochează); aspectul ecranelor de pornire pentru Launch; și ce citește serviciul de accesibilitate în timp ce apasă butoane pentru o sarcină pe care ați inițiat-o (confirmări de dezinstalare, instalări din dApp Store, mutarea pictogramelor de pe ecranul de pornire). Nimic din acestea nu părăsește telefonul.</li>
+        <li><strong>Numărători Anonime</strong> — aplicația trimite numărători anonime ale evenimentelor (doar tipul evenimentului, fără identificatori) către propriul nostru server. Puteți dezactiva această opțiune în Setări → „Anonymous Analytics”.</li>
+        <li><strong>Ce NU Colectăm</strong> — niciun identificator personal, ID-uri de dispozitiv, chei private, analize efectuate de terți sau trackere publicitare.</li>
+        <li><strong>Utilizare</strong> — verificarea plăților, respectarea sancțiunilor, afișarea aplicațiilor instalate, acordarea funcțiilor plătite.</li>
         <li><strong>Partajare</strong> — Nu vă vindem niciodată datele. Divulgare limitată numai pentru tranzacții blockchain și cerințe legale.</li>
-        <li><strong>Servicii ale Terților</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Stocare și Securitate</strong> — Toate datele sunt stocate local. Nu operăm servere care vă stochează datele.</li>
-        <li><strong>Restricții Geografice</strong> — Aplicația nu este disponibilă în 58 de jurisdicții blocate. Locația este verificată la lansare și înainte de fiecare plată.</li>
-        <li><strong>Drepturile Dvs.</strong> — acces prin Setări, ștergere prin dezinstalare, renunțare prin oprirea utilizării. GDPR/CCPA pe deplin susținute.</li>
+        <li><strong>Servicii ale Terților</strong> — blockchain-ul Solana și furnizorii RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (verificare sancțiuni). Lista completă se află în textul în limba engleză.</li>
+        <li><strong>Stocare și Securitate</strong> — Datele dumneavoastră sunt stocate pe telefonul dvs. Serverele noastre păstrează numărători zilnice anonime și o adresă de e-mail de contact doar dacă achiziționați o poziționare Featured dApp.</li>
+        <li><strong>Restricții Geografice</strong> — Aplicația nu este disponibilă în 58 de jurisdicții blocate. Țara dvs. este verificată la lansare și înainte de fiecare plată.</li>
+        <li><strong>Drepturile Dvs.</strong> — „Export My Data” și „Delete My Data” în Setări. Drepturile GDPR/CCPA sunt susținute integral.</li>
         <li><strong>Contact</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Pe scurt:</strong> Colectăm foarte puține date — în principal adresa portofelului dvs. public pentru plăți și locația aproximativă pentru verificarea sancțiunilor. Toate celelalte rămân pe telefonul dvs. Nu vă urmărim, nu afișăm reclame și nu vă vindem niciodată datele.</div>
+    <div class="summary-box"><strong>Pe scurt:</strong> Colectăm foarte puține date — în principal adresa portofelului dvs. public pentru plăți și țara dvs. aproximativă pentru verificarea sancțiunilor. Tot restul rămâne pe telefonul dvs., cu excepția numărătorilor anonime pe care le puteți dezactiva. Nu afișăm reclame și nu vă vindem niciodată datele.</div>
 </article>
 
 <!-- ============== RUSSIAN ============== -->
@@ -525,18 +566,20 @@
     <div class="binding-notice"><strong>Уведомление:</strong> Английская версия выше является юридически обязательным текстом. Это резюме предоставлено для удобства.</div>
     <p>Этот документ резюмирует, как AardAppvark Toolkit обрабатывает ваши данные. Полный текст содержится в <a href="#en">английском разделе выше</a>.</p>
     <ol>
-        <li><strong>Введение</strong> — Мы стремимся защищать вашу конфиденциальность. Принципы: минимизация данных, локальная обработка, прозрачность, отсутствие отслеживания, контроль пользователя.</li>
-        <li><strong>Собираемая информация</strong> — адрес кошелька Solana для платежей, приблизительное местоположение для соблюдения санкций, список установленных приложений (только локально).</li>
-        <li><strong>Что мы НЕ собираем</strong> — никаких личных идентификаторов, идентификаторов устройств, приватных ключей, аналитики или рекламных трекеров.</li>
-        <li><strong>Использование</strong> — проверка платежей, соблюдение санкций, отображение приложений, функции подписки.</li>
+        <li><strong>Введение</strong> — Мы стремимся защищать вашу конфиденциальность. Наши принципы: минимизация данных, локальная обработка, прозрачность, отсутствие отслеживания третьими сторонами, контроль со стороны пользователя.</li>
+        <li><strong>Собираемая информация</strong> — адрес кошелька Solana для платежей, приблизительная страна для проверки санкций, список установленных приложений (остаётся на телефоне).</li>
+        <li><strong>Только на вашем телефоне</strong> — если вы разрешили «Usage access», время последнего открытия каждого приложения (не сохраняется); раскладки главного экрана для Launch; и то, что считывает служба специальных возможностей, пока она нажимает кнопки для задачи, которую вы запустили (подтверждения удаления, установки из dApp Store, перемещение значков на главном экране). Ничего из этого не покидает телефон.</li>
+        <li><strong>Анонимная статистика</strong> — приложение отправляет анонимные счётчики событий (только тип события, без идентификаторов) на наш собственный сервер. Вы можете отключить это в Настройках → «Anonymous Analytics».</li>
+        <li><strong>Что мы НЕ собираем</strong> — никаких личных идентификаторов, идентификаторов устройств, приватных ключей, сторонней аналитики или рекламных трекеров.</li>
+        <li><strong>Использование</strong> — проверка платежей, соблюдение санкций, отображение установленных приложений, предоставление платных функций.</li>
         <li><strong>Передача</strong> — Мы никогда не продаём ваши данные. Ограниченное раскрытие только для блокчейн-транзакций и юридических требований.</li>
-        <li><strong>Сторонние сервисы</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Хранение и безопасность</strong> — Все данные хранятся локально. Мы не управляем серверами, хранящими ваши данные.</li>
-        <li><strong>Географические ограничения</strong> — Приложение недоступно в 58 заблокированных юрисдикциях. Местоположение проверяется при запуске и перед каждой оплатой.</li>
-        <li><strong>Ваши права</strong> — доступ через Настройки, удаление путём деинсталляции, отказ путём прекращения использования. GDPR/CCPA полностью поддерживаются.</li>
+        <li><strong>Сторонние сервисы</strong> — блокчейн Solana и RPC-провайдеры, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (проверка санкций). Полный список приведён в английском тексте.</li>
+        <li><strong>Хранение и безопасность</strong> — Ваши данные хранятся на вашем телефоне. На наших серверах хранятся только анонимные ежедневные счётчики и контактный адрес электронной почты — только если вы приобретаете размещение Featured dApp.</li>
+        <li><strong>Географические ограничения</strong> — Приложение недоступно в 58 заблокированных юрисдикциях. Ваша страна проверяется при запуске и перед каждым платежом.</li>
+        <li><strong>Ваши права</strong> — «Export My Data» и «Delete My Data» в Настройках. Права по GDPR/CCPA полностью поддерживаются.</li>
         <li><strong>Контакты</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Кратко:</strong> Мы собираем очень мало данных — в основном ваш публичный адрес кошелька для платежей и приблизительное местоположение для проверки санкций. Всё остальное остаётся на вашем телефоне. Мы не отслеживаем вас, не показываем рекламу и никогда не продаём ваши данные.</div>
+    <div class="summary-box"><strong>Кратко:</strong> Мы собираем очень мало данных — в основном ваш публичный адрес кошелька для платежей и приблизительную страну для проверки санкций. Всё остальное остаётся на вашем телефоне, за исключением анонимных счётчиков, которые можно отключить. Мы не показываем рекламу и никогда не продаём ваши данные.</div>
 </article>
 
 <!-- ============== SWEDISH ============== -->
@@ -545,18 +588,20 @@
     <div class="binding-notice"><strong>Obs:</strong> Den engelska versionen ovan är den juridiskt bindande texten. Denna sammanfattning tillhandahålls för enkelhetens skull.</div>
     <p>Detta dokument sammanfattar hur AardAppvark Toolkit hanterar dina data. För hela texten, se <a href="#en">det engelska avsnittet ovan</a>.</p>
     <ol>
-        <li><strong>Introduktion</strong> — Vi är engagerade i att skydda din integritet. Principer: dataminimering, lokal bearbetning, transparens, ingen spårning, användarkontroll.</li>
-        <li><strong>Insamlad information</strong> — Solana-plånboksadress för betalningar, ungefärlig plats för sanktionsefterlevnad, lista över installerade appar (endast lokalt).</li>
-        <li><strong>Vad vi INTE samlar in</strong> — inga personliga identifierare, enhets-ID, privata nycklar, analys eller annonsspårare.</li>
-        <li><strong>Hur vi använder</strong> — betalningsverifiering, sanktionsefterlevnad, visa appar, prenumerationsfunktioner.</li>
+        <li><strong>Introduktion</strong> — Vi är engagerade i att skydda din integritet. Våra principer: dataminimering, lokal bearbetning, transparens, ingen spårning från tredje part, användarkontroll.</li>
+        <li><strong>Insamlad information</strong> — Solana-plånboksadress för betalningar, ungefärligt land för sanktionskontroller, listan över installerade appar (stannar på telefonen).</li>
+        <li><strong>Endast på din telefon</strong> — om du tillåter ”Usage access”, när varje app senast öppnades (lagras inte); dina hemskärmslayouter för Launch; och det som tillgänglighetstjänsten läser medan den trycker på knappar för en uppgift du startat (avinstallationsbekräftelser, installationer från dApp Store, flytt av hemskärmsikoner). Inget av detta lämnar telefonen.</li>
+        <li><strong>Anonyma räkningar</strong> — appen skickar anonyma händelseräkningar (endast händelsetypen, inga identifierare) till vår egen server. Du kan stänga av detta i Inställningar → ”Anonymous Analytics”.</li>
+        <li><strong>Vad vi INTE samlar in</strong> — inga personliga identifierare, enhets-ID, privata nycklar, tredjepartsanalys eller annonsspårare.</li>
+        <li><strong>Hur vi använder</strong> — betalningsverifiering, sanktionsefterlevnad, visa installerade appar, ge tillgång till betalfunktioner.</li>
         <li><strong>Delning</strong> — Vi säljer aldrig dina data. Begränsad utlämning endast för blockchain-transaktioner och rättsliga krav.</li>
-        <li><strong>Tredjepartstjänster</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Lagring och säkerhet</strong> — All data lagras lokalt. Vi driver inga servrar som lagrar dina data.</li>
-        <li><strong>Geografiska begränsningar</strong> — Appen är inte tillgänglig i 58 blockerade jurisdiktioner. Plats verifieras vid start och före varje betalning.</li>
-        <li><strong>Dina rättigheter</strong> — åtkomst via Inställningar, borttagning genom avinstallation, avregistrering genom att sluta använda. GDPR/CCPA fullt stödda.</li>
+        <li><strong>Tredjepartstjänster</strong> — Solana-blockkedjan och RPC-leverantörer, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (sanktionskontroll). Den fullständiga listan finns i den engelska texten.</li>
+        <li><strong>Lagring och säkerhet</strong> — Dina data lagras på din telefon. Våra servrar sparar anonyma dagliga räkningar, samt en kontakt-e-postadress endast om du köper en Featured dApp-placering.</li>
+        <li><strong>Geografiska begränsningar</strong> — Appen är inte tillgänglig i 58 blockerade jurisdiktioner. Ditt land kontrolleras vid start och före varje betalning.</li>
+        <li><strong>Dina rättigheter</strong> — ”Export My Data” och ”Delete My Data” i Inställningar. GDPR/CCPA-rättigheter stöds fullt ut.</li>
         <li><strong>Kontakt</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Kort sagt:</strong> Vi samlar in väldigt lite data — främst din offentliga plånboksadress för betalningar och din ungefärliga plats för sanktionskontroll. Allt annat stannar på din telefon. Vi spårar dig inte, visar inga annonser och säljer aldrig dina data.</div>
+    <div class="summary-box"><strong>Kort sagt:</strong> Vi samlar in väldigt lite data — främst din offentliga plånboksadress för betalningar och ditt ungefärliga land för sanktionskontroll. Allt annat stannar på din telefon, förutom anonyma räkningar som du kan stänga av. Vi visar inga annonser och säljer aldrig dina data.</div>
 </article>
 
 <!-- ============== THAI ============== -->
@@ -565,18 +610,20 @@
     <div class="binding-notice"><strong>หมายเหตุ:</strong> เวอร์ชันภาษาอังกฤษด้านบนเป็นข้อความที่มีผลผูกพันทางกฎหมาย สรุปนี้จัดทำขึ้นเพื่อความสะดวก</div>
     <p>เอกสารนี้สรุปวิธีที่ AardAppvark Toolkit จัดการข้อมูลของคุณ สำหรับข้อความฉบับเต็ม โปรดดู<a href="#en">ส่วนภาษาอังกฤษด้านบน</a></p>
     <ol>
-        <li><strong>บทนำ</strong> — เรามุ่งมั่นที่จะปกป้องความเป็นส่วนตัวของคุณ หลักการ: ลดการเก็บข้อมูล ประมวลผลในเครื่องก่อน ความโปร่งใส ไม่ติดตาม ผู้ใช้ควบคุม</li>
-        <li><strong>ข้อมูลที่เราเก็บ</strong> — ที่อยู่กระเป๋าเงิน Solana สำหรับการชำระเงิน ตำแหน่งโดยประมาณสำหรับการปฏิบัติตามมาตรการคว่ำบาตร รายการแอป (เฉพาะในเครื่อง)</li>
-        <li><strong>สิ่งที่เราไม่เก็บ</strong> — ไม่มีตัวระบุบุคคล รหัสอุปกรณ์ คีย์ส่วนตัว การวิเคราะห์ หรือตัวติดตามโฆษณา</li>
-        <li><strong>วิธีการใช้</strong> — ตรวจสอบการชำระเงิน การปฏิบัติตามมาตรการคว่ำบาตร แสดงแอป คุณสมบัติการสมัครสมาชิก</li>
+        <li><strong>บทนำ</strong> — เรามุ่งมั่นที่จะปกป้องความเป็นส่วนตัวของคุณ หลักการของเรา: การลดการเก็บข้อมูลให้น้อยที่สุด การประมวลผลในเครื่อง ความโปร่งใส ไม่มีการติดตามโดยบุคคลที่สาม การควบคุมโดยผู้ใช้</li>
+        <li><strong>ข้อมูลที่เราเก็บ</strong> — ที่อยู่กระเป๋าเงิน Solana สำหรับการชำระเงิน ประเทศโดยประมาณสำหรับการตรวจสอบมาตรการคว่ำบาตร รายการแอปที่ติดตั้ง (อยู่ในโทรศัพท์)</li>
+        <li><strong>อยู่ในโทรศัพท์ของคุณเท่านั้น</strong> — เวลาที่เปิดแอปแต่ละตัวครั้งล่าสุด (ไม่ถูกจัดเก็บ) หากคุณอนุญาต "Usage access" รูปแบบหน้าจอหลักของคุณสำหรับ Launch และสิ่งที่บริการการช่วยเหลือพิเศษอ่านขณะที่กดปุ่มต่าง ๆ เพื่อทำงานที่คุณเริ่มไว้ (การยืนยันการถอนการติดตั้ง การติดตั้งจาก dApp Store การย้ายไอคอนบนหน้าจอหลัก) ไม่มีข้อมูลใดออกจากโทรศัพท์เลย</li>
+        <li><strong>จำนวนนับแบบไม่ระบุตัวตน</strong> — แอปส่งจำนวนนับเหตุการณ์แบบไม่ระบุตัวตน (เฉพาะประเภทเหตุการณ์เท่านั้น ไม่มีตัวระบุตัวตน) ไปยังเซิร์ฟเวอร์ของเราเอง คุณสามารถปิดสิ่งนี้ได้ในการตั้งค่า → "Anonymous Analytics"</li>
+        <li><strong>สิ่งที่เราไม่เก็บ</strong> — ไม่มีตัวระบุบุคคล รหัสอุปกรณ์ คีย์ส่วนตัว การวิเคราะห์โดยบุคคลที่สาม หรือตัวติดตามโฆษณา</li>
+        <li><strong>วิธีการใช้</strong> — ตรวจสอบการชำระเงิน การปฏิบัติตามมาตรการคว่ำบาตร แสดงแอปที่ติดตั้ง มอบสิทธิ์การใช้งานฟีเจอร์แบบชำระเงิน</li>
         <li><strong>การแบ่งปัน</strong> — เราไม่ขายข้อมูลของคุณ การเปิดเผยจำกัดเฉพาะธุรกรรมบล็อกเชนและข้อกำหนดทางกฎหมาย</li>
-        <li><strong>บริการบุคคลที่สาม</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store</li>
-        <li><strong>การจัดเก็บและความปลอดภัย</strong> — ข้อมูลทั้งหมดจัดเก็บไว้ในเครื่อง เราไม่ดำเนินการเซิร์ฟเวอร์ที่จัดเก็บข้อมูลของคุณ</li>
-        <li><strong>ข้อจำกัดทางภูมิศาสตร์</strong> — แอปไม่พร้อมใช้งานใน 58 เขตอำนาจที่ถูกบล็อก ตำแหน่งจะถูกตรวจสอบเมื่อเปิดและก่อนการชำระเงินแต่ละครั้ง</li>
-        <li><strong>สิทธิของคุณ</strong> — เข้าถึงผ่านการตั้งค่า ลบโดยการถอนการติดตั้ง ออกจากระบบโดยหยุดใช้ GDPR/CCPA รองรับเต็มที่</li>
+        <li><strong>บริการบุคคลที่สาม</strong> — บล็อกเชน Solana และผู้ให้บริการ RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (การตรวจสอบมาตรการคว่ำบาตร) รายการทั้งหมดอยู่ในข้อความภาษาอังกฤษ</li>
+        <li><strong>การจัดเก็บและความปลอดภัย</strong> — ข้อมูลของคุณจัดเก็บไว้ในโทรศัพท์ของคุณ เซิร์ฟเวอร์ของเราเก็บเฉพาะจำนวนนับรายวันแบบไม่ระบุตัวตน และอีเมลติดต่อเฉพาะในกรณีที่คุณซื้อตำแหน่ง Featured dApp เท่านั้น</li>
+        <li><strong>ข้อจำกัดทางภูมิศาสตร์</strong> — แอปไม่พร้อมใช้งานใน 58 เขตอำนาจที่ถูกบล็อก ประเทศของคุณจะถูกตรวจสอบเมื่อเปิดแอปและก่อนการชำระเงินทุกครั้ง</li>
+        <li><strong>สิทธิของคุณ</strong> — "Export My Data" และ "Delete My Data" ในการตั้งค่า รองรับสิทธิ GDPR/CCPA อย่างเต็มที่</li>
         <li><strong>ติดต่อ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>โดยสรุป:</strong> เราเก็บข้อมูลน้อยมาก — ส่วนใหญ่คือที่อยู่กระเป๋าเงินสาธารณะของคุณสำหรับการชำระเงินและตำแหน่งโดยประมาณสำหรับการตรวจสอบมาตรการคว่ำบาตร ทุกอย่างอื่นยังคงอยู่ในโทรศัพท์ของคุณ เราไม่ติดตามคุณ ไม่แสดงโฆษณา และไม่ขายข้อมูลของคุณ</div>
+    <div class="summary-box"><strong>โดยสรุป:</strong> เราเก็บข้อมูลน้อยมาก — ส่วนใหญ่คือที่อยู่กระเป๋าเงินสาธารณะของคุณสำหรับการชำระเงินและประเทศโดยประมาณของคุณสำหรับการตรวจสอบมาตรการคว่ำบาตร ทุกอย่างอื่นยังคงอยู่ในโทรศัพท์ของคุณ ยกเว้นจำนวนนับแบบไม่ระบุตัวตนที่คุณสามารถปิดได้ เราไม่แสดงโฆษณาและไม่ขายข้อมูลของคุณเลย</div>
 </article>
 
 <!-- ============== TURKISH ============== -->
@@ -585,18 +632,20 @@
     <div class="binding-notice"><strong>Bildirim:</strong> Yukarıdaki İngilizce sürüm yasal olarak bağlayıcı metindir. Bu özet kolaylık sağlamak için sunulmuştur.</div>
     <p>Bu belge, AardAppvark Toolkit uygulamasının verilerinizi nasıl işlediğini özetler. Tam metin için <a href="#en">yukarıdaki İngilizce bölüme</a> bakın.</p>
     <ol>
-        <li><strong>Giriş</strong> — Gizliliğinizi korumayı taahhüt ediyoruz. İlkeler: veri minimizasyonu, yerel işleme, şeffaflık, takip yok, kullanıcı kontrolü.</li>
-        <li><strong>Topladığımız Bilgiler</strong> — ödemeler için Solana cüzdan adresi, yaptırım uyumluluğu için yaklaşık konum, yüklü uygulamalar listesi (yalnızca yerel).</li>
-        <li><strong>Toplamadığımız Bilgiler</strong> — kişisel tanımlayıcılar, cihaz kimlikleri, özel anahtarlar, analitik veya reklam izleyicileri yoktur.</li>
-        <li><strong>Kullanım</strong> — ödeme doğrulama, yaptırım uyumluluğu, uygulamaları görüntüleme, abonelik özellikleri.</li>
+        <li><strong>Giriş</strong> — Gizliliğinizi korumayı taahhüt ediyoruz. İlkelerimiz: veri minimizasyonu, yerel işleme, şeffaflık, üçüncü taraflarca takip edilmeme, kullanıcı kontrolü.</li>
+        <li><strong>Topladığımız Bilgiler</strong> — ödemeler için Solana cüzdan adresi, yaptırım kontrolleri için yaklaşık ülke, yüklü uygulamaların listesi (telefonda kalır).</li>
+        <li><strong>Yalnızca Telefonunuzda</strong> — “Usage access” iznini verirseniz, her uygulamanın en son ne zaman açıldığı (kaydedilmez); Launch için ana ekran düzenleriniz; ve başlattığınız bir görev için düğmelere basarken erişilebilirlik hizmetinin okuduğu veriler (kaldırma onayları, dApp Store yüklemeleri, ana ekran simgelerini taşıma). Bunların hiçbiri telefondan çıkmaz.</li>
+        <li><strong>Anonim Sayımlar</strong> — uygulama, anonim olay sayımlarını (yalnızca olay türü, kimlik bilgisi olmadan) kendi sunucumuza gönderir. Bunu Ayarlar → “Anonymous Analytics” üzerinden kapatabilirsiniz.</li>
+        <li><strong>Toplamadığımız Bilgiler</strong> — kişisel tanımlayıcılar, cihaz kimlikleri, özel anahtarlar, üçüncü taraf analitikleri veya reklam izleyicileri yoktur.</li>
+        <li><strong>Kullanım</strong> — ödeme doğrulama, yaptırım uyumluluğu, yüklü uygulamaları görüntüleme, ücretli özellikleri sağlama.</li>
         <li><strong>Paylaşım</strong> — Verilerinizi asla satmayız. Sınırlı açıklama yalnızca blockchain işlemleri ve yasal gereksinimler için.</li>
-        <li><strong>Üçüncü Taraf Hizmetleri</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Depolama ve Güvenlik</strong> — Tüm veriler yerel olarak depolanır. Verilerinizi depolayan sunucular işletmiyoruz.</li>
-        <li><strong>Coğrafi Kısıtlamalar</strong> — Uygulama 58 engellenen yargı alanında mevcut değildir. Konum, başlatma sırasında ve her ödeme öncesinde doğrulanır.</li>
-        <li><strong>Haklarınız</strong> — Ayarlar üzerinden erişim, kaldırarak silme, kullanmayı durdurarak vazgeçme. KVKK/GDPR/CCPA tam olarak desteklenir.</li>
+        <li><strong>Üçüncü Taraf Hizmetleri</strong> — Solana blockchain'i ve RPC sağlayıcıları, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (yaptırım kontrolü). Tam liste İngilizce metinde yer almaktadır.</li>
+        <li><strong>Depolama ve Güvenlik</strong> — Verileriniz telefonunuzda saklanır. Sunucularımız yalnızca anonim günlük sayımları ve — yalnızca bir Featured dApp yerleşimi satın alırsanız — bir iletişim e-postası tutar.</li>
+        <li><strong>Coğrafi Kısıtlamalar</strong> — Uygulama 58 engellenen yargı alanında mevcut değildir. Ülkeniz, başlatma sırasında ve her ödeme öncesinde kontrol edilir.</li>
+        <li><strong>Haklarınız</strong> — Ayarlar'da “Export My Data” ve “Delete My Data”. GDPR/CCPA hakları tam olarak desteklenmektedir.</li>
         <li><strong>İletişim</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Kısaca:</strong> Çok az veri topluyoruz — esas olarak ödemeler için genel cüzdan adresinizi ve yaptırım kontrolü için yaklaşık konumunuzu. Diğer her şey telefonunuzda kalır. Sizi takip etmiyor, reklam göstermiyor ve verilerinizi asla satmıyoruz.</div>
+    <div class="summary-box"><strong>Kısaca:</strong> Çok az veri topluyoruz — esas olarak ödemeler için genel cüzdan adresinizi ve yaptırım kontrolü için yaklaşık ülkenizi. Diğer her şey, kapatabileceğiniz anonim sayımlar dışında, telefonunuzda kalır. Reklam göstermiyoruz ve verilerinizi asla satmıyoruz.</div>
 </article>
 
 <!-- ============== UKRAINIAN ============== -->
@@ -605,18 +654,20 @@
     <div class="binding-notice"><strong>Повідомлення:</strong> Англійська версія вище є юридично обов'язковим текстом. Це резюме надається для зручності.</div>
     <p>Цей документ підсумовує, як AardAppvark Toolkit обробляє ваші дані. Повний текст міститься в <a href="#en">англійському розділі вище</a>.</p>
     <ol>
-        <li><strong>Вступ</strong> — Ми зобов'язуємося захищати вашу конфіденційність. Принципи: мінімізація даних, локальна обробка, прозорість, без відстеження, контроль користувача.</li>
-        <li><strong>Інформація, яку збираємо</strong> — адреса гаманця Solana для платежів, приблизне місцезнаходження для дотримання санкцій, список установлених програм (лише локально).</li>
-        <li><strong>Чого НЕ збираємо</strong> — жодних особистих ідентифікаторів, ідентифікаторів пристрою, приватних ключів, аналітики чи рекламних трекерів.</li>
-        <li><strong>Використання</strong> — перевірка платежів, дотримання санкцій, відображення програм, функції підписки.</li>
+        <li><strong>Вступ</strong> — Ми зобов'язуємося захищати вашу конфіденційність. Наші принципи: мінімізація даних, локальна обробка, прозорість, відсутність стеження з боку третіх сторін, контроль користувача.</li>
+        <li><strong>Інформація, яку збираємо</strong> — адреса гаманця Solana для платежів, приблизна країна для перевірки санкцій, список установлених програм (залишається на телефоні).</li>
+        <li><strong>Лише на вашому телефоні</strong> — якщо ви дозволите «Usage access», час останнього відкриття кожної програми (не зберігається); макети головного екрана для Launch; і те, що зчитує служба спеціальних можливостей, натискаючи кнопки для завдання, яке ви розпочали (підтвердження видалення, встановлення з dApp Store, переміщення значків на головному екрані). Ніщо з цього не залишає телефон.</li>
+        <li><strong>Анонімні лічильники</strong> — додаток надсилає анонімні лічильники подій (лише тип події, без ідентифікаторів) на наш власний сервер. Ви можете вимкнути це в Налаштуваннях → «Anonymous Analytics».</li>
+        <li><strong>Чого НЕ збираємо</strong> — жодних особистих ідентифікаторів, ідентифікаторів пристрою, приватних ключів, сторонньої аналітики чи рекламних трекерів.</li>
+        <li><strong>Використання</strong> — перевірка платежів, дотримання санкцій, відображення встановлених програм, надання платних функцій.</li>
         <li><strong>Передача</strong> — Ми ніколи не продаємо ваші дані. Обмежене розкриття лише для блокчейн-транзакцій і юридичних вимог.</li>
-        <li><strong>Сторонні служби</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Зберігання та безпека</strong> — Усі дані зберігаються локально. Ми не керуємо серверами, що зберігають ваші дані.</li>
-        <li><strong>Географічні обмеження</strong> — Додаток недоступний у 58 заблокованих юрисдикціях. Місцезнаходження перевіряється при запуску та перед кожним платежем.</li>
-        <li><strong>Ваші права</strong> — доступ через Налаштування, видалення видаленням, відмова припиненням використання. GDPR/CCPA повністю підтримуються.</li>
+        <li><strong>Сторонні служби</strong> — блокчейн Solana та RPC-провайдери, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (перевірка санкцій). Повний список наведено в англійському тексті.</li>
+        <li><strong>Зберігання та безпека</strong> — Ваші дані зберігаються на вашому телефоні. Наші сервери зберігають лише анонімні щоденні лічильники та контактну електронну адресу — тільки якщо ви купуєте розміщення Featured dApp.</li>
+        <li><strong>Географічні обмеження</strong> — Додаток недоступний у 58 заблокованих юрисдикціях. Вашу країну перевіряють під час запуску та перед кожним платежем.</li>
+        <li><strong>Ваші права</strong> — «Export My Data» і «Delete My Data» у Налаштуваннях. Права GDPR/CCPA повністю підтримуються.</li>
         <li><strong>Контакти</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Коротко:</strong> Ми збираємо дуже мало даних — переважно вашу публічну адресу гаманця для платежів і ваше приблизне місцезнаходження для перевірки санкцій. Усе інше залишається на вашому телефоні. Ми не відстежуємо вас, не показуємо рекламу і ніколи не продаємо ваші дані.</div>
+    <div class="summary-box"><strong>Коротко:</strong> Ми збираємо дуже мало даних — переважно вашу публічну адресу гаманця для платежів і приблизну країну для перевірки санкцій. Усе інше залишається на вашому телефоні, окрім анонімних лічильників, які можна вимкнути. Ми не показуємо рекламу і ніколи не продаємо ваші дані.</div>
 </article>
 
 <!-- ============== URDU (RTL) ============== -->
@@ -625,18 +676,20 @@
     <div class="binding-notice"><strong>نوٹس:</strong> اوپر کی انگریزی نسخہ قانونی طور پر پابند کرنے والا متن ہے۔ یہ خلاصہ سہولت کے لئے فراہم کیا گیا ہے۔</div>
     <p>یہ دستاویز AardAppvark Toolkit آپ کے ڈیٹا کو کیسے ہینڈل کرتا ہے کا خلاصہ پیش کرتی ہے۔ مکمل متن کے لئے، <a href="#en">اوپر انگریزی سیکشن</a> دیکھیں۔</p>
     <ol>
-        <li><strong>تعارف</strong> — ہم آپ کی پرائیویسی کی حفاظت کے لئے پرعزم ہیں۔ اصول: ڈیٹا کم سے کم، مقامی-پہلے، شفافیت، کوئی ٹریکنگ نہیں، صارف کنٹرول۔</li>
-        <li><strong>جمع کی گئی معلومات</strong> — ادائیگیوں کے لئے Solana والیٹ ایڈریس، پابندیوں کی تعمیل کے لئے تخمینی مقام، انسٹال شدہ ایپس کی فہرست (صرف مقامی)۔</li>
-        <li><strong>جو ہم نہیں جمع کرتے</strong> — کوئی ذاتی شناخت کنندہ، ڈیوائس ID، نجی کیز، تجزیات، یا اشتہاری ٹریکرز نہیں۔</li>
-        <li><strong>استعمال</strong> — ادائیگی کی تصدیق، پابندیوں کی تعمیل، ایپس دکھانا، سبسکرپشن خصوصیات۔</li>
+        <li><strong>تعارف</strong> — ہم آپ کی پرائیویسی کی حفاظت کے لئے پرعزم ہیں۔ اصول: ڈیٹا کم سے کم، مقامی-پہلے، شفافیت، تیسرے فریق کی کوئی ٹریکنگ نہیں، صارف کنٹرول۔</li>
+        <li><strong>جمع کی گئی معلومات</strong> — ادائیگیوں کے لئے Solana والیٹ ایڈریس، پابندیوں کی تعمیل کے لئے تخمینی ملک، انسٹال شدہ ایپس کی فہرست (فون پر ہی رہتی ہے)۔</li>
+        <li><strong>صرف آپ کے فون پر</strong> — اگر آپ "Usage access" کی اجازت دیتے ہیں، تو ہر ایپ کب آخری بار کھولی گئی (محفوظ نہیں کی جاتی)؛ Launch کے لئے آپ کی ہوم اسکرین کی ترتیبات؛ اور رسائی کی سروس اس وقت جو کچھ پڑھتی ہے جب وہ آپ کے شروع کردہ کسی کام کے لئے بٹن دباتی ہے (اَن انسٹال کی تصدیقات، dApp Store کی تنصیبات، ہوم اسکرین آئیکنز کو منتقل کرنا)۔ اس میں سے کچھ بھی فون سے باہر نہیں جاتا۔</li>
+        <li><strong>گمنام شمار</strong> — ایپ گمنام ایونٹ شمار (صرف ایونٹ کی قسم، کوئی شناخت کنندہ نہیں) ہمارے اپنے سرور کو بھیجتی ہے۔ آپ اسے ترتیبات → "Anonymous Analytics" میں بند کر سکتے ہیں۔</li>
+        <li><strong>جو ہم نہیں جمع کرتے</strong> — کوئی ذاتی شناخت کنندہ نہیں، کوئی ڈیوائس ID نہیں، کوئی نجی کیز نہیں، تیسرے فریق کے تجزیات یا اشتہاری ٹریکرز نہیں۔</li>
+        <li><strong>استعمال</strong> — ادائیگی کی تصدیق، پابندیوں کی تعمیل، انسٹال شدہ ایپس دکھانا، ادائیگی والی خصوصیات دینا۔</li>
         <li><strong>اشتراک</strong> — ہم آپ کا ڈیٹا کبھی فروخت نہیں کرتے۔ محدود انکشاف صرف بلاکچین لین دین اور قانونی تقاضوں کے لئے۔</li>
-        <li><strong>تیسرے فریق کی خدمات</strong> — Solana Blockchain، Mobile Wallet Adapter، Shizuku، Solana dApp Store۔</li>
-        <li><strong>اسٹوریج اور سیکیورٹی</strong> — تمام ڈیٹا مقامی طور پر محفوظ ہے۔ ہم آپ کا ڈیٹا اسٹور کرنے والے سرورز نہیں چلاتے۔</li>
-        <li><strong>جغرافیائی پابندیاں</strong> — ایپ 58 بلاک شدہ دائرہ اختیارات میں دستیاب نہیں ہے۔ مقام لانچ پر اور ہر ادائیگی سے پہلے تصدیق کیا جاتا ہے۔</li>
-        <li><strong>آپ کے حقوق</strong> — ترتیبات کے ذریعے رسائی، ان انسٹال کرکے حذف، استعمال بند کرکے آپٹ آؤٹ۔ GDPR/CCPA مکمل طور پر سپورٹ شدہ۔</li>
+        <li><strong>تیسرے فریق کی خدمات</strong> — Solana بلاکچین اور RPC فراہم کنندگان، Mobile Wallet Adapter، Shizuku، Solana dApp Store، TRM Labs (پابندیوں کی اسکریننگ)۔ مکمل فہرست انگریزی متن میں موجود ہے۔</li>
+        <li><strong>اسٹوریج اور سیکیورٹی</strong> — آپ کا ڈیٹا آپ کے فون پر محفوظ ہوتا ہے۔ ہمارے سرورز گمنام روزانہ شمار محفوظ رکھتے ہیں، اور رابطے کے لئے ای میل ایڈریس صرف اس صورت میں جب آپ ایک نمایاں dApp پلیسمنٹ خریدیں (Featured dApp placement)۔</li>
+        <li><strong>جغرافیائی پابندیاں</strong> — ایپ 58 بلاک شدہ دائرہ اختیارات میں دستیاب نہیں ہے۔ آپ کا ملک لانچ کے وقت اور ہر ادائیگی سے پہلے چیک کیا جاتا ہے۔</li>
+        <li><strong>آپ کے حقوق</strong> — ترتیبات میں "Export My Data" اور "Delete My Data"۔ GDPR/CCPA حقوق مکمل طور پر سپورٹ شدہ ہیں۔</li>
         <li><strong>رابطہ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>سادہ الفاظ میں:</strong> ہم بہت کم ڈیٹا جمع کرتے ہیں — بنیادی طور پر ادائیگیوں کے لئے آپ کا عوامی والیٹ ایڈریس اور پابندیاں چیک کرنے کے لئے آپ کا تخمینی مقام۔ باقی سب کچھ آپ کے فون پر ہی رہتا ہے۔ ہم آپ کو ٹریک نہیں کرتے، اشتہارات نہیں دکھاتے، اور آپ کا ڈیٹا کبھی فروخت نہیں کرتے۔</div>
+    <div class="summary-box"><strong>سادہ الفاظ میں:</strong> ہم بہت کم ڈیٹا جمع کرتے ہیں — بنیادی طور پر ادائیگیوں کے لئے آپ کا عوامی والیٹ ایڈریس اور پابندیاں چیک کرنے کے لئے آپ کا تخمینی ملک۔ باقی سب کچھ آپ کے فون پر ہی رہتا ہے، سوائے گمنام شمار کے جسے آپ بند کر سکتے ہیں۔ ہم کوئی اشتہارات نہیں دکھاتے اور آپ کا ڈیٹا کبھی فروخت نہیں کرتے۔</div>
 </article>
 
 <!-- ============== VIETNAMESE ============== -->
@@ -645,18 +698,20 @@
     <div class="binding-notice"><strong>Thông báo:</strong> Phiên bản tiếng Anh ở trên là văn bản có giá trị pháp lý ràng buộc. Bản tóm tắt này được cung cấp để thuận tiện.</div>
     <p>Tài liệu này tóm tắt cách AardAppvark Toolkit xử lý dữ liệu của bạn. Để biết văn bản đầy đủ, hãy xem <a href="#en">phần tiếng Anh ở trên</a>.</p>
     <ol>
-        <li><strong>Giới thiệu</strong> — Chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Nguyên tắc: tối thiểu hóa dữ liệu, xử lý cục bộ trước, minh bạch, không theo dõi, kiểm soát người dùng.</li>
-        <li><strong>Thông tin chúng tôi thu thập</strong> — địa chỉ ví Solana để thanh toán, vị trí gần đúng để tuân thủ trừng phạt, danh sách ứng dụng (chỉ cục bộ).</li>
-        <li><strong>Những gì chúng tôi KHÔNG thu thập</strong> — không có thông tin nhận dạng cá nhân, ID thiết bị, khóa riêng, phân tích hoặc trình theo dõi quảng cáo.</li>
-        <li><strong>Cách sử dụng</strong> — xác minh thanh toán, tuân thủ trừng phạt, hiển thị ứng dụng, các tính năng đăng ký.</li>
+        <li><strong>Giới thiệu</strong> — Chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Các nguyên tắc của chúng tôi: tối thiểu hóa dữ liệu, xử lý cục bộ, minh bạch, không bị bên thứ ba theo dõi, người dùng kiểm soát.</li>
+        <li><strong>Thông tin chúng tôi thu thập</strong> — địa chỉ ví Solana để thanh toán, quốc gia gần đúng để kiểm tra trừng phạt, danh sách ứng dụng đã cài đặt (lưu trên điện thoại).</li>
+        <li><strong>Chỉ trên điện thoại của bạn</strong> — nếu bạn cho phép “Usage access”, thời điểm mỗi ứng dụng được mở lần cuối (không được lưu trữ); bố cục màn hình chính của bạn cho Launch; và những gì dịch vụ trợ năng đọc được khi nó nhấn các nút cho một tác vụ bạn đã khởi động (xác nhận gỡ cài đặt, cài đặt từ dApp Store, di chuyển biểu tượng trên màn hình chính). Không có gì trong số đó rời khỏi điện thoại.</li>
+        <li><strong>Số liệu ẩn danh</strong> — ứng dụng gửi số liệu đếm sự kiện ẩn danh (chỉ loại sự kiện, không có thông tin nhận dạng) đến máy chủ riêng của chúng tôi. Bạn có thể tắt tính năng này trong Cài đặt → “Anonymous Analytics”.</li>
+        <li><strong>Những gì chúng tôi KHÔNG thu thập</strong> — không có thông tin nhận dạng cá nhân, ID thiết bị, khóa riêng, phân tích của bên thứ ba hoặc trình theo dõi quảng cáo.</li>
+        <li><strong>Cách sử dụng</strong> — xác minh thanh toán, tuân thủ trừng phạt, hiển thị ứng dụng đã cài đặt, cấp các tính năng trả phí.</li>
         <li><strong>Chia sẻ</strong> — Chúng tôi không bao giờ bán dữ liệu của bạn. Tiết lộ hạn chế chỉ cho các giao dịch blockchain và yêu cầu pháp lý.</li>
-        <li><strong>Dịch vụ Bên thứ Ba</strong> — Solana Blockchain, Mobile Wallet Adapter, Shizuku, Solana dApp Store.</li>
-        <li><strong>Lưu trữ và Bảo mật</strong> — Tất cả dữ liệu được lưu trữ cục bộ. Chúng tôi không vận hành máy chủ lưu trữ dữ liệu của bạn.</li>
-        <li><strong>Hạn chế Địa lý</strong> — Ứng dụng không khả dụng ở 58 khu vực pháp lý bị chặn. Vị trí được xác minh khi khởi chạy và trước mỗi lần thanh toán.</li>
-        <li><strong>Quyền của bạn</strong> — truy cập qua Cài đặt, xóa bằng cách gỡ cài đặt, từ chối bằng cách ngừng sử dụng. GDPR/CCPA được hỗ trợ đầy đủ.</li>
+        <li><strong>Dịch vụ Bên thứ Ba</strong> — blockchain Solana và các nhà cung cấp RPC, Mobile Wallet Adapter, Shizuku, Solana dApp Store, TRM Labs (sàng lọc trừng phạt). Danh sách đầy đủ có trong văn bản tiếng Anh.</li>
+        <li><strong>Lưu trữ và Bảo mật</strong> — Dữ liệu của bạn được lưu trữ trên điện thoại của bạn. Máy chủ của chúng tôi chỉ lưu số liệu đếm hằng ngày ẩn danh, và một email liên hệ chỉ khi bạn mua vị trí Featured dApp.</li>
+        <li><strong>Hạn chế Địa lý</strong> — Ứng dụng không khả dụng ở 58 khu vực pháp lý bị chặn. Quốc gia của bạn được kiểm tra khi khởi chạy và trước mỗi lần thanh toán.</li>
+        <li><strong>Quyền của bạn</strong> — “Export My Data” và “Delete My Data” trong Cài đặt. Quyền GDPR/CCPA được hỗ trợ đầy đủ.</li>
         <li><strong>Liên hệ</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>Tóm lại:</strong> Chúng tôi thu thập rất ít dữ liệu — chủ yếu là địa chỉ ví công khai của bạn cho thanh toán và vị trí gần đúng để kiểm tra trừng phạt. Mọi thứ khác đều ở lại điện thoại của bạn. Chúng tôi không theo dõi bạn, không hiển thị quảng cáo và không bao giờ bán dữ liệu của bạn.</div>
+    <div class="summary-box"><strong>Tóm lại:</strong> Chúng tôi thu thập rất ít dữ liệu — chủ yếu là địa chỉ ví công khai của bạn cho thanh toán và quốc gia gần đúng của bạn để kiểm tra trừng phạt. Mọi thứ khác đều ở lại điện thoại của bạn, ngoại trừ số liệu ẩn danh mà bạn có thể tắt. Chúng tôi không hiển thị quảng cáo và không bao giờ bán dữ liệu của bạn.</div>
 </article>
 
 <!-- ============== CHINESE SIMPLIFIED ============== -->
@@ -665,18 +720,20 @@
     <div class="binding-notice"><strong>声明:</strong> 上方英文版本为具有法律约束力的文本。本摘要仅为便利提供。</div>
     <p>本文档总结了 AardAppvark Toolkit 如何处理您的数据。完整文本请参阅<a href="#en">上方英文部分</a>。</p>
     <ol>
-        <li><strong>引言</strong> — 我们致力于保护您的隐私。原则:数据最小化、本地优先、透明度、不追踪、用户控制。</li>
-        <li><strong>我们收集的信息</strong> — 用于支付的 Solana 钱包地址、用于制裁合规的大致位置、已安装应用列表(仅限本地)。</li>
-        <li><strong>我们不收集的信息</strong> — 不收集任何个人标识符、设备 ID、私钥、分析数据或广告追踪器。</li>
-        <li><strong>使用方式</strong> — 验证支付、遵守制裁、显示应用、授予订阅功能。</li>
+        <li><strong>引言</strong> — 我们致力于保护您的隐私。我们的原则:数据最小化、本地处理、透明度、不进行第三方追踪、用户控制。</li>
+        <li><strong>我们收集的信息</strong> — 用于支付的 Solana 钱包地址、用于制裁合规检查的大致所在国家、已安装应用列表(保留在手机上)。</li>
+        <li><strong>仅保留在您的手机上</strong> — 如果您允许“Usage access”,记录每个应用最后一次打开的时间(不会被存储);您用于 Launch 的主屏幕布局;以及无障碍服务在为您发起的任务按下按钮时所读取的内容(卸载确认、dApp Store 安装、移动主屏幕图标)。这些信息都不会离开手机。</li>
+        <li><strong>匿名计数</strong> — 应用会向我们自己的服务器发送匿名事件计数(仅事件类型,不含任何标识符)。您可以在设置 → “Anonymous Analytics” 中关闭此功能。</li>
+        <li><strong>我们不收集的信息</strong> — 不收集任何个人标识符、设备 ID、私钥、第三方分析工具或广告追踪器。</li>
+        <li><strong>使用方式</strong> — 验证支付、遵守制裁规定、显示已安装的应用、授予付费功能。</li>
         <li><strong>共享</strong> — 我们绝不出售您的数据。仅在区块链交易和法律要求时进行有限披露。</li>
-        <li><strong>第三方服务</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
-        <li><strong>存储和安全</strong> — 所有数据均存储在本地。我们不运营存储您数据的服务器。</li>
-        <li><strong>地理限制</strong> — 应用在 58 个被屏蔽的司法管辖区不可用。位置在启动时和每次支付前进行验证。</li>
-        <li><strong>您的权利</strong> — 通过设置访问、卸载删除、停用退出。完全支持 GDPR/CCPA。</li>
+        <li><strong>第三方服务</strong> — Solana 区块链及 RPC 提供商、Mobile Wallet Adapter、Shizuku、Solana dApp Store、TRM Labs(制裁审查)。完整列表见英文文本。</li>
+        <li><strong>存储和安全</strong> — 您的数据存储在您的手机上。我们的服务器仅保留匿名的每日计数,以及仅在您购买 Featured dApp 展示位时才会留存的联系邮箱。</li>
+        <li><strong>地理限制</strong> — 应用在 58 个被屏蔽的司法管辖区不可用。您所在的国家会在启动时以及每次支付前进行核查。</li>
+        <li><strong>您的权利</strong> — 设置中的“Export My Data”和“Delete My Data”。完全支持 GDPR/CCPA 权利。</li>
         <li><strong>联系方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>简而言之:</strong> 我们收集的数据非常少——主要是您用于支付的公共钱包地址和用于制裁检查的大致位置。其他所有信息都留在您的手机上。我们不追踪您,不显示广告,绝不出售您的数据。</div>
+    <div class="summary-box"><strong>简而言之:</strong> 我们收集的数据非常少——主要是您用于支付的公开钱包地址,以及用于制裁检查的大致所在国家。除了可以关闭的匿名计数外,其他所有信息都保留在您的手机上。我们不展示广告,也绝不出售您的数据。</div>
 </article>
 
 <!-- ============== CHINESE TRADITIONAL ============== -->
@@ -685,18 +742,20 @@
     <div class="binding-notice"><strong>聲明:</strong> 上方英文版本為具有法律約束力的文本。本摘要僅為便利提供。</div>
     <p>本文件總結了 AardAppvark Toolkit 如何處理您的資料。完整文本請參閱<a href="#en">上方英文部分</a>。</p>
     <ol>
-        <li><strong>引言</strong> — 我們致力於保護您的隱私。原則:資料最小化、本地優先、透明度、不追蹤、使用者控制。</li>
-        <li><strong>我們收集的資訊</strong> — 用於付款的 Solana 錢包地址、用於制裁合規的大致位置、已安裝應用程式列表(僅限本地)。</li>
-        <li><strong>我們不收集的資訊</strong> — 不收集任何個人識別碼、裝置 ID、私鑰、分析資料或廣告追蹤器。</li>
-        <li><strong>使用方式</strong> — 驗證付款、遵守制裁、顯示應用程式、授予訂閱功能。</li>
+        <li><strong>引言</strong> — 我們致力於保護您的隱私。我們的原則:資料最小化、本地處理、透明度、不進行第三方追蹤、使用者控制。</li>
+        <li><strong>我們收集的資訊</strong> — 用於付款的 Solana 錢包地址、用於制裁合規檢查的大致所在國家、已安裝應用程式清單(保留在手機上)。</li>
+        <li><strong>僅保留在您的手機上</strong> — 如果您允許「Usage access」,記錄每個應用程式最後一次開啟的時間(不會被儲存);您用於 Launch 的主畫面版面配置;以及協助工具服務在為您發起的工作按下按鈕時所讀取的內容(解除安裝確認、dApp Store 安裝、移動主畫面圖示)。這些資訊都不會離開手機。</li>
+        <li><strong>匿名計數</strong> — 應用程式會將匿名事件計數(僅事件類型,不含任何識別碼)傳送至我們自己的伺服器。您可以在設定 → 「Anonymous Analytics」中關閉此功能。</li>
+        <li><strong>我們不收集的資訊</strong> — 不收集任何個人識別碼、裝置 ID、私鑰、第三方分析工具或廣告追蹤器。</li>
+        <li><strong>使用方式</strong> — 驗證付款、遵守制裁規定、顯示已安裝的應用程式、授予付費功能。</li>
         <li><strong>共享</strong> — 我們絕不出售您的資料。僅在區塊鏈交易和法律要求時進行有限揭露。</li>
-        <li><strong>第三方服務</strong> — Solana Blockchain、Mobile Wallet Adapter、Shizuku、Solana dApp Store。</li>
-        <li><strong>儲存和安全</strong> — 所有資料均儲存在本地。我們不營運儲存您資料的伺服器。</li>
-        <li><strong>地理限制</strong> — 應用程式在 58 個被封鎖的司法管轄區不可用。位置在啟動時和每次付款前進行驗證。</li>
-        <li><strong>您的權利</strong> — 透過設定存取、解除安裝刪除、停用退出。完全支援 GDPR/CCPA。</li>
+        <li><strong>第三方服務</strong> — Solana 區塊鏈及 RPC 供應商、Mobile Wallet Adapter、Shizuku、Solana dApp Store、TRM Labs(制裁審查)。完整清單請見英文文本。</li>
+        <li><strong>儲存和安全</strong> — 您的資料儲存在您的手機上。我們的伺服器僅保留匿名的每日計數,以及僅在您購買 Featured dApp 曝光版位時才會留存的聯絡電子郵件。</li>
+        <li><strong>地理限制</strong> — 應用程式在 58 個被封鎖的司法管轄區不可用。您所在的國家會在啟動時以及每次付款前進行核查。</li>
+        <li><strong>您的權利</strong> — 設定中的「Export My Data」和「Delete My Data」。完全支援 GDPR/CCPA 權利。</li>
         <li><strong>聯絡方式</strong> — <a href="mailto:aardappvark@proton.me">aardappvark@proton.me</a></li>
     </ol>
-    <div class="summary-box"><strong>簡而言之:</strong> 我們收集的資料非常少——主要是您用於付款的公共錢包地址和用於制裁檢查的大致位置。其他所有資訊都留在您的手機上。我們不追蹤您,不顯示廣告,絕不出售您的資料。</div>
+    <div class="summary-box"><strong>簡而言之:</strong> 我們收集的資料非常少——主要是您用於付款的公開錢包地址,以及用於制裁檢查的大致所在國家。除了可以關閉的匿名計數外,其他所有資訊都保留在您的手機上。我們不展示廣告,也絕不出售您的資料。</div>
 </article>
 
 
